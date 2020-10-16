@@ -77,9 +77,7 @@ namespace Web_DDD_2020.Controllers
         }        
        
         public IActionResult Create()
-        {
-            #region Por isso em outra camada
-
+        {    
             var listaDePaises = _InterfacePaisApp.List();
             var listaDeRegioes = _InterfaceRegiaoApp.List();
 
@@ -117,8 +115,6 @@ namespace Web_DDD_2020.Controllers
             ViewBag.Paises = paises.ToList().Select(c => new SelectListItem(){ Value = c.Id.ToString(), Text = c.Nome.ToString()}).ToList();
 
             ViewBag.Regioes = regioes.ToList().Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() }).ToList();
-
-            #endregion
 
             return View();
         }        
@@ -159,29 +155,16 @@ namespace Web_DDD_2020.Controllers
             SensorViewModel sensorViewModel;
 
             try
-            {
-                #region Validacoes podem ser feitas em outra camada
-
-                if (id == null)
-                    return NotFound();
-
-                if (sensor == null)
-                    return NotFound();
-
-                #endregion
-
-                #region Por isso em outra camada
+            {  
+                if (id == null || sensor == null)
+                    return NotFound();               
 
                 var lista = Enum.GetValues(typeof(StatusSensorEnum))
                                .Cast<StatusSensorEnum>()
                                .Select(v => new { Value = (int)v, Name = v.ToString() })
                                .ToList();
 
-                bool status = sensor.StatusSensorId == Convert.ToInt32(lista[0].Value) ? true : false;
-
-                #endregion
-
-                #region Por isso em outra camada separando Pais e Regiao.
+                bool status = sensor.StatusSensorId == Convert.ToInt32(lista[0].Value) ? true : false;   
 
                 var listaDePaises = _InterfacePaisApp.List();
                 var listaDeRegioes = _InterfaceRegiaoApp.List();
@@ -219,11 +202,7 @@ namespace Web_DDD_2020.Controllers
 
                 ViewBag.Paises = paises.ToList().Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() }).ToList();
 
-                ViewBag.Regioes = regioes.ToList().Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() }).ToList();
-
-                #endregion
-
-                #region Isso pode ser feito por auto mapper
+                ViewBag.Regioes = regioes.ToList().Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() }).ToList(); 
 
                 sensorViewModel = new SensorViewModel
                 {
@@ -236,8 +215,6 @@ namespace Web_DDD_2020.Controllers
                     DataCadastro = sensor.DataCadastro,
                     DataAlteracao = sensor.DataAlteracao
                 };
-
-                #endregion
 
             }
             catch (Exception ex)
@@ -254,14 +231,11 @@ namespace Web_DDD_2020.Controllers
         {
             Sensor sensor = new Sensor();
 
-            if (id != sensorViewModel.Id)
-            {
-                return NotFound();
-            }
+            if (id != sensorViewModel.Id)           
+                return NotFound();            
 
             if (ModelState.IsValid)
             {
-
                 try
                 {
                     var lista = Enum.GetValues(typeof(StatusSensorEnum))
@@ -289,8 +263,10 @@ namespace Web_DDD_2020.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(sensorViewModel);
         }
 
@@ -303,18 +279,9 @@ namespace Web_DDD_2020.Controllers
             SensorViewModel sensorViewModel;
 
             try
-            {
-                #region Validacoes podem ser feitas em outra camada
-
-                if (id == null)
-                    return NotFound();
-
-                if (sensor == null)
-                    return NotFound();
-
-                #endregion                
-
-                #region Por isso em outra camada
+            {          
+                if (id == null || sensor == null)
+                    return NotFound();     
 
                 var lista = Enum.GetValues(typeof(StatusSensorEnum))
                                .Cast<StatusSensorEnum>()
@@ -322,10 +289,6 @@ namespace Web_DDD_2020.Controllers
                                .ToList();
 
                 bool status = sensor.StatusSensorId == Convert.ToInt32(lista[0].Value) ? true : false;
-
-                #endregion                
-
-                #region Isso pode ser feito por auto mapper
 
                 sensorViewModel = new SensorViewModel
                 {
@@ -340,9 +303,7 @@ namespace Web_DDD_2020.Controllers
                     DataCadastro = sensor.DataCadastro,
                     DataAlteracao = sensor.DataAlteracao
                 };
-
-                #endregion
-
+              
             }
             catch (Exception ex)
             {
@@ -359,6 +320,7 @@ namespace Web_DDD_2020.Controllers
             try
             {
                 var sensor = await _InterfaceSensorApp.GetEntityById(id);
+
                 await _InterfaceSensorApp.Delete(sensor);
             }
             catch (Exception ex)
@@ -378,18 +340,9 @@ namespace Web_DDD_2020.Controllers
             SensorViewModel sensorViewModel;
 
             try
-            {
-                #region Validacoes podem ser feitas em outra camada
-
-                if (id == null)
-                    return NotFound();
-
-                if (sensor == null)
-                    return NotFound();
-
-                #endregion                
-
-                #region Por isso em outra camada
+            {      
+                if (id == null || sensor == null)
+                    return NotFound(); 
 
                 var lista = Enum.GetValues(typeof(StatusSensorEnum))
                                .Cast<StatusSensorEnum>()
@@ -397,10 +350,6 @@ namespace Web_DDD_2020.Controllers
                                .ToList();
 
                 bool status = sensor.StatusSensorId == Convert.ToInt32(lista[0].Value) ? true : false;
-
-                #endregion
-
-                #region Isso pode ser feito por auto mapper
 
                 sensorViewModel = new SensorViewModel
                 {
@@ -416,7 +365,6 @@ namespace Web_DDD_2020.Controllers
                     DataAlteracao = sensor.DataAlteracao
                 };
 
-                #endregion
             }
             catch (Exception ex)
             {
