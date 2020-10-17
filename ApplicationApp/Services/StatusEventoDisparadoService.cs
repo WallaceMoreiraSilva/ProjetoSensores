@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ApplicationApp.OpenApp
 {
-    public class AppStatusEventoDisparado : InterfaceStatusEventoDisparadoApp
+    public class StatusEventoDisparadoService : InterfaceStatusEventoDisparadoApp
     {
         IStatusEventoDisparado _IStatusEventoDisparado;
 
-        public AppStatusEventoDisparado(IStatusEventoDisparado IStatusEventoDisparado)
+        public StatusEventoDisparadoService(IStatusEventoDisparado IStatusEventoDisparado)
         {
             _IStatusEventoDisparado = IStatusEventoDisparado;
         }

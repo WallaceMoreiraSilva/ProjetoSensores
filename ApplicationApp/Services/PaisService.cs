@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ApplicationApp.OpenApp
 {
-    public class AppPais : InterfacePaisApp
+    public class PaisService : InterfacePaisApp
     {
         IPais _IPais;
 
-        public AppPais(IPais IPais)
+        public PaisService(IPais IPais)
         {
             _IPais = IPais;
         }

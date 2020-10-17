@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ApplicationApp.OpenApp
 {
-    public class AppRegiao : InterfaceRegiaoApp
+    public class RegiaoService : InterfaceRegiaoApp
     {
         IRegiao _IRegiao;
 
-        public AppRegiao(IRegiao IRegiao)
+        public RegiaoService(IRegiao IRegiao)
         {
             _IRegiao = IRegiao;
         }

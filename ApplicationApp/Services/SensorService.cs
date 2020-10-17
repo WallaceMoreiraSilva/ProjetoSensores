@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ApplicationApp.OpenApp
 {
-    public class AppSensor : InterfaceSensorApp
+    public class SensorService : InterfaceSensorApp
     {
         ISensor _ISensor;
 
-        public AppSensor(ISensor ISensor)
+        public SensorService(ISensor ISensor)
         {
             _ISensor = ISensor;
         }

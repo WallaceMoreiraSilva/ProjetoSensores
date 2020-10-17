@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ApplicationApp.OpenApp
 {
-    public class AppEventoDisparado : InterfaceEventoDisparadoApp
+    public class EventoDisparadoService : InterfaceEventoDisparadoApp
     {
         IEventoDisparado _IEventoDisparado;
 
-        public AppEventoDisparado(IEventoDisparado IEventoDisparado)
+        public EventoDisparadoService(IEventoDisparado IEventoDisparado)
         {
             _IEventoDisparado = IEventoDisparado;
         }

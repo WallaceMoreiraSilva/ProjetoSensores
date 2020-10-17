@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ApplicationApp.OpenApp
 {
-    public class AppStatusSensor : InterfaceStatusSensorApp
+    public class StatusSensorService : InterfaceStatusSensorApp
     {
         IStatusSensor _IStatusSensor;
 
-        public AppStatusSensor(IStatusSensor IStatusSensor)
+        public StatusSensorService(IStatusSensor IStatusSensor)
         {
             _IStatusSensor = IStatusSensor;
         }

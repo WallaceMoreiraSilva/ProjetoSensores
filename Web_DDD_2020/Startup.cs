@@ -32,22 +32,22 @@ namespace Web_DDD_2020
             services.AddSingleton(typeof(IGeneric<>), typeof(RepositoryGenerics<>));
 
             services.AddSingleton<ISensor, RepositorySensor>();
-            services.AddSingleton<InterfaceSensorApp, AppSensor>();
+            services.AddSingleton<InterfaceSensorApp, SensorService>();
 
             services.AddSingleton<IRegiao, RepositoryRegiao>();
-            services.AddSingleton<InterfaceRegiaoApp, AppRegiao>();
+            services.AddSingleton<InterfaceRegiaoApp, RegiaoService>();
 
             services.AddSingleton<IPais, RepositoryPais>();
-            services.AddSingleton<InterfacePaisApp, AppPais>();
+            services.AddSingleton<InterfacePaisApp, PaisService>();
 
             services.AddSingleton<IEventoDisparado, RepositoryEventoDisparado>();
-            services.AddSingleton<InterfaceEventoDisparadoApp, AppEventoDisparado>();
+            services.AddSingleton<InterfaceEventoDisparadoApp, EventoDisparadoService>();
 
             services.AddSingleton<IStatusEventoDisparado, RepositoryStatusEventoDisparado>();
-            services.AddSingleton<InterfaceStatusEventoDisparadoApp, AppStatusEventoDisparado>();
+            services.AddSingleton<InterfaceStatusEventoDisparadoApp, StatusEventoDisparadoService>();
 
             services.AddSingleton<IStatusSensor, RepositoryStatusSensor>();
-            services.AddSingleton<InterfaceStatusSensorApp, AppStatusSensor>();
+            services.AddSingleton<InterfaceStatusSensorApp, StatusSensorService>();
 
             services.AddControllersWithViews();           
         }
