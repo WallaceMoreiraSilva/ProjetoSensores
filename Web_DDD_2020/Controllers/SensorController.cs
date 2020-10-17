@@ -7,13 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using System.Drawing;
-using AutoMapper;
-using Web_DDD_2020.Models;
 using ApplicationApp.ViewModels;
-using System.Runtime.InteropServices.ComTypes;
 using Entities.Enum;
-using Nuke.Common.Tooling;
 
 namespace Web_DDD_2020.Controllers
 {

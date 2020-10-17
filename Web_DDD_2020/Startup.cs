@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ApplicationApp.Interfaces;
 using ApplicationApp.OpenApp;
-using AutoMapper;
 using Domain.Interfaces.Generics;
 using Domain.Interfaces.InterfaceEventoDisparado;
 using Domain.Interfaces.InterfacePais;
@@ -12,7 +7,6 @@ using Domain.Interfaces.InterfaceRegiao;
 using Domain.Interfaces.InterfaceSensor;
 using Domain.Interfaces.InterfaceStatusEventoDisparado;
 using Domain.Interfaces.InterfaceStatusSensor;
-using Entities.Entities;
 using Infrastructure.Repository.Generics;
 using Infrastructure.Repository.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -20,7 +14,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Web_DDD_2020.Models;
 
 namespace Web_DDD_2020
 {
@@ -56,11 +49,7 @@ namespace Web_DDD_2020
             services.AddSingleton<IStatusSensor, RepositoryStatusSensor>();
             services.AddSingleton<InterfaceStatusSensorApp, AppStatusSensor>();
 
-            services.AddControllersWithViews();
-
-            ////Configure AutoMapper//////        
-                //services.AddAutoMapper(typeof(Startup));
-            ////////
+            services.AddControllersWithViews();           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
