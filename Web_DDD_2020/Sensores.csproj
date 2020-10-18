@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ApplicationApp\SensoresApp.csproj" />
     <ProjectReference Include="..\Domain\Sensores.Domain.csproj" />
+    <ProjectReference Include="..\Enum\Enum.csproj" />
     <ProjectReference Include="..\Sensores.Data\Sensores.Data.csproj" />
   </ItemGroup>
 

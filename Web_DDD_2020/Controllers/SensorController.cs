@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using ApplicationApp.ViewModels;
-using Entities.Enum;
+using Enum;
 
 namespace Web_DDD_2020.Controllers
 {
@@ -33,7 +33,7 @@ namespace Web_DDD_2020.Controllers
         public async Task<IActionResult> Index()
         {            
             List<SensorViewModel> lista = new List<SensorViewModel>();
-
+            
             try
             {                
                 var entitySensor = await _InterfaceSensorApp.List();
@@ -117,12 +117,7 @@ namespace Web_DDD_2020.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SensorViewModel sensorViewModel)
-        {           
-            var lista = Enum.GetValues(typeof(StatusSensorEnum))
-                             .Cast<StatusSensorEnum>()
-                             .Select(v => new { Value = (int)v, Name = v.ToString() })
-                             .ToList();
-
+        {    
             if (ModelState.IsValid)
             {
                 Sensor sensor = new Sensor();
@@ -132,8 +127,8 @@ namespace Web_DDD_2020.Controllers
                 sensor.PaisId = sensorViewModel.PaisId;
                 sensor.RegiaoId = sensorViewModel.RegiaoId;
                 sensor.DataCadastro = DateTime.Now;
-                sensor.DataAlteracao = DateTime.Now;               
-                sensor.StatusSensorId = sensorViewModel.Ativo == true ? lista[0].Value : lista[1].Value;
+                sensor.DataAlteracao = DateTime.Now;
+                sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
                 await _InterfaceSensorApp.Add(sensor);
 
@@ -152,14 +147,9 @@ namespace Web_DDD_2020.Controllers
             try
             {  
                 if (id == null || sensor == null)
-                    return NotFound();               
+                    return NotFound();   
 
-                var lista = Enum.GetValues(typeof(StatusSensorEnum))
-                               .Cast<StatusSensorEnum>()
-                               .Select(v => new { Value = (int)v, Name = v.ToString() })
-                               .ToList();
-
-                bool status = sensor.StatusSensorId == Convert.ToInt32(lista[0].Value) ? true : false;   
+                bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;   
 
                 var listaDePaises = _InterfacePaisApp.List();
                 var listaDeRegioes = _InterfaceRegiaoApp.List();
@@ -232,18 +222,13 @@ namespace Web_DDD_2020.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
-                    var lista = Enum.GetValues(typeof(StatusSensorEnum))
-                             .Cast<StatusSensorEnum>()
-                             .Select(v => new { Value = (int)v, Name = v.ToString() })
-                             .ToList();                    
-
+                {      
                     sensor.Nome = sensorViewModel.Nome;
                     sensor.Numero = sensorViewModel.Numero;
                     sensor.PaisId = sensorViewModel.PaisId;
                     sensor.RegiaoId = sensorViewModel.RegiaoId;                   
                     sensor.DataAlteracao = DateTime.Now;
-                    sensor.StatusSensorId = sensorViewModel.Ativo == true ? lista[0].Value : lista[1].Value;
+                    sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
                     await _InterfaceSensorApp.Update(sensor);
                 }
@@ -278,12 +263,7 @@ namespace Web_DDD_2020.Controllers
                 if (id == null || sensor == null)
                     return NotFound();     
 
-                var lista = Enum.GetValues(typeof(StatusSensorEnum))
-                               .Cast<StatusSensorEnum>()
-                               .Select(v => new { Value = (int)v, Name = v.ToString() })
-                               .ToList();
-
-                bool status = sensor.StatusSensorId == Convert.ToInt32(lista[0].Value) ? true : false;
+                bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;
 
                 sensorViewModel = new SensorViewModel
                 {
@@ -337,14 +317,9 @@ namespace Web_DDD_2020.Controllers
             try
             {      
                 if (id == null || sensor == null)
-                    return NotFound(); 
+                    return NotFound();
 
-                var lista = Enum.GetValues(typeof(StatusSensorEnum))
-                               .Cast<StatusSensorEnum>()
-                               .Select(v => new { Value = (int)v, Name = v.ToString() })
-                               .ToList();
-
-                bool status = sensor.StatusSensorId == Convert.ToInt32(lista[0].Value) ? true : false;
+                bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;
 
                 sensorViewModel = new SensorViewModel
                 {
