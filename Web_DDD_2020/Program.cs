@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Web_DDD_2020
+namespace ProjetoDDD
 {
     public class Program
     {

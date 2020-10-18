@@ -15,7 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace Web_DDD_2020
+namespace ProjetoDDD
 {
     public class Startup
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Web_DDD_2020.Models
+namespace ProjetoDDD.Models
 {
     public class ErrorViewModel
     {

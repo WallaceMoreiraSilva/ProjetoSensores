@@ -10,7 +10,7 @@ using System;
 using ApplicationApp.ViewModels;
 using Enum;
 
-namespace Web_DDD_2020.Controllers
+namespace ProjetoDDD.Controllers
 {
     public class SensorController : Controller
     {

@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Web_DDD_2020": {
+    "ProjetoDDD": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

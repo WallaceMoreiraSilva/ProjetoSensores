@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Web_DDD_2020.Models;
+using ProjetoDDD.Models;
 
-namespace Web_DDD_2020.Controllers
+namespace ProjetoDDD.Controllers
 {
     public class HomeController : Controller
     {
