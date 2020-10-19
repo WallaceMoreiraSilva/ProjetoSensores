@@ -15,23 +15,23 @@ namespace ProjetoDDD.Controllers
 {
     public class SensorController : Controller
     {
-        private readonly ISensorService _InterfaceSensorApp;
-        private readonly IPaisService _InterfacePaisApp;
-        private readonly IRegiaoService _InterfaceRegiaoApp;       
-        private readonly InterfaceStatusSensorApp _InterfaceStatusSensorApp;
+        private readonly ISensorService _InterfaceSensorService;
+        private readonly IPaisService _InterfacePaisService;
+        private readonly IRegiaoService _InterfaceRegiaoService;       
+        private readonly IStatusSensorService _InterfaceStatusSensorService;
         private readonly ILogger<SensorController> _logger;
 
-        public SensorController( ISensorService InterfaceSensorApp, 
-                                 IPaisService InterfacePaisApp, 
-                                 IRegiaoService InterfaceRegiaoApp,
-                                 InterfaceStatusSensorApp InterfaceStatusSensorApp,
+        public SensorController( ISensorService InterfaceSensorService, 
+                                 IPaisService InterfacePaisService, 
+                                 IRegiaoService InterfaceRegiaoService,
+                                 IStatusSensorService InterfaceStatusSensorService,
                                  ILogger<SensorController> logger
                                 ) 
         {
-            _InterfaceSensorApp = InterfaceSensorApp;
-            _InterfacePaisApp = InterfacePaisApp;
-            _InterfaceRegiaoApp = InterfaceRegiaoApp;
-            _InterfaceStatusSensorApp = InterfaceStatusSensorApp;
+            _InterfaceSensorService = InterfaceSensorService;
+            _InterfacePaisService = InterfacePaisService;
+            _InterfaceRegiaoService = InterfaceRegiaoService;
+            _InterfaceStatusSensorService = InterfaceStatusSensorService;
             _logger = logger;
         }
         
@@ -41,15 +41,15 @@ namespace ProjetoDDD.Controllers
             
             try
             {                
-                var entitySensor = await _InterfaceSensorApp.List();
+                var entitySensor = await _InterfaceSensorService.List();
 
                 if (entitySensor != null)
                 {       
                     foreach (var item in entitySensor)
                     {
-                        var nomePais = _InterfacePaisApp.GetEntityById(item.PaisId).Result.Nome;
-                        var nomeRegiao = _InterfaceRegiaoApp.GetEntityById(item.RegiaoId).Result.Nome;
-                        var statusSensor = _InterfaceStatusSensorApp.GetEntityById(item.StatusSensorId).Result.Nome;
+                        var nomePais = _InterfacePaisService.GetEntityById(item.PaisId).Result.Nome;
+                        var nomeRegiao = _InterfaceRegiaoService.GetEntityById(item.RegiaoId).Result.Nome;
+                        var statusSensor = _InterfaceStatusSensorService.GetEntityById(item.StatusSensorId).Result.Nome;
 
                         lista.Add(new SensorViewModel
                         {
@@ -78,8 +78,8 @@ namespace ProjetoDDD.Controllers
        
         public IActionResult Create()
         {    
-            var listaDePaises = _InterfacePaisApp.List();
-            var listaDeRegioes = _InterfaceRegiaoApp.List();
+            var listaDePaises = _InterfacePaisService.List();
+            var listaDeRegioes = _InterfaceRegiaoService.List();
 
             List<Pais> paises = new List<Pais>();
             List<Regiao> regioes = new List<Regiao>();
@@ -135,7 +135,7 @@ namespace ProjetoDDD.Controllers
                 sensor.DataAlteracao = DateTime.Now;
                 sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
-                await _InterfaceSensorApp.Add(sensor);
+                await _InterfaceSensorService.Add(sensor);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -145,7 +145,7 @@ namespace ProjetoDDD.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
-            var sensor = await _InterfaceSensorApp.GetEntityById((int)id);
+            var sensor = await _InterfaceSensorService.GetEntityById((int)id);
 
             SensorViewModel sensorViewModel;
 
@@ -156,8 +156,8 @@ namespace ProjetoDDD.Controllers
 
                 bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;   
 
-                var listaDePaises = _InterfacePaisApp.List();
-                var listaDeRegioes = _InterfaceRegiaoApp.List();
+                var listaDePaises = _InterfacePaisService.List();
+                var listaDeRegioes = _InterfaceRegiaoService.List();
 
                 List<Pais> paises = new List<Pais>();
                 List<Regiao> regioes = new List<Regiao>();
@@ -235,7 +235,7 @@ namespace ProjetoDDD.Controllers
                     sensor.DataAlteracao = DateTime.Now;
                     sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
-                    await _InterfaceSensorApp.Update(sensor);
+                    await _InterfaceSensorService.Update(sensor);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -257,9 +257,9 @@ namespace ProjetoDDD.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
-            var sensor = await _InterfaceSensorApp.GetEntityById((int)id);
-            var nomePais = _InterfacePaisApp.GetEntityById(sensor.PaisId).Result.Nome;
-            var nomeRegiao = _InterfaceRegiaoApp.GetEntityById(sensor.RegiaoId).Result.Nome;
+            var sensor = await _InterfaceSensorService.GetEntityById((int)id);
+            var nomePais = _InterfacePaisService.GetEntityById(sensor.PaisId).Result.Nome;
+            var nomeRegiao = _InterfaceRegiaoService.GetEntityById(sensor.RegiaoId).Result.Nome;
 
             SensorViewModel sensorViewModel;
 
@@ -299,9 +299,9 @@ namespace ProjetoDDD.Controllers
         {
             try
             {
-                var sensor = await _InterfaceSensorApp.GetEntityById(id);
+                var sensor = await _InterfaceSensorService.GetEntityById(id);
 
-                await _InterfaceSensorApp.Delete(sensor);
+                await _InterfaceSensorService.Delete(sensor);
             }
             catch (Exception ex)
             {
@@ -313,9 +313,9 @@ namespace ProjetoDDD.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
-            var sensor = await _InterfaceSensorApp.GetEntityById((int)id);
-            var nomePais = _InterfacePaisApp.GetEntityById(sensor.PaisId).Result.Nome;
-            var nomeRegiao = _InterfaceRegiaoApp.GetEntityById(sensor.RegiaoId).Result.Nome;
+            var sensor = await _InterfaceSensorService.GetEntityById((int)id);
+            var nomePais = _InterfacePaisService.GetEntityById(sensor.PaisId).Result.Nome;
+            var nomeRegiao = _InterfaceRegiaoService.GetEntityById(sensor.RegiaoId).Result.Nome;
 
             SensorViewModel sensorViewModel;
 
@@ -351,7 +351,7 @@ namespace ProjetoDDD.Controllers
 
         private async Task<bool> SensorExists(int id)
         {
-            var objeto = await _InterfaceSensorApp.GetEntityById(id);
+            var objeto = await _InterfaceSensorService.GetEntityById(id);
 
             return objeto != null;
         }

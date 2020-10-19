@@ -1,5 +1,5 @@
 ﻿using Domain.Interfaces.Generics;
-using Infrastructure.Configuration;
+using Infra.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32.SafeHandles;
 using System;
@@ -11,7 +11,6 @@ namespace Infra.Repository.Generics
 {
     public class GenericsRepository<T> : IGenericsRepository<T>, IDisposable where T : class
     {
-
         private readonly DbContextOptions<ContextBase> _OptionsBuilder;
 
         public GenericsRepository()

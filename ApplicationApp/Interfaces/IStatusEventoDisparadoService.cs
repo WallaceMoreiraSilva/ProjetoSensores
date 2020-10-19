@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace SensoresAPP.Interfaces
 {
-    public interface InterfaceStatusSensorApp : IGenericsService<StatusSensor>
+    public interface IStatusSensorService : IGenericsService<StatusSensor>
     {
 
     }

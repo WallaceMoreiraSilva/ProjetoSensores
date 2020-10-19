@@ -6,7 +6,7 @@ using Domain.Interfaces;
 
 namespace SensoresAPP.SensoresService
 {
-    public class StatusEventoDisparadoService : InterfaceStatusEventoDisparadoApp
+    public class StatusEventoDisparadoService : IStatusEventoDisparadoService
     {
         IStatusEventoDisparadoRepository _IStatusEventoDisparado;
 

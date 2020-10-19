@@ -3,6 +3,8 @@ using Domain.Interfaces;
 using Infra.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using SensoresAPP.SensoresService;
+using Domain.Interfaces.Generics;
+using Infra.Repository.Generics;
 
 namespace Sensores.IoC
 {
@@ -10,15 +12,27 @@ namespace Sensores.IoC
     {
         public static void RegisterServices(IServiceCollection services)
         {
-            #region Services
+            #region Services          
 
-            services.AddScoped<ISensorService, SensorService>();    
+            services.AddScoped<ISensorService, SensorService>();
+            services.AddScoped<IRegiaoService, RegiaoService>();
+            services.AddScoped<IPaisService, PaisService>();
+            services.AddScoped<IEventoDisparadoService, EventoDisparadoService>();
+            services.AddScoped<IStatusEventoDisparadoService, StatusEventoDisparadoService>();
+            services.AddScoped<IStatusSensorService, StatusSensorService>();
 
             #endregion
 
             #region Repositories
 
+            services.AddScoped(typeof(IGenericsRepository<>), typeof(GenericsRepository<>));
+
             services.AddScoped<ISensorRepository, SensorRepository>();
+            services.AddScoped<IRegiaoRepository, RegiaoRepository>();
+            services.AddScoped<IPaisRepository, PaisRepository>();
+            services.AddScoped<IEventoDisparadoRepository, EventoDisparadoRepository>();
+            services.AddScoped<IStatusEventoDisparadoRepository, StatusEventoDisparadoRepository>();
+            services.AddScoped<IStatusSensorRepository, StatusSensorRepository>();
 
             #endregion
         }

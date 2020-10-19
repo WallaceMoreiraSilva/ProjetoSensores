@@ -2,12 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Infrastructure.Configuration
+namespace Infra.Configuration
 {
     public class ContextBase : DbContext
     {
         //public ContextBase(DbContextOptions<ContextBase> option)
-        //   : base(option) { }
+        //    : base(option) { }       
 
         public ContextBase(DbContextOptions<ContextBase> options) : base(options)
         {
@@ -35,16 +35,14 @@ namespace Infrastructure.Configuration
         private string GetStringConectionConfig()
         {
             string strCon = "Data Source=.\\SQLEXPRESS;Initial Catalog=ProjetoModeloDDD;Integrated Security=False;User ID=sa;Password=123456;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
+
             return strCon;
         }
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    //modelBuilder.ApplyConfiguration(new SensorMap());
-        //    //modelBuilder.ApplyGlobalConfigurations();
-        //    //modelBuilder.SeedData();
-
+        //{            
         //    base.OnModelCreating(modelBuilder);
         //}
+
     }
 }

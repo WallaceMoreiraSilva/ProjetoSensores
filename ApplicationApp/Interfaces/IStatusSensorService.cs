@@ -3,7 +3,7 @@ using Domain.Entities;
 
 namespace SensoresAPP.Interfaces
 {
-    public interface InterfaceStatusEventoDisparadoApp : IGenericsService<StatusEventoDisparado>
+    public interface IStatusEventoDisparadoService : IGenericsService<StatusEventoDisparado>
     {
 
     }

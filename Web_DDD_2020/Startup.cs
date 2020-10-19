@@ -3,55 +3,59 @@ using Domain.Interfaces;
 using Domain.Interfaces.Generics;
 using Infra.Repositories;
 using Infra.Repository.Generics;
-using Infrastructure.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Sensores.IoC;
 using SensoresAPP.SensoresService;
+using Infra.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 namespace ProjetoDDD
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        //public IConfiguration Configuration { get; }
 
-        public IConfiguration Configuration { get; }
-       
+        //public Startup(IConfiguration configuration)
+        //{
+        //    Configuration = configuration;
+        //}
+
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ContextBase>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ProjetoModeloDDD")).EnableSensitiveDataLogging());
-            NativeInjector.RegisterServices(services);
+            services.AddControllersWithViews();           
+
+            //var connectionString = Configuration.GetConnectionString("ProjetoModeloDDD");
+
+            //services.AddDbContext<ContextBase>(opt => opt.UseSqlServer(Configuration.GetConnectionString(connectionString)).EnableSensitiveDataLogging());
+
+            #region Services
+
+            services.AddSingleton<ISensorService, SensorService>();         
+            services.AddSingleton<IRegiaoService, RegiaoService>();           
+            services.AddSingleton<IPaisService, PaisService>();           
+            services.AddSingleton<IEventoDisparadoService, EventoDisparadoService>();           
+            services.AddSingleton<IStatusEventoDisparadoService, StatusEventoDisparadoService>();            
+            services.AddSingleton<IStatusSensorService, StatusSensorService>();
+
+            #endregion
+
+            #region Repository
 
             services.AddSingleton(typeof(IGenericsRepository<>), typeof(GenericsRepository<>));
 
             services.AddSingleton<ISensorRepository, SensorRepository>();
-            services.AddSingleton<ISensorService, SensorService>();
-
             services.AddSingleton<IRegiaoRepository, RegiaoRepository>();
-            services.AddSingleton<IRegiaoService, RegiaoService>();
-
             services.AddSingleton<IPaisRepository, PaisRepository>();
-            services.AddSingleton<IPaisService, PaisService>();
-
             services.AddSingleton<IEventoDisparadoRepository, EventoDisparadoRepository>();
-            services.AddSingleton<IEventoDisparadoService, EventoDisparadoService>();
-
             services.AddSingleton<IStatusEventoDisparadoRepository, StatusEventoDisparadoRepository>();
-            services.AddSingleton<InterfaceStatusEventoDisparadoApp, StatusEventoDisparadoService>();
-
             services.AddSingleton<IStatusSensorRepository, StatusSensorRepository>();
-            services.AddSingleton<InterfaceStatusSensorApp, StatusSensorService>();
 
-            services.AddControllersWithViews();           
+            #endregion
         }
-       
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -60,8 +64,9 @@ namespace ProjetoDDD
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Shared/Error");
             }
+
             app.UseStaticFiles();
 
             app.UseRouting();
