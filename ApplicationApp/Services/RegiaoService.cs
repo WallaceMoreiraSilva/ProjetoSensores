@@ -1,16 +1,16 @@
-﻿using ApplicationApp.Interfaces;
-using Domain.Interfaces.InterfaceRegiao;
-using Entities.Entities;
+﻿using SensoresAPP.Interfaces;
+using Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 
-namespace ApplicationApp.OpenApp
+namespace SensoresAPP.SensoresService
 {
-    public class RegiaoService : InterfaceRegiaoApp
+    public class RegiaoService : IRegiaoService
     {
-        IRegiao _IRegiao;
+        IRegiaoRepository _IRegiao;
 
-        public RegiaoService(IRegiao IRegiao)
+        public RegiaoService(IRegiaoRepository IRegiao)
         {
             _IRegiao = IRegiao;
         }

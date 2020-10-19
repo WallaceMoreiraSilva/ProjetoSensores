@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Generics
 {
-    public interface IGeneric<T> where T : class
+    public interface IGenericsRepository<T> : IDisposable where T : class
     {
         Task Add(T Objeto);
         Task Update(T Objeto);

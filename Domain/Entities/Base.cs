@@ -1,5 +1,5 @@
 ﻿
-namespace Entities.Entities
+namespace Domain.Entities
 {
     public class Base
     {               

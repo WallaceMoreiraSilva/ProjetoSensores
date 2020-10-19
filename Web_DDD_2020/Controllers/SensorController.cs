@@ -1,33 +1,38 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Entities.Entities;
-using ApplicationApp.Interfaces;
+using Domain.Entities;
+using SensoresAPP.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using ApplicationApp.ViewModels;
 using Enum;
+using Microsoft.Extensions.Logging;
+using SensoresAPP.ViewModels;
 
 namespace ProjetoDDD.Controllers
 {
     public class SensorController : Controller
     {
-        private readonly InterfaceSensorApp _InterfaceSensorApp;
-        private readonly InterfacePaisApp _InterfacePaisApp;
-        private readonly InterfaceRegiaoApp _InterfaceRegiaoApp;       
+        private readonly ISensorService _InterfaceSensorApp;
+        private readonly IPaisService _InterfacePaisApp;
+        private readonly IRegiaoService _InterfaceRegiaoApp;       
         private readonly InterfaceStatusSensorApp _InterfaceStatusSensorApp;
+        private readonly ILogger<SensorController> _logger;
 
-        public SensorController( InterfaceSensorApp InterfaceSensorApp, 
-                                 InterfacePaisApp InterfacePaisApp, 
-                                 InterfaceRegiaoApp InterfaceRegiaoApp,
-                                 InterfaceStatusSensorApp InterfaceStatusSensorApp) 
+        public SensorController( ISensorService InterfaceSensorApp, 
+                                 IPaisService InterfacePaisApp, 
+                                 IRegiaoService InterfaceRegiaoApp,
+                                 InterfaceStatusSensorApp InterfaceStatusSensorApp,
+                                 ILogger<SensorController> logger
+                                ) 
         {
             _InterfaceSensorApp = InterfaceSensorApp;
             _InterfacePaisApp = InterfacePaisApp;
             _InterfaceRegiaoApp = InterfaceRegiaoApp;
             _InterfaceStatusSensorApp = InterfaceStatusSensorApp;
+            _logger = logger;
         }
         
         public async Task<IActionResult> Index()

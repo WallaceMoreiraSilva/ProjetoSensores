@@ -1,7 +1,6 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace Entities.Entities
+namespace Domain.Entities
 {
     public class EventoDisparado : Base
     {     

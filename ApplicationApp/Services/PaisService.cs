@@ -1,16 +1,16 @@
-﻿using ApplicationApp.Interfaces;
-using Domain.Interfaces.InterfacePais;
-using Entities.Entities;
+﻿using SensoresAPP.Interfaces;
+using Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 
-namespace ApplicationApp.OpenApp
+namespace SensoresAPP.SensoresService
 {
-    public class PaisService : InterfacePaisApp
+    public class PaisService : IPaisService
     {
-        IPais _IPais;
+        IPaisRepository _IPais;
 
-        public PaisService(IPais IPais)
+        public PaisService(IPaisRepository IPais)
         {
             _IPais = IPais;
         }

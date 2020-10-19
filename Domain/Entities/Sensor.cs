@@ -1,13 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Entities.Entities
+namespace Domain.Entities
 {
     public class Sensor : Base
     {        
         public int Numero { get; set; }
-
-        //tirar daqui e pegar essa logica da viewModel
+        
         [NotMapped]
         public bool Ativo { get; set; }
 

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace Entities.Entities
+namespace Domain.Entities
 {
     public class Regiao : Base
     {           

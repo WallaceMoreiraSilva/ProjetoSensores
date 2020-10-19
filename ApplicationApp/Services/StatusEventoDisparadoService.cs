@@ -1,17 +1,16 @@
-﻿using ApplicationApp.Interfaces;
-using Domain.Interfaces.InterfaceEventoDisparado;
-using Domain.Interfaces.InterfaceStatusEventoDisparado;
-using Entities.Entities;
+﻿using SensoresAPP.Interfaces;
+using Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 
-namespace ApplicationApp.OpenApp
+namespace SensoresAPP.SensoresService
 {
     public class StatusEventoDisparadoService : InterfaceStatusEventoDisparadoApp
     {
-        IStatusEventoDisparado _IStatusEventoDisparado;
+        IStatusEventoDisparadoRepository _IStatusEventoDisparado;
 
-        public StatusEventoDisparadoService(IStatusEventoDisparado IStatusEventoDisparado)
+        public StatusEventoDisparadoService(IStatusEventoDisparadoRepository IStatusEventoDisparado)
         {
             _IStatusEventoDisparado = IStatusEventoDisparado;
         }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationApp.Interfaces.Generics
+namespace SensoresAPP.Interfaces.Generics
 {
-    public interface InterfaceGenericaApp<T> where T : class
+    public interface IGenericsService<T> where T : class
     {
         Task Add(T Objeto);
         Task Update(T Objeto);

@@ -7,14 +7,14 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Repository.Generics
+namespace Infra.Repository.Generics
 {
-    public class RepositoryGenerics<T> : IGeneric<T>, IDisposable where T : class
+    public class GenericsRepository<T> : IGenericsRepository<T>, IDisposable where T : class
     {
 
         private readonly DbContextOptions<ContextBase> _OptionsBuilder;
 
-        public RepositoryGenerics()
+        public GenericsRepository()
         {
             _OptionsBuilder = new DbContextOptions<ContextBase>();
         }

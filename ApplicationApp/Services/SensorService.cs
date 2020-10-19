@@ -1,18 +1,16 @@
-﻿using ApplicationApp.Interfaces;
-using Domain.Interfaces.InterfaceSensor;
-using Entities.Entities;
-using System;
+﻿using SensoresAPP.Interfaces;
+using Domain.Entities;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 
-namespace ApplicationApp.OpenApp
+namespace SensoresAPP.SensoresService
 {
-    public class SensorService : InterfaceSensorApp
+    public class SensorService : ISensorService
     {
-        ISensor _ISensor;
+        ISensorRepository _ISensor;
 
-        public SensorService(ISensor ISensor)
+        public SensorService(ISensorRepository ISensor)
         {
             _ISensor = ISensor;
         }

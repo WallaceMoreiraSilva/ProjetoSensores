@@ -1,19 +1,17 @@
-using ApplicationApp.Interfaces;
-using ApplicationApp.OpenApp;
+using SensoresAPP.Interfaces;
+using Domain.Interfaces;
 using Domain.Interfaces.Generics;
-using Domain.Interfaces.InterfaceEventoDisparado;
-using Domain.Interfaces.InterfacePais;
-using Domain.Interfaces.InterfaceRegiao;
-using Domain.Interfaces.InterfaceSensor;
-using Domain.Interfaces.InterfaceStatusEventoDisparado;
-using Domain.Interfaces.InterfaceStatusSensor;
-using Infrastructure.Repository.Generics;
-using Infrastructure.Repository.Repositories;
+using Infra.Repositories;
+using Infra.Repository.Generics;
+using Infrastructure.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Sensores.IoC;
+using SensoresAPP.SensoresService;
 
 namespace ProjetoDDD
 {
@@ -25,34 +23,35 @@ namespace ProjetoDDD
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+       
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton(typeof(IGeneric<>), typeof(RepositoryGenerics<>));
+            services.AddDbContext<ContextBase>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ProjetoModeloDDD")).EnableSensitiveDataLogging());
+            NativeInjector.RegisterServices(services);
 
-            services.AddSingleton<ISensor, RepositorySensor>();
-            services.AddSingleton<InterfaceSensorApp, SensorService>();
+            services.AddSingleton(typeof(IGenericsRepository<>), typeof(GenericsRepository<>));
 
-            services.AddSingleton<IRegiao, RepositoryRegiao>();
-            services.AddSingleton<InterfaceRegiaoApp, RegiaoService>();
+            services.AddSingleton<ISensorRepository, SensorRepository>();
+            services.AddSingleton<ISensorService, SensorService>();
 
-            services.AddSingleton<IPais, RepositoryPais>();
-            services.AddSingleton<InterfacePaisApp, PaisService>();
+            services.AddSingleton<IRegiaoRepository, RegiaoRepository>();
+            services.AddSingleton<IRegiaoService, RegiaoService>();
 
-            services.AddSingleton<IEventoDisparado, RepositoryEventoDisparado>();
-            services.AddSingleton<InterfaceEventoDisparadoApp, EventoDisparadoService>();
+            services.AddSingleton<IPaisRepository, PaisRepository>();
+            services.AddSingleton<IPaisService, PaisService>();
 
-            services.AddSingleton<IStatusEventoDisparado, RepositoryStatusEventoDisparado>();
+            services.AddSingleton<IEventoDisparadoRepository, EventoDisparadoRepository>();
+            services.AddSingleton<IEventoDisparadoService, EventoDisparadoService>();
+
+            services.AddSingleton<IStatusEventoDisparadoRepository, StatusEventoDisparadoRepository>();
             services.AddSingleton<InterfaceStatusEventoDisparadoApp, StatusEventoDisparadoService>();
 
-            services.AddSingleton<IStatusSensor, RepositoryStatusSensor>();
+            services.AddSingleton<IStatusSensorRepository, StatusSensorRepository>();
             services.AddSingleton<InterfaceStatusSensorApp, StatusSensorService>();
 
             services.AddControllersWithViews();           
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+       
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -73,8 +72,9 @@ namespace ProjetoDDD
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Sensor}/{action=Index}/{id?}");
             });
         }
+
     }
 }

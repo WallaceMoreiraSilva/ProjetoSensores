@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace ApplicationApp.ViewModels
+namespace SensoresAPP.ViewModels
 {
     public class StatusSensorViewModel
     {

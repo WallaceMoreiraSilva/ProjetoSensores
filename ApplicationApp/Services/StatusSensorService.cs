@@ -1,16 +1,16 @@
-﻿using ApplicationApp.Interfaces;
-using Domain.Interfaces.InterfaceStatusSensor;
-using Entities.Entities;
+﻿using SensoresAPP.Interfaces;
+using Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Domain.Interfaces;
 
-namespace ApplicationApp.OpenApp
+namespace SensoresAPP.SensoresService
 {
     public class StatusSensorService : InterfaceStatusSensorApp
     {
-        IStatusSensor _IStatusSensor;
+        IStatusSensorRepository _IStatusSensor;
 
-        public StatusSensorService(IStatusSensor IStatusSensor)
+        public StatusSensorService(IStatusSensorRepository IStatusSensor)
         {
             _IStatusSensor = IStatusSensor;
         }
