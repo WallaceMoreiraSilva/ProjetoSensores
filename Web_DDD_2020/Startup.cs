@@ -26,6 +26,7 @@ namespace ProjetoDDD
 
             NativeInjector.RegisterServices(services);
 
+            
             //#region Services
 
             //services.AddSingleton<ISensorService, SensorService>();         

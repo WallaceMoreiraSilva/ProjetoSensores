@@ -61,19 +61,21 @@ namespace Infra.Repository.Generics
         //    }
         //}
 
-        #region Properties
+        //#region Properties
+
+        //protected readonly ContextBase _context;
+
+        //protected DbSet<T> DbSet
+        //{
+        //    get
+        //    {
+        //        return _context.Set<T>();
+        //    }
+        //}
+
+        //#endregion
 
         protected readonly ContextBase _context;
-
-        protected DbSet<T> DbSet
-        {
-            get
-            {
-                return _context.Set<T>();
-            }
-        }
-
-        #endregion
 
         public GenericsRepository(ContextBase context)
         {
@@ -82,29 +84,29 @@ namespace Infra.Repository.Generics
 
         public async Task Add(T Objeto)
         {            
-            await DbSet.AddAsync(Objeto);
+            await _context.Set<T>().AddAsync(Objeto);
             await _context.SaveChangesAsync();            
         }
 
         public async Task Delete(T Objeto)
         {
-            DbSet.Remove(Objeto);
+            _context.Set<T>().Remove(Objeto);
             await _context.SaveChangesAsync();            
         }
 
         public async Task<T> GetEntityById(int Id)
         {           
-            return await DbSet.FindAsync(Id);            
+            return await _context.Set<T>().FindAsync(Id);            
         }
 
         public async Task<List<T>> List()
         {            
-            return await DbSet.AsNoTracking().ToListAsync();           
+            return await _context.Set<T>().AsNoTracking().ToListAsync();           
         }
 
         public async Task Update(T Objeto)
         {
-            DbSet.Update(Objeto);
+            _context.Set<T>().Update(Objeto);
             await _context.SaveChangesAsync();
         }
 

@@ -76,43 +76,51 @@ namespace ProjetoDDD.Controllers
             return View(lista);
         }        
        
-        public IActionResult Create()
-        {    
-            var listaDePaises = _InterfacePaisService.List();
-            var listaDeRegioes = _InterfaceRegiaoService.List();
-
+        public async Task<IActionResult> Create()
+        {          
             List<Pais> paises = new List<Pais>();
             List<Regiao> regioes = new List<Regiao>();
 
-            if(listaDePaises != null && listaDeRegioes != null)
+            try
             {
-                foreach (var item in listaDePaises.Result.AsEnumerable())
-                {
-                    paises.Add(new Pais
-                    {
-                        Id = item.Id,
-                        Nome = item.Nome,
-                        IsoDuasLetras = item.IsoDuasLetras,
-                        IsoTresLetras = item.IsoTresLetras,
-                        NumeroCodigoIso = item.NumeroCodigoIso,
-                        DataCadastro = item.DataCadastro,
-                        DataAlteracao = item.DataAlteracao
-                    }); ;
-                }
+                var listaDePaises = await _InterfacePaisService.List();
+                var listaDeRegioes = await _InterfaceRegiaoService.List();
 
-                foreach (var item in listaDeRegioes.Result.AsEnumerable())
+                if (listaDePaises != null && listaDeRegioes != null)
                 {
-                    regioes.Add(new Regiao
+                    foreach (var item in listaDePaises.AsEnumerable())
                     {
-                        Id = item.Id,
-                        Nome = item.Nome,                   
-                        DataCadastro = item.DataCadastro,
-                        DataAlteracao = item.DataAlteracao
-                    });
-                }
+                        paises.Add(new Pais
+                        {
+                            Id = item.Id,
+                            Nome = item.Nome,
+                            IsoDuasLetras = item.IsoDuasLetras,
+                            IsoTresLetras = item.IsoTresLetras,
+                            NumeroCodigoIso = item.NumeroCodigoIso,
+                            DataCadastro = item.DataCadastro,
+                            DataAlteracao = item.DataAlteracao
+                        }); ;
+                    }
+
+                    foreach (var item in listaDeRegioes.AsEnumerable())
+                    {
+                        regioes.Add(new Regiao
+                        {
+                            Id = item.Id,
+                            Nome = item.Nome,
+                            DataCadastro = item.DataCadastro,
+                            DataAlteracao = item.DataAlteracao
+                        });
+                    }
+                }               
+
             }
-            
-            ViewBag.Paises = paises.ToList().Select(c => new SelectListItem(){ Value = c.Id.ToString(), Text = c.Nome.ToString()}).ToList();
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            ViewBag.Paises = paises.ToList().Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() }).ToList();
 
             ViewBag.Regioes = regioes.ToList().Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() }).ToList();
 
@@ -145,26 +153,25 @@ namespace ProjetoDDD.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
-            var sensor = await _InterfaceSensorService.GetEntityById((int)id);
-
+            List<Pais> paises = new List<Pais>();
+            List<Regiao> regioes = new List<Regiao>();      
             SensorViewModel sensorViewModel;
 
             try
-            {  
+            {
+                var sensor = await _InterfaceSensorService.GetEntityById((int)id);
+
                 if (id == null || sensor == null)
                     return NotFound();   
 
                 bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;   
 
-                var listaDePaises = _InterfacePaisService.List();
-                var listaDeRegioes = _InterfaceRegiaoService.List();
-
-                List<Pais> paises = new List<Pais>();
-                List<Regiao> regioes = new List<Regiao>();
+                var listaDePaises = await _InterfacePaisService.List();
+                var listaDeRegioes = await _InterfaceRegiaoService.List();               
 
                 if (listaDePaises != null && listaDeRegioes != null)
                 {
-                    foreach (var item in listaDePaises.Result.AsEnumerable())
+                    foreach (var item in listaDePaises.AsEnumerable())
                     {
                         paises.Add(new Pais
                         {
@@ -178,7 +185,7 @@ namespace ProjetoDDD.Controllers
                         }); ;
                     }
 
-                    foreach (var item in listaDeRegioes.Result.AsEnumerable())
+                    foreach (var item in listaDeRegioes.AsEnumerable())
                     {
                         regioes.Add(new Regiao
                         {
@@ -237,7 +244,7 @@ namespace ProjetoDDD.Controllers
 
                     await _InterfaceSensorService.Update(sensor);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException ex)
                 {
                     if (!await SensorExists(sensor.Id))
                     {
@@ -245,7 +252,7 @@ namespace ProjetoDDD.Controllers
                     }
                     else
                     {
-                        throw;
+                        throw new Exception (ex.Message);
                     }
                 }
 
@@ -257,14 +264,14 @@ namespace ProjetoDDD.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
-            var sensor = await _InterfaceSensorService.GetEntityById((int)id);
-            var nomePais = _InterfacePaisService.GetEntityById(sensor.PaisId).Result.Nome;
-            var nomeRegiao = _InterfaceRegiaoService.GetEntityById(sensor.RegiaoId).Result.Nome;
-
             SensorViewModel sensorViewModel;
 
             try
-            {          
+            {
+                var sensor = await _InterfaceSensorService.GetEntityById((int)id);
+                var nomePais = _InterfacePaisService.GetEntityById(sensor.PaisId).Result.Nome;
+                var nomeRegiao = _InterfaceRegiaoService.GetEntityById(sensor.RegiaoId).Result.Nome;
+
                 if (id == null || sensor == null)
                     return NotFound();     
 
@@ -300,7 +307,6 @@ namespace ProjetoDDD.Controllers
             try
             {
                 var sensor = await _InterfaceSensorService.GetEntityById(id);
-
                 await _InterfaceSensorService.Delete(sensor);
             }
             catch (Exception ex)
@@ -313,14 +319,14 @@ namespace ProjetoDDD.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
-            var sensor = await _InterfaceSensorService.GetEntityById((int)id);
-            var nomePais = _InterfacePaisService.GetEntityById(sensor.PaisId).Result.Nome;
-            var nomeRegiao = _InterfaceRegiaoService.GetEntityById(sensor.RegiaoId).Result.Nome;
-
             SensorViewModel sensorViewModel;
 
             try
-            {      
+            {
+                var sensor = await _InterfaceSensorService.GetEntityById((int)id);
+                var nomePais = _InterfacePaisService.GetEntityById(sensor.PaisId).Result.Nome;
+                var nomeRegiao = _InterfaceRegiaoService.GetEntityById(sensor.RegiaoId).Result.Nome;
+
                 if (id == null || sensor == null)
                     return NotFound();
 
@@ -351,9 +357,24 @@ namespace ProjetoDDD.Controllers
 
         private async Task<bool> SensorExists(int id)
         {
-            var objeto = await _InterfaceSensorService.GetEntityById(id);
+            Sensor sensor = null;
+            bool sensorExiste;
 
-            return objeto != null;
+            try
+            {
+                sensor = await _InterfaceSensorService.GetEntityById(id);
+                sensorExiste = sensor != null ? true : false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+
+            //var objeto = await _InterfaceSensorService.GetEntityById(id);
+            //return objeto != null;
+
+            return sensorExiste;
         }
     }
 }

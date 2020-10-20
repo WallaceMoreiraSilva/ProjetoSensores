@@ -16,10 +16,4 @@
     <ProjectReference Include="..\Sensores.IoC\Sensores.IoC.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="SensoresApp">
-      <HintPath>..\SensoresAPP\bin\Debug\netcoreapp3.1\SensoresApp.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
