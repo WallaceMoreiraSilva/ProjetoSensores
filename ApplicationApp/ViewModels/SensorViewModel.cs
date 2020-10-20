@@ -7,11 +7,10 @@ namespace SensoresAPP.ViewModels
 {
     public class SensorViewModel
     {       
-        [Key]
-        [Display(Name = "Código")]
+        [Key]       
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "O Nome é obrigatório")]
+        [Required(ErrorMessage = "Nome é obrigatório")]
         [MinLength(2)]
         [MaxLength(100)]
         [DisplayName("Nome")]
@@ -21,8 +20,7 @@ namespace SensoresAPP.ViewModels
         [Display(Name = "Número")]
         public int Numero { get; set; }
 
-        [NotMapped]
-        [Display(Name = "Ativo")]
+        [NotMapped]        
         public bool Ativo { get; set; }
 
         [Required(ErrorMessage = "Data Cadastro é obrigatório")]
@@ -37,8 +35,8 @@ namespace SensoresAPP.ViewModels
         [DisplayName("Data Alteração")]
         [Display(Name = "Data de Alteração")]
         public DateTime DataAlteracao { get; set; }
-
-        [Display(Name = "Código da Região")]
+        
+        [Required(ErrorMessage = "Região é obrigatório")]
         public int RegiaoId { get; set; }
 
         //public RegiaoViewModel Regiao { get; set; }
@@ -46,15 +44,14 @@ namespace SensoresAPP.ViewModels
         [Display(Name = "Região")]
         public string NomeRegiao { get; set; }
 
-        [Display(Name = "Código da País")]
+        [Required(ErrorMessage = "País é obrigatório")]
         public int PaisId { get; set; }
 
         //public PaisViewModel Pais { get; set; }
 
         [Display(Name = "País")]
         public string NomePais { get; set; }
-
-        [Display(Name = "Código do Status do Sensor")]
+                
         public int StatusSensorId { get; set; }
 
         //public StatusSensorViewModel StatusSensor { get; set; }

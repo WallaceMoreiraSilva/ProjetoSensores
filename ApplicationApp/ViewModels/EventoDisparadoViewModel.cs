@@ -6,11 +6,10 @@ namespace SensoresAPP.ViewModels
 {
     public class EventoDisparadoViewModel
     {
-        [Key]
-        [Display(Name = "Código")]
+        [Key]       
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "O Nome é obrigatório")]
+        [Required(ErrorMessage = "Nome é obrigatório")]
         [MinLength(2)]
         [MaxLength(100)]
         [DisplayName("Nome")]
@@ -26,10 +25,10 @@ namespace SensoresAPP.ViewModels
 
         public int SensorId { get; set; }
 
-        public virtual SensorViewModel Sensor { get; set; }
+        //public virtual SensorViewModel Sensor { get; set; }
 
         public int StatusEventoDisparadoId { get; set; }
 
-        public virtual StatusEventoDisparadoViewModel StatusEventoDisparado { get; set; }
+        //public virtual StatusEventoDisparadoViewModel StatusEventoDisparado { get; set; }
     }
 }

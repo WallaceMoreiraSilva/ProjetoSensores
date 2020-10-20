@@ -6,11 +6,10 @@ namespace SensoresAPP.ViewModels
 {
     public class StatusEventoDisparadoViewModel
     {
-        [Key]
-        [Display(Name = "Código")]
+        [Key]       
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "O Nome é obrigatório")]
+        [Required(ErrorMessage = "Nome é obrigatório")]
         [MinLength(2)]
         [MaxLength(100)]
         [DisplayName("Nome")]
