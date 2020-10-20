@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sensores.Data", "Sensores.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enum", "Enum\Enum.csproj", "{601F2454-BA9C-47D0-8982-6AAAB27CA03B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sensores.IoC", "Sensores.IoC\Sensores.IoC.csproj", "{6544B62C-469C-4D91-9FE1-4255F8D669AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sensores.IoC", "Sensores.IoC\Sensores.IoC.csproj", "{6544B62C-469C-4D91-9FE1-4255F8D669AB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

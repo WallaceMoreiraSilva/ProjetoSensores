@@ -11,54 +11,101 @@ namespace Infra.Repository.Generics
 {
     public class GenericsRepository<T> : IGenericsRepository<T>, IDisposable where T : class
     {
-        private readonly DbContextOptions<ContextBase> _OptionsBuilder;
+        //private readonly DbContextOptions<ContextBase> _OptionsBuilder;        
 
-        public GenericsRepository()
+        //public GenericsRepository()
+        //{
+        //    _OptionsBuilder = new DbContextOptions<ContextBase>();
+        //}       
+
+        //public async Task Add(T Objeto)
+        //{
+        //    using (var data = new ContextBase(_context))
+        //    {
+        //        await data.Set<T>().AddAsync(Objeto);
+        //        await data.SaveChangesAsync();
+        //    }
+        //}
+
+        //public async Task Delete(T Objeto)
+        //{
+        //    using (var data = new ContextBase(_OptionsBuilder))
+        //    {
+        //        data.Set<T>().Remove(Objeto);
+        //        await data.SaveChangesAsync();
+        //    }
+        //}
+
+        //public async Task<T> GetEntityById(int Id)
+        //{
+        //    using (var data = new ContextBase(_OptionsBuilder))
+        //    {
+        //        return await data.Set<T>().FindAsync(Id);
+        //    }
+        //}
+
+        //public async Task<List<T>> List()
+        //{
+        //    using (var data = new ContextBase(_OptionsBuilder))
+        //    {
+        //        return await data.Set<T>().AsNoTracking().ToListAsync();
+        //    }
+        //}
+
+        //public async Task Update(T Objeto)
+        //{
+        //    using (var data = new ContextBase(_OptionsBuilder))
+        //    {
+        //        data.Set<T>().Update(Objeto);
+        //        await data.SaveChangesAsync();
+        //    }
+        //}
+
+        #region Properties
+
+        protected readonly ContextBase _context;
+
+        protected DbSet<T> DbSet
         {
-            _OptionsBuilder = new DbContextOptions<ContextBase>();
+            get
+            {
+                return _context.Set<T>();
+            }
+        }
+
+        #endregion
+
+        public GenericsRepository(ContextBase context)
+        {
+            _context = context;
         }
 
         public async Task Add(T Objeto)
-        {
-            using (var data = new ContextBase(_OptionsBuilder))
-            {
-                await data.Set<T>().AddAsync(Objeto);
-                await data.SaveChangesAsync();
-            }
+        {            
+            await DbSet.AddAsync(Objeto);
+            await _context.SaveChangesAsync();            
         }
 
         public async Task Delete(T Objeto)
         {
-            using (var data = new ContextBase(_OptionsBuilder))
-            {
-                data.Set<T>().Remove(Objeto);
-                await data.SaveChangesAsync();
-            }
+            DbSet.Remove(Objeto);
+            await _context.SaveChangesAsync();            
         }
 
         public async Task<T> GetEntityById(int Id)
-        {
-            using (var data = new ContextBase(_OptionsBuilder))
-            {
-                return await data.Set<T>().FindAsync(Id);
-            }
+        {           
+            return await DbSet.FindAsync(Id);            
         }
 
         public async Task<List<T>> List()
-        {
-            using (var data = new ContextBase(_OptionsBuilder))
-            {
-                return await data.Set<T>().AsNoTracking().ToListAsync();
-            }
+        {            
+            return await DbSet.AsNoTracking().ToListAsync();           
         }
 
         public async Task Update(T Objeto)
         {
-            using (var data = new ContextBase(_OptionsBuilder))
-            {
-                data.Set<T>().Update(Objeto);
-                await data.SaveChangesAsync();
-            }
+            DbSet.Update(Objeto);
+            await _context.SaveChangesAsync();
         }
 
         #region Disposed
