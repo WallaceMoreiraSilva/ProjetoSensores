@@ -96,38 +96,13 @@ namespace ProjetoDDD.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create(SensorViewModel sensorViewModel)
-        //{    
-        //    if (ModelState.IsValid)
-        //    {
-        //        Sensor sensor = new Sensor();
-
-        //        sensor.Nome = sensorViewModel.Nome;
-        //        sensor.Numero = sensorViewModel.Numero;
-        //        sensor.PaisId = sensorViewModel.PaisId;
-        //        sensor.RegiaoId = sensorViewModel.RegiaoId;
-        //        sensor.DataCadastro = DateTime.Now;
-        //        sensor.DataAlteracao = DateTime.Now;
-        //        sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
-
-        //        await _InterfaceSensorService.Add(sensor);
-
-        //        return RedirectToAction(nameof(Index));
-        //    }
-
-        //    return View(sensorViewModel);
-        //}
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SensorViewModel sensorViewModel)
         {
             if (ModelState.IsValid)
             {
-                Sensor sensor = _mapper.Map<Sensor>(sensorViewModel);
-                
+                Sensor sensor = _mapper.Map<Sensor>(sensorViewModel);                
                 sensor.DataCadastro = DateTime.Now;
                 sensor.DataAlteracao = DateTime.Now;
                 sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
@@ -142,65 +117,30 @@ namespace ProjetoDDD.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
-            List<Pais> paises = new List<Pais>();
-            List<Regiao> regioes = new List<Regiao>();      
-            SensorViewModel sensorViewModel;
+            List<PaisViewModel> paises = new List<PaisViewModel>();
+            List<RegiaoViewModel> regioes = new List<RegiaoViewModel>();
+            SensorViewModel sensorViewModel = new SensorViewModel();
 
             try
             {
                 var sensor = await _InterfaceSensorService.GetEntityById((int)id);
 
                 if (id == null || sensor == null)
-                    return NotFound();   
+                    return NotFound();
 
-                bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;   
+                bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;
 
-                var listaDePaises = await _InterfacePaisService.List();
-                var listaDeRegioes = await _InterfaceRegiaoService.List();               
+                IEnumerable<Pais> _paises = await _InterfacePaisService.List();
+                IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
 
-                if (listaDePaises != null && listaDeRegioes != null)
-                {
-                    foreach (var item in listaDePaises.AsEnumerable())
-                    {
-                        paises.Add(new Pais
-                        {
-                            Id = item.Id,
-                            Nome = item.Nome,
-                            IsoDuasLetras = item.IsoDuasLetras,
-                            IsoTresLetras = item.IsoTresLetras,
-                            NumeroCodigoIso = item.NumeroCodigoIso,
-                            DataCadastro = item.DataCadastro,
-                            DataAlteracao = item.DataAlteracao
-                        }); ;
-                    }
+                paises = _mapper.Map<List<PaisViewModel>>(_paises);
+                regioes = _mapper.Map<List<RegiaoViewModel>>(_regioes);
 
-                    foreach (var item in listaDeRegioes.AsEnumerable())
-                    {
-                        regioes.Add(new Regiao
-                        {
-                            Id = item.Id,
-                            Nome = item.Nome,
-                            DataCadastro = item.DataCadastro,
-                            DataAlteracao = item.DataAlteracao
-                        });
-                    }
-                }
+                ViewBag.Paises = paises.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
+                ViewBag.Regioes = regioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });                
 
-                ViewBag.Paises = paises.ToList().Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() }).ToList();
-
-                ViewBag.Regioes = regioes.ToList().Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() }).ToList(); 
-
-                sensorViewModel = new SensorViewModel
-                {
-                    Ativo = status,
-                    Id = sensor.Id,
-                    Nome = sensor.Nome,
-                    Numero = sensor.Numero,
-                    PaisId = sensor.PaisId,
-                    RegiaoId = sensor.RegiaoId,
-                    DataCadastro = sensor.DataCadastro,
-                    DataAlteracao = sensor.DataAlteracao
-                };
+                sensorViewModel = _mapper.Map<SensorViewModel>(sensor);
+                sensorViewModel.Ativo = status;
 
             }
             catch (Exception ex)
@@ -214,20 +154,17 @@ namespace ProjetoDDD.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, SensorViewModel sensorViewModel)
-        {
-            Sensor sensor = new Sensor();
-
-            if (id != sensorViewModel.Id)           
-                return NotFound();            
-
+        {      
             if (ModelState.IsValid)
             {
+                Sensor sensor = new Sensor();
+
+                if (id != sensorViewModel.Id)
+                    return NotFound();
+
                 try
-                {      
-                    sensor.Nome = sensorViewModel.Nome;
-                    sensor.Numero = sensorViewModel.Numero;
-                    sensor.PaisId = sensorViewModel.PaisId;
-                    sensor.RegiaoId = sensorViewModel.RegiaoId;                   
+                {
+                    sensor = _mapper.Map<Sensor>(sensorViewModel); 
                     sensor.DataAlteracao = DateTime.Now;
                     sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
@@ -241,7 +178,7 @@ namespace ProjetoDDD.Controllers
                     }
                     else
                     {
-                        throw new Exception (ex.Message);
+                        throw new Exception(ex.Message);
                     }
                 }
 
@@ -253,7 +190,7 @@ namespace ProjetoDDD.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
-            SensorViewModel sensorViewModel;
+            SensorViewModel sensorViewModel = new SensorViewModel();
 
             try
             {
@@ -262,29 +199,20 @@ namespace ProjetoDDD.Controllers
                 var nomeRegiao = _InterfaceRegiaoService.GetEntityById(sensor.RegiaoId).Result.Nome;
 
                 if (id == null || sensor == null)
-                    return NotFound();     
+                    return NotFound();
 
-                bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;
+                bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;               
 
-                sensorViewModel = new SensorViewModel
-                {
-                    Ativo = status,
-                    Id = sensor.Id,
-                    Nome = sensor.Nome,
-                    Numero = sensor.Numero,
-                    PaisId = sensor.PaisId,
-                    NomePais = nomePais,
-                    RegiaoId = sensor.RegiaoId,
-                    NomeRegiao = nomeRegiao,
-                    DataCadastro = sensor.DataCadastro,
-                    DataAlteracao = sensor.DataAlteracao
-                };
-              
+                sensorViewModel = _mapper.Map<SensorViewModel>(sensor);
+                sensorViewModel.Ativo = status;
+                sensorViewModel.NomePais = nomePais;
+                sensorViewModel.NomeRegiao = nomeRegiao;
+
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }     
+            }
 
             return View(sensorViewModel);
         }
@@ -308,7 +236,7 @@ namespace ProjetoDDD.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
-            SensorViewModel sensorViewModel;
+            SensorViewModel sensorViewModel = new SensorViewModel();
 
             try
             {
@@ -321,32 +249,22 @@ namespace ProjetoDDD.Controllers
 
                 bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;
 
-                sensorViewModel = new SensorViewModel
-                {
-                    Ativo = status,
-                    Id = sensor.Id,
-                    Nome = sensor.Nome,
-                    Numero = sensor.Numero,
-                    PaisId = sensor.PaisId,
-                    NomePais = nomePais,
-                    RegiaoId = sensor.RegiaoId,
-                    NomeRegiao = nomeRegiao,
-                    DataCadastro = sensor.DataCadastro,
-                    DataAlteracao = sensor.DataAlteracao
-                };
-
+                sensorViewModel = _mapper.Map<SensorViewModel>(sensor);
+                sensorViewModel.Ativo = status;
+                sensorViewModel.NomePais = nomePais;
+                sensorViewModel.NomeRegiao = nomeRegiao;
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }              
+            }
 
             return View(sensorViewModel);
         }
 
         private async Task<bool> SensorExists(int id)
         {
-            Sensor sensor = null;
+            Sensor sensor = new Sensor();
             bool sensorExiste;
 
             try
@@ -358,10 +276,6 @@ namespace ProjetoDDD.Controllers
             {
                 throw new Exception(ex.Message);
             }
-
-
-            //var objeto = await _InterfaceSensorService.GetEntityById(id);
-            //return objeto != null;
 
             return sensorExiste;
         }

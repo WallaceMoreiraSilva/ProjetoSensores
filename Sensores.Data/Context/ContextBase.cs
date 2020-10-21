@@ -1,6 +1,5 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Infra.Configuration
 {
@@ -8,11 +7,6 @@ namespace Infra.Configuration
     {
         public ContextBase(DbContextOptions<ContextBase> option)
             : base(option) { }
-
-        //public ContextBase(DbContextOptions<ContextBase> options) : base(options)
-        //{
-        //    Database.EnsureCreated();
-        //}
 
         #region DbSets
 
@@ -25,24 +19,9 @@ namespace Infra.Configuration
 
         #endregion
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //        optionsBuilder.UseSqlServer(GetStringConectionConfig());
-        //    base.OnConfiguring(optionsBuilder);
-        //}
-
-        //private string GetStringConectionConfig()
-        //{
-        //    string strCon = "Data Source=.\\SQLEXPRESS;Initial Catalog=ProjetoModeloDDD;Integrated Security=False;User ID=sa;Password=123456;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
-
-        //    return strCon;
-        //}
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
         }
-
     }
 }

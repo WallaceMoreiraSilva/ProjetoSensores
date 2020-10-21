@@ -29,31 +29,6 @@ namespace ProjetoDDD
             NativeInjector.RegisterServices(services);
 
             services.AddAutoMapper(typeof(AutoMapperSetup));
-
-            
-            //#region Services
-
-            //services.AddSingleton<ISensorService, SensorService>();         
-            //services.AddSingleton<IRegiaoService, RegiaoService>();           
-            //services.AddSingleton<IPaisService, PaisService>();           
-            //services.AddSingleton<IEventoDisparadoService, EventoDisparadoService>();           
-            //services.AddSingleton<IStatusEventoDisparadoService, StatusEventoDisparadoService>();            
-            //services.AddSingleton<IStatusSensorService, StatusSensorService>();
-
-            //#endregion
-
-            //#region Repository
-
-            //services.AddSingleton(typeof(IGenericsRepository<>), typeof(GenericsRepository<>));
-
-            //services.AddSingleton<ISensorRepository, SensorRepository>();
-            //services.AddSingleton<IRegiaoRepository, RegiaoRepository>();
-            //services.AddSingleton<IPaisRepository, PaisRepository>();
-            //services.AddSingleton<IEventoDisparadoRepository, EventoDisparadoRepository>();
-            //services.AddSingleton<IStatusEventoDisparadoRepository, StatusEventoDisparadoRepository>();
-            //services.AddSingleton<IStatusSensorRepository, StatusSensorRepository>();
-
-            //#endregion
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -80,6 +55,5 @@ namespace ProjetoDDD
                     pattern: "{controller=Sensor}/{action=Index}/{id?}");
             });
         }
-
     }
 }
