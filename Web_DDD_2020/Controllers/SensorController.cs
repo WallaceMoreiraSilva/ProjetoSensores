@@ -38,63 +38,21 @@ namespace ProjetoDDD.Controllers
             _InterfaceStatusSensorService = InterfaceStatusSensorService;
             _logger = logger;
             _mapper = mapper;
-        }
-
-        //public async Task<IActionResult> Index()
-        //{            
-        //    List<SensorViewModel> lista = new List<SensorViewModel>();
-
-        //    try
-        //    {                
-        //        var entitySensor = await _InterfaceSensorService.List();
-
-        //        if (entitySensor != null)
-        //        {       
-        //            foreach (var item in entitySensor)
-        //            {
-        //                var nomePais = _InterfacePaisService.GetEntityById(item.PaisId).Result.Nome;
-        //                var nomeRegiao = _InterfaceRegiaoService.GetEntityById(item.RegiaoId).Result.Nome;
-        //                var statusSensor = _InterfaceStatusSensorService.GetEntityById(item.StatusSensorId).Result.Nome;
-
-        //                lista.Add(new SensorViewModel
-        //                {
-        //                    Id = item.Id,
-        //                    Nome = item.Nome,
-        //                    Numero = item.Numero,
-        //                    DataCadastro = item.DataCadastro,
-        //                    DataAlteracao = item.DataAlteracao,
-        //                    PaisId = item.PaisId,
-        //                    NomePais = nomePais,
-        //                    RegiaoId = item.RegiaoId,
-        //                    NomeRegiao = nomeRegiao,
-        //                    StatusSensorId = item.StatusSensorId,
-        //                    StatusDoSensor = statusSensor
-        //                });
-
-        //            }
-        //        }                
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception(ex.Message);
-        //    }            
-
-        //    return View(lista);
-        //}        
+        }     
 
         public async Task<IActionResult> Index()
         {
-            List<SensorViewModel> lista = new List<SensorViewModel>();    
+            List<SensorViewModel> sensores = new List<SensorViewModel>();    
 
             try
             {
                 IEnumerable<Sensor> _sensor = await _InterfaceSensorService.List();
 
-                lista = _mapper.Map<List<SensorViewModel>>(_sensor);
+                sensores = _mapper.Map<List<SensorViewModel>>(_sensor);
 
-                if (lista != null)
+                if (sensores != null)
                 {
-                    foreach (var item in lista)
+                    foreach (var item in sensores)
                     {
                         var nomePais = _InterfacePaisService.GetEntityById(item.PaisId).Result.Nome;
                         var nomeRegiao = _InterfaceRegiaoService.GetEntityById(item.RegiaoId).Result.Nome;
@@ -111,72 +69,65 @@ namespace ProjetoDDD.Controllers
                 throw new Exception(ex.Message);
             }
 
-            return View(lista);
+            return View(sensores);
         }
 
         public async Task<IActionResult> Create()
-        {          
-            List<Pais> paises = new List<Pais>();
-            List<Regiao> regioes = new List<Regiao>();
+        {
+            List<PaisViewModel> paises = new List<PaisViewModel>();
+            List<RegiaoViewModel> regioes = new List<RegiaoViewModel>();
 
             try
             {
-                var listaDePaises = await _InterfacePaisService.List();
-                var listaDeRegioes = await _InterfaceRegiaoService.List();
+                IEnumerable<Pais> _paises = await _InterfacePaisService.List();
+                IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
 
-                if (listaDePaises != null && listaDeRegioes != null)
-                {
-                    foreach (var item in listaDePaises.AsEnumerable())
-                    {
-                        paises.Add(new Pais
-                        {
-                            Id = item.Id,
-                            Nome = item.Nome,
-                            IsoDuasLetras = item.IsoDuasLetras,
-                            IsoTresLetras = item.IsoTresLetras,
-                            NumeroCodigoIso = item.NumeroCodigoIso,
-                            DataCadastro = item.DataCadastro,
-                            DataAlteracao = item.DataAlteracao
-                        }); ;
-                    }
+                paises = _mapper.Map<List<PaisViewModel>>(_paises);
+                regioes = _mapper.Map<List<RegiaoViewModel>>(_regioes);               
 
-                    foreach (var item in listaDeRegioes.AsEnumerable())
-                    {
-                        regioes.Add(new Regiao
-                        {
-                            Id = item.Id,
-                            Nome = item.Nome,
-                            DataCadastro = item.DataCadastro,
-                            DataAlteracao = item.DataAlteracao
-                        });
-                    }
-                }               
-
+                ViewBag.Paises = paises.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
+                ViewBag.Regioes = regioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }
-
-            ViewBag.Paises = paises.ToList().Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() }).ToList();
-
-            ViewBag.Regioes = regioes.ToList().Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() }).ToList();
+            }            
 
             return View();
-        }        
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(SensorViewModel sensorViewModel)
+        //{    
+        //    if (ModelState.IsValid)
+        //    {
+        //        Sensor sensor = new Sensor();
+
+        //        sensor.Nome = sensorViewModel.Nome;
+        //        sensor.Numero = sensorViewModel.Numero;
+        //        sensor.PaisId = sensorViewModel.PaisId;
+        //        sensor.RegiaoId = sensorViewModel.RegiaoId;
+        //        sensor.DataCadastro = DateTime.Now;
+        //        sensor.DataAlteracao = DateTime.Now;
+        //        sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
+
+        //        await _InterfaceSensorService.Add(sensor);
+
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //    return View(sensorViewModel);
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SensorViewModel sensorViewModel)
-        {    
+        {
             if (ModelState.IsValid)
             {
-                Sensor sensor = new Sensor();
-                               
-                sensor.Nome = sensorViewModel.Nome;
-                sensor.Numero = sensorViewModel.Numero;
-                sensor.PaisId = sensorViewModel.PaisId;
-                sensor.RegiaoId = sensorViewModel.RegiaoId;
+                Sensor sensor = _mapper.Map<Sensor>(sensorViewModel);
+                
                 sensor.DataCadastro = DateTime.Now;
                 sensor.DataAlteracao = DateTime.Now;
                 sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
