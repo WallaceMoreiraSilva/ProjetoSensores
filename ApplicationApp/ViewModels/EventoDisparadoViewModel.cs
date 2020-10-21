@@ -15,20 +15,20 @@ namespace SensoresAPP.ViewModels
         [DisplayName("Nome")]
         public string Nome { get; set; }
 
+        public int Valor { get; set; }
+
         [Required(ErrorMessage = "Data Cadastro é obrigatório")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
         [DisplayName("Data Cadastro")]
-        public DateTime DataCadastro { get; set; } 
-
-        public int Valor { get; set; } 
+        public DateTime DataCadastro { get; set; }         
 
         public int SensorId { get; set; }
 
-        //public virtual SensorViewModel Sensor { get; set; }
+        public virtual SensorViewModel Sensor { get; set; }
 
         public int StatusEventoDisparadoId { get; set; }
 
-        //public virtual StatusEventoDisparadoViewModel StatusEventoDisparado { get; set; }
+        public virtual StatusEventoDisparadoViewModel StatusEventoDisparado { get; set; }
     }
 }

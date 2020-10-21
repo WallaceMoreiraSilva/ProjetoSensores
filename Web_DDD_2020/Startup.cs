@@ -6,6 +6,8 @@ using Microsoft.Extensions.Hosting;
 using Infra.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Sensores.IoC;
+using AutoMapper;
+using SensoresApp.AutoMapper;
 
 namespace ProjetoDDD
 {
@@ -25,6 +27,8 @@ namespace ProjetoDDD
             services.AddDbContext<ContextBase>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ProjetoModeloDDD")).EnableSensitiveDataLogging());
 
             NativeInjector.RegisterServices(services);
+
+            services.AddAutoMapper(typeof(AutoMapperSetup));
 
             
             //#region Services

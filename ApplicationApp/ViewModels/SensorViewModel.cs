@@ -39,25 +39,28 @@ namespace SensoresAPP.ViewModels
         [Required(ErrorMessage = "Região é obrigatório")]
         public int RegiaoId { get; set; }
 
-        //public RegiaoViewModel Regiao { get; set; }
+        public RegiaoViewModel Regiao { get; set; }
 
+        //sai
         [Display(Name = "Região")]
         public string NomeRegiao { get; set; }
 
         [Required(ErrorMessage = "País é obrigatório")]
         public int PaisId { get; set; }
 
-        //public PaisViewModel Pais { get; set; }
+        public PaisViewModel Pais { get; set; }
 
+        //sai
         [Display(Name = "País")]
         public string NomePais { get; set; }
                 
         public int StatusSensorId { get; set; }
 
-        //public StatusSensorViewModel StatusSensor { get; set; }
+        public StatusSensorViewModel StatusSensor { get; set; }
 
+        //sai
         [Display(Name = "Status")]
-        public string StatusSensor { get; set; }
+        public string StatusDoSensor { get; set; }
 
     }
 }

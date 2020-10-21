@@ -10,6 +10,7 @@ using System;
 using Enum;
 using Microsoft.Extensions.Logging;
 using SensoresAPP.ViewModels;
+using AutoMapper;
 
 namespace ProjetoDDD.Controllers
 {
@@ -20,12 +21,15 @@ namespace ProjetoDDD.Controllers
         private readonly IRegiaoService _InterfaceRegiaoService;       
         private readonly IStatusSensorService _InterfaceStatusSensorService;
         private readonly ILogger<SensorController> _logger;
+        private readonly IMapper _mapper;
+
 
         public SensorController( ISensorService InterfaceSensorService, 
                                  IPaisService InterfacePaisService, 
                                  IRegiaoService InterfaceRegiaoService,
                                  IStatusSensorService InterfaceStatusSensorService,
-                                 ILogger<SensorController> logger
+                                 ILogger<SensorController> logger,
+                                 IMapper mapper
                                 ) 
         {
             _InterfaceSensorService = InterfaceSensorService;
@@ -33,49 +37,83 @@ namespace ProjetoDDD.Controllers
             _InterfaceRegiaoService = InterfaceRegiaoService;
             _InterfaceStatusSensorService = InterfaceStatusSensorService;
             _logger = logger;
+            _mapper = mapper;
         }
-        
-        public async Task<IActionResult> Index()
-        {            
-            List<SensorViewModel> lista = new List<SensorViewModel>();
-            
-            try
-            {                
-                var entitySensor = await _InterfaceSensorService.List();
 
-                if (entitySensor != null)
-                {       
-                    foreach (var item in entitySensor)
+        //public async Task<IActionResult> Index()
+        //{            
+        //    List<SensorViewModel> lista = new List<SensorViewModel>();
+
+        //    try
+        //    {                
+        //        var entitySensor = await _InterfaceSensorService.List();
+
+        //        if (entitySensor != null)
+        //        {       
+        //            foreach (var item in entitySensor)
+        //            {
+        //                var nomePais = _InterfacePaisService.GetEntityById(item.PaisId).Result.Nome;
+        //                var nomeRegiao = _InterfaceRegiaoService.GetEntityById(item.RegiaoId).Result.Nome;
+        //                var statusSensor = _InterfaceStatusSensorService.GetEntityById(item.StatusSensorId).Result.Nome;
+
+        //                lista.Add(new SensorViewModel
+        //                {
+        //                    Id = item.Id,
+        //                    Nome = item.Nome,
+        //                    Numero = item.Numero,
+        //                    DataCadastro = item.DataCadastro,
+        //                    DataAlteracao = item.DataAlteracao,
+        //                    PaisId = item.PaisId,
+        //                    NomePais = nomePais,
+        //                    RegiaoId = item.RegiaoId,
+        //                    NomeRegiao = nomeRegiao,
+        //                    StatusSensorId = item.StatusSensorId,
+        //                    StatusDoSensor = statusSensor
+        //                });
+
+        //            }
+        //        }                
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw new Exception(ex.Message);
+        //    }            
+
+        //    return View(lista);
+        //}        
+
+        public async Task<IActionResult> Index()
+        {
+            List<SensorViewModel> lista = new List<SensorViewModel>();    
+
+            try
+            {
+                IEnumerable<Sensor> _sensor = await _InterfaceSensorService.List();
+
+                lista = _mapper.Map<List<SensorViewModel>>(_sensor);
+
+                if (lista != null)
+                {
+                    foreach (var item in lista)
                     {
                         var nomePais = _InterfacePaisService.GetEntityById(item.PaisId).Result.Nome;
                         var nomeRegiao = _InterfaceRegiaoService.GetEntityById(item.RegiaoId).Result.Nome;
                         var statusSensor = _InterfaceStatusSensorService.GetEntityById(item.StatusSensorId).Result.Nome;
 
-                        lista.Add(new SensorViewModel
-                        {
-                            Id = item.Id,
-                            Nome = item.Nome,
-                            Numero = item.Numero,
-                            DataCadastro = item.DataCadastro,
-                            DataAlteracao = item.DataAlteracao,
-                            PaisId = item.PaisId,
-                            NomePais = nomePais,
-                            RegiaoId = item.RegiaoId,
-                            NomeRegiao = nomeRegiao,
-                            StatusSensorId = item.StatusSensorId,
-                            StatusSensor = statusSensor
-                        });
+                        item.NomePais = nomePais;
+                        item.NomeRegiao = nomeRegiao;
+                        item.StatusDoSensor = statusSensor;
                     }
-                }                
+                }
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }            
-           
+            }
+
             return View(lista);
-        }        
-       
+        }
+
         public async Task<IActionResult> Create()
         {          
             List<Pais> paises = new List<Pais>();
