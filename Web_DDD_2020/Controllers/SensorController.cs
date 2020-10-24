@@ -11,6 +11,8 @@ using Enum;
 using Microsoft.Extensions.Logging;
 using SensoresAPP.ViewModels;
 using AutoMapper;
+using ProjetoDDD.Models;
+using System.Diagnostics;
 
 namespace ProjetoDDD.Controllers
 {
@@ -278,6 +280,12 @@ namespace ProjetoDDD.Controllers
             }
 
             return sensorExiste;
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
