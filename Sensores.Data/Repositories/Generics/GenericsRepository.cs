@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Generics;
+﻿using Domain.Entities;
+using Domain.Interfaces.Generics;
 using Infra.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32.SafeHandles;
@@ -11,87 +12,43 @@ namespace Infra.Repository.Generics
 {
     public class GenericsRepository<T> : IGenericsRepository<T>, IDisposable where T : class
     {
-        //private readonly DbContextOptions<ContextBase> _OptionsBuilder;        
-
-        //public GenericsRepository()
-        //{
-        //    _OptionsBuilder = new DbContextOptions<ContextBase>();
-        //}       
-
-        //public async Task Add(T Objeto)
-        //{
-        //    using (var data = new ContextBase(_context))
-        //    {
-        //        await data.Set<T>().AddAsync(Objeto);
-        //        await data.SaveChangesAsync();
-        //    }
-        //}
-
-        //public async Task Delete(T Objeto)
-        //{
-        //    using (var data = new ContextBase(_OptionsBuilder))
-        //    {
-        //        data.Set<T>().Remove(Objeto);
-        //        await data.SaveChangesAsync();
-        //    }
-        //}
-
-        //public async Task<T> GetEntityById(int Id)
-        //{
-        //    using (var data = new ContextBase(_OptionsBuilder))
-        //    {
-        //        return await data.Set<T>().FindAsync(Id);
-        //    }
-        //}
-
-        //public async Task<List<T>> List()
-        //{
-        //    using (var data = new ContextBase(_OptionsBuilder))
-        //    {
-        //        return await data.Set<T>().AsNoTracking().ToListAsync();
-        //    }
-        //}
-
-        //public async Task Update(T Objeto)
-        //{
-        //    using (var data = new ContextBase(_OptionsBuilder))
-        //    {
-        //        data.Set<T>().Update(Objeto);
-        //        await data.SaveChangesAsync();
-        //    }
-        //}
-
-        //#region Properties
-
-        //protected readonly ContextBase _context;
-
-        //protected DbSet<T> DbSet
-        //{
-        //    get
-        //    {
-        //        return _context.Set<T>();
-        //    }
-        //}
-
-        //#endregion
-
         protected readonly ContextBase _context;
 
         public GenericsRepository(ContextBase context)
         {
             _context = context;
-        }
+        }      
 
         public async Task Add(T Objeto)
-        {            
-            await _context.Set<T>().AddAsync(Objeto);
-            await _context.SaveChangesAsync();            
+        {
+            try
+            {
+                await _context.Set<T>().AddAsync(Objeto);
+                await _context.SaveChangesAsync();
+
+                //_context.LogAuditorias.Add(
+                //    new LogAuditoria
+                //    {
+                //        DetalhesAuditoria = string.Format("{0} cadastrado com sucesso", Objeto)
+                //    }); 
+            }
+            catch (Exception ex)
+            {       
+                throw new Exception(ex.Message);
+            }            
         }
 
         public async Task Delete(T Objeto)
         {
-            _context.Set<T>().Remove(Objeto);
-            await _context.SaveChangesAsync();            
+            try
+            {
+                _context.Set<T>().Remove(Objeto);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }                   
         }
 
         public async Task<T> GetEntityById(int Id)
@@ -100,14 +57,32 @@ namespace Infra.Repository.Generics
         }
 
         public async Task<List<T>> List()
-        {            
-            return await _context.Set<T>().AsNoTracking().ToListAsync();           
+        {
+            List<T> lista = new List<T>();
+
+            try
+            {
+                lista = await _context.Set<T>().AsNoTracking().ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }            
+
+            return lista;                    
         }
 
         public async Task Update(T Objeto)
         {
-            _context.Set<T>().Update(Objeto);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Set<T>().Update(Objeto);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }           
         }
 
         #region Disposed

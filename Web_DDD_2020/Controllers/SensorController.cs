@@ -21,24 +21,21 @@ namespace ProjetoDDD.Controllers
         private readonly ISensorService _InterfaceSensorService;
         private readonly IPaisService _InterfacePaisService;
         private readonly IRegiaoService _InterfaceRegiaoService;       
-        private readonly IStatusSensorService _InterfaceStatusSensorService;
-        private readonly ILogger<SensorController> _logger;
+        private readonly IStatusSensorService _InterfaceStatusSensorService;       
         private readonly IMapper _mapper;
 
 
         public SensorController( ISensorService InterfaceSensorService, 
                                  IPaisService InterfacePaisService, 
                                  IRegiaoService InterfaceRegiaoService,
-                                 IStatusSensorService InterfaceStatusSensorService,
-                                 ILogger<SensorController> logger,
+                                 IStatusSensorService InterfaceStatusSensorService,                                
                                  IMapper mapper
                                 ) 
         {
             _InterfaceSensorService = InterfaceSensorService;
             _InterfacePaisService = InterfacePaisService;
             _InterfaceRegiaoService = InterfaceRegiaoService;
-            _InterfaceStatusSensorService = InterfaceStatusSensorService;
-            _logger = logger;
+            _InterfaceStatusSensorService = InterfaceStatusSensorService;            
             _mapper = mapper;
         }     
 
@@ -69,7 +66,7 @@ namespace ProjetoDDD.Controllers
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }
+            }            
 
             return View(sensores);
         }
@@ -88,7 +85,7 @@ namespace ProjetoDDD.Controllers
                 regioes = _mapper.Map<List<RegiaoViewModel>>(_regioes);               
 
                 ViewBag.Paises = paises.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
-                ViewBag.Regioes = regioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
+                ViewBag.Regioes = regioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });                
             }
             catch (Exception ex)
             {
@@ -109,7 +106,7 @@ namespace ProjetoDDD.Controllers
                 sensor.DataAlteracao = DateTime.Now;
                 sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
-                await _InterfaceSensorService.Add(sensor);
+                await _InterfaceSensorService.Add(sensor);                
 
                 return RedirectToAction(nameof(Index));
             }
@@ -170,7 +167,7 @@ namespace ProjetoDDD.Controllers
                     sensor.DataAlteracao = DateTime.Now;
                     sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
-                    await _InterfaceSensorService.Update(sensor);
+                    await _InterfaceSensorService.Update(sensor);                  
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -226,7 +223,8 @@ namespace ProjetoDDD.Controllers
             try
             {
                 var sensor = await _InterfaceSensorService.GetEntityById(id);
-                await _InterfaceSensorService.Delete(sensor);
+
+                await _InterfaceSensorService.Delete(sensor);                
             }
             catch (Exception ex)
             {
@@ -272,6 +270,7 @@ namespace ProjetoDDD.Controllers
             try
             {
                 sensor = await _InterfaceSensorService.GetEntityById(id);
+
                 sensorExiste = sensor != null ? true : false;
             }
             catch (Exception ex)
