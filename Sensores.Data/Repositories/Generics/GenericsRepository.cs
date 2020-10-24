@@ -24,13 +24,7 @@ namespace Infra.Repository.Generics
             try
             {
                 await _context.Set<T>().AddAsync(Objeto);
-                await _context.SaveChangesAsync();
-
-                //_context.LogAuditorias.Add(
-                //    new LogAuditoria
-                //    {
-                //        DetalhesAuditoria = string.Format("{0} cadastrado com sucesso", Objeto)
-                //    }); 
+                await _context.SaveChangesAsync();              
             }
             catch (Exception ex)
             {       
@@ -43,7 +37,7 @@ namespace Infra.Repository.Generics
             try
             {
                 _context.Set<T>().Remove(Objeto);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();               
             }
             catch (Exception ex)
             {
@@ -73,11 +67,11 @@ namespace Infra.Repository.Generics
         }
 
         public async Task Update(T Objeto)
-        {
+        {     
             try
             {
                 _context.Set<T>().Update(Objeto);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();                
             }
             catch (Exception ex)
             {

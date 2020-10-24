@@ -21,6 +21,8 @@ namespace Sensores.IoC
             services.AddScoped<IStatusEventoDisparadoService, StatusEventoDisparadoService>();
             services.AddScoped<IStatusSensorService, StatusSensorService>();
 
+            services.AddScoped<ILogAuditoriaService, LogAuditoriaService>();
+
             #endregion
 
             #region Repositories
@@ -33,6 +35,8 @@ namespace Sensores.IoC
             services.AddScoped<IEventoDisparadoRepository, EventoDisparadoRepository>();
             services.AddScoped<IStatusEventoDisparadoRepository, StatusEventoDisparadoRepository>();
             services.AddScoped<IStatusSensorRepository, StatusSensorRepository>();
+
+            services.AddScoped<ILogAuditoriaRepository, LogAuditoriaRepository>();
 
             #endregion
         }
