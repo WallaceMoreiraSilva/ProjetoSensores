@@ -20,21 +20,23 @@ namespace ProjetoDDD.Controllers
         private readonly ISensorService _InterfaceSensorService;
         private readonly IPaisService _InterfacePaisService;
         private readonly IRegiaoService _InterfaceRegiaoService;       
-        private readonly IStatusSensorService _InterfaceStatusSensorService;       
-        private readonly IMapper _mapper;
-
+        private readonly IStatusSensorService _InterfaceStatusSensorService;
+        private readonly ILogAuditoriaService _InterfaceLogAuditoriaService;
+        private readonly IMapper _mapper;    
 
         public SensorController( ISensorService InterfaceSensorService, 
                                  IPaisService InterfacePaisService, 
                                  IRegiaoService InterfaceRegiaoService,
-                                 IStatusSensorService InterfaceStatusSensorService,                                
-                                 IMapper mapper
+                                 IStatusSensorService InterfaceStatusSensorService,
+                                 ILogAuditoriaService InterfaceLogAuditoriaService,
+                                 IMapper mapper                                 
                                 ) 
         {
             _InterfaceSensorService = InterfaceSensorService;
             _InterfacePaisService = InterfacePaisService;
             _InterfaceRegiaoService = InterfaceRegiaoService;
-            _InterfaceStatusSensorService = InterfaceStatusSensorService;            
+            _InterfaceStatusSensorService = InterfaceStatusSensorService;   
+            _InterfaceLogAuditoriaService = InterfaceLogAuditoriaService;
             _mapper = mapper;
         }     
 
@@ -105,7 +107,13 @@ namespace ProjetoDDD.Controllers
                 sensor.DataAlteracao = DateTime.Now;
                 sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
-                await _InterfaceSensorService.Add(sensor);                
+                await _InterfaceSensorService.Add(sensor);
+
+                await _InterfaceLogAuditoriaService.Add(
+                    new LogAuditoria
+                    {
+                        DetalhesAuditoria = string.Format("O sensor {0} foi criado com sucesso", sensor.Id.ToString())
+                    });
 
                 return RedirectToAction(nameof(Index));
             }
@@ -166,7 +174,13 @@ namespace ProjetoDDD.Controllers
                     sensor.DataAlteracao = DateTime.Now;
                     sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
-                    await _InterfaceSensorService.Update(sensor);                  
+                    await _InterfaceSensorService.Update(sensor);
+
+                   await _InterfaceLogAuditoriaService.Add(
+                       new LogAuditoria
+                       {
+                           DetalhesAuditoria = string.Format("O sensor {0} foi atualizado com sucesso", sensor.Id.ToString())
+                       });
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
@@ -223,7 +237,13 @@ namespace ProjetoDDD.Controllers
             {
                 var sensor = await _InterfaceSensorService.GetEntityById(id);
 
-                await _InterfaceSensorService.Delete(sensor);                
+                await _InterfaceSensorService.Delete(sensor);
+
+                await _InterfaceLogAuditoriaService.Add(
+                    new LogAuditoria
+                    {
+                        DetalhesAuditoria = string.Format("O sensor {0} foi deletado com sucesso", sensor.Id.ToString())
+                    });
             }
             catch (Exception ex)
             {
