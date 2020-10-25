@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Enum;
-using Microsoft.Extensions.Logging;
 using SensoresAPP.ViewModels;
 using AutoMapper;
 using ProjetoDDD.Models;

@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
 using SensoresAPP.Interfaces;
+using System;
 using System.Threading.Tasks;
 
 namespace SensoresAPP.SensoresService
@@ -17,7 +18,14 @@ namespace SensoresAPP.SensoresService
 
         public async Task Add(LogAuditoria Objeto)
         {
-            await _ILogAuditoria.Add(Objeto);
+            try
+            {
+                await _ILogAuditoria.Add(Objeto);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }            
         }
     }
 }

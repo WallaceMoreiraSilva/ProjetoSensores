@@ -29,6 +29,8 @@ namespace Sensores.IoC
 
             services.AddScoped(typeof(IGenericsRepository<>), typeof(GenericsRepository<>));
 
+            services.AddScoped(typeof(IGenericsLogAuditoriaRepository<>), typeof(GenericsLogAuditoriaRepository<>));
+
             services.AddScoped<ISensorRepository, SensorRepository>();
             services.AddScoped<IRegiaoRepository, RegiaoRepository>();
             services.AddScoped<IPaisRepository, PaisRepository>();
