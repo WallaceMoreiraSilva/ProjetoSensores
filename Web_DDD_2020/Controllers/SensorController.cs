@@ -66,8 +66,13 @@ namespace ProjetoDDD.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
-            }            
+                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+
+                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                {
+                    DetalhesAuditoria = mensagem
+                });
+            }           
 
             return View(sensores);
         }
@@ -90,7 +95,12 @@ namespace ProjetoDDD.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+
+                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                {
+                    DetalhesAuditoria = mensagem
+                });
             }            
 
             return View();
@@ -100,23 +110,37 @@ namespace ProjetoDDD.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SensorViewModel sensorViewModel)
         {
-            if (ModelState.IsValid)
+
+            try
             {
-                Sensor sensor = _mapper.Map<Sensor>(sensorViewModel);                
-                sensor.DataCadastro = DateTime.Now;
-                sensor.DataAlteracao = DateTime.Now;
-                sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
+                if (ModelState.IsValid)
+                {
+                    Sensor sensor = _mapper.Map<Sensor>(sensorViewModel);
+                    sensor.DataCadastro = DateTime.Now;
+                    sensor.DataAlteracao = DateTime.Now;
+                    sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
-                await _InterfaceSensorService.Add(sensor);
+                    await _InterfaceSensorService.Add(sensor);
 
-                await _InterfaceLogAuditoriaService.Add(
-                    new LogAuditoria
+                    string mensagem = string.Format("{0} - O sensor {1} foi criado com sucesso", DateTime.Now, sensor.Id.ToString());
+
+                    await _InterfaceLogAuditoriaService.Add(new LogAuditoria
                     {
-                        DetalhesAuditoria = string.Format("O sensor {0} foi criado com sucesso", sensor.Id.ToString())
+                        DetalhesAuditoria = mensagem
                     });
 
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
+                }
             }
+            catch (Exception ex)
+            {
+                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+
+                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                {
+                    DetalhesAuditoria = mensagem
+                });
+            } 
 
             return View(sensorViewModel);
         }
@@ -151,7 +175,12 @@ namespace ProjetoDDD.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+
+                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                {
+                    DetalhesAuditoria = mensagem
+                });
             }
 
             return View(sensorViewModel);
@@ -176,23 +205,31 @@ namespace ProjetoDDD.Controllers
 
                     await _InterfaceSensorService.Update(sensor);
 
-                   await _InterfaceLogAuditoriaService.Add(
-                       new LogAuditoria
-                       {
-                           DetalhesAuditoria = string.Format("O sensor {0} foi atualizado com sucesso", sensor.Id.ToString())
-                       });
+                    string mensagem = string.Format("{0} - O sensor {1} foi alterado com sucesso", DateTime.Now, sensor.Id.ToString());
+
+                    await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                    {
+                        DetalhesAuditoria = mensagem
+                    });
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
+                    string mensagem = string.Empty;
+
                     if (!await SensorExists(sensor.Id))
                     {
-                        return NotFound();
+                        mensagem = string.Format("{0} - {1}", DateTime.Now, NotFound());                       
                     }
                     else
                     {
-                        throw new Exception(ex.Message);
+                        mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
                     }
-                }
+
+                    await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                    {
+                        DetalhesAuditoria = mensagem
+                    });
+                }                
 
                 return RedirectToAction(nameof(Index));
             }
@@ -223,7 +260,12 @@ namespace ProjetoDDD.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+
+                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                {
+                    DetalhesAuditoria = mensagem
+                });
             }
 
             return View(sensorViewModel);
@@ -239,15 +281,21 @@ namespace ProjetoDDD.Controllers
 
                 await _InterfaceSensorService.Delete(sensor);
 
-                await _InterfaceLogAuditoriaService.Add(
-                    new LogAuditoria
-                    {
-                        DetalhesAuditoria = string.Format("O sensor {0} foi deletado com sucesso", sensor.Id.ToString())
-                    });
+                string mensagem = string.Format("{0} - O sensor {1} foi deletado com sucesso", DateTime.Now, sensor.Id.ToString());
+
+                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                {
+                    DetalhesAuditoria = mensagem
+                });
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+
+                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                {
+                    DetalhesAuditoria = mensagem
+                });
             }
             
             return RedirectToAction(nameof(Index));
@@ -275,7 +323,12 @@ namespace ProjetoDDD.Controllers
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+
+                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                {
+                    DetalhesAuditoria = mensagem
+                });
             }
 
             return View(sensorViewModel);
@@ -289,21 +342,21 @@ namespace ProjetoDDD.Controllers
             try
             {
                 sensor = await _InterfaceSensorService.GetEntityById(id);
-
                 sensorExiste = sensor != null ? true : false;
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+                sensorExiste = false;                
+
+                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                {
+                    DetalhesAuditoria = mensagem
+                });
             }
 
             return sensorExiste;
         }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+       
     }
 }
