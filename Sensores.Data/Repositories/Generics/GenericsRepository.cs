@@ -60,9 +60,9 @@ namespace Infra.Repository.Generics
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
-            }            
+            }
 
-            return lista;                    
+            return lista;
         }
 
         public async Task Update(T Objeto)

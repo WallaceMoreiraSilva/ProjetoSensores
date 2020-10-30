@@ -4,6 +4,21 @@
     ViewData["Title"] = "Cadastrar Sensor";
 }
 
+@{var erroMessage = TempData["ErroMessage"]; }
+
+@if (erroMessage != null)
+{
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        @erroMessage.ToString()
+    </div>
+}
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
 <h1>Cadastrar</h1>
 
 <p>
@@ -26,7 +41,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NomeRegiao)
-            </th>            
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,7 +50,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StatusDoSensor)                   
+                    @Html.DisplayFor(modelItem => item.StatusDoSensor)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nome)
@@ -54,7 +69,8 @@
                     <a asp-action="Details" asp-route-id="@item.Id">Detalhes</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Deletar</a>
                 </td>
-            </tr>         
+            </tr>
+
         }
     </tbody>
 </table>

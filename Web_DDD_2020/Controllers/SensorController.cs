@@ -42,17 +42,17 @@ namespace ProjetoDDD.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<SensorViewModel> sensores = new List<SensorViewModel>();    
+            List<SensorViewModel> sensoresViemModel = new List<SensorViewModel>();    
 
             try
             {
                 IEnumerable<Sensor> _sensor = await _InterfaceSensorService.List();
 
-                sensores = _mapper.Map<List<SensorViewModel>>(_sensor);
+                sensoresViemModel = _mapper.Map<List<SensorViewModel>>(_sensor);
 
-                if (sensores != null)
+                if (sensoresViemModel != null)
                 {
-                    foreach (var item in sensores)
+                    foreach (var item in sensoresViemModel)
                     {
                         var nomePais = _InterfacePaisService.GetEntityById(item.PaisId).Result.Nome;
                         var nomeRegiao = _InterfaceRegiaoService.GetEntityById(item.RegiaoId).Result.Nome;
@@ -62,7 +62,7 @@ namespace ProjetoDDD.Controllers
                         item.NomeRegiao = nomeRegiao;
                         item.StatusDoSensor = statusSensor;
                     }
-                }
+                }               
             }
             catch (Exception ex)
             {
@@ -72,9 +72,11 @@ namespace ProjetoDDD.Controllers
                 {
                     DetalhesAuditoria = mensagem
                 });
-            }           
 
-            return View(sensores);
+                ViewBag.Error = "Não foi possível listar os sensores.";
+            }
+
+            return View(sensoresViemModel);
         }
 
         public async Task<IActionResult> Create()
@@ -88,10 +90,10 @@ namespace ProjetoDDD.Controllers
                 IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
 
                 paises = _mapper.Map<List<PaisViewModel>>(_paises);
-                regioes = _mapper.Map<List<RegiaoViewModel>>(_regioes);               
+                regioes = _mapper.Map<List<RegiaoViewModel>>(_regioes);
 
                 ViewBag.Paises = paises.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
-                ViewBag.Regioes = regioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });                
+                ViewBag.Regioes = regioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
             }
             catch (Exception ex)
             {
@@ -101,7 +103,11 @@ namespace ProjetoDDD.Controllers
                 {
                     DetalhesAuditoria = mensagem
                 });
-            }            
+
+                TempData["ErroMessage"] = "Houve um erro inesperado ao tentar realizar o cadastro. Por favor entre em contato com o suporte.";
+
+                return RedirectToAction(nameof(Index));
+            }
 
             return View();
         }
@@ -109,8 +115,7 @@ namespace ProjetoDDD.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SensorViewModel sensorViewModel)
-        {
-
+        {            
             try
             {
                 if (ModelState.IsValid)
@@ -118,7 +123,7 @@ namespace ProjetoDDD.Controllers
                     Sensor sensor = _mapper.Map<Sensor>(sensorViewModel);
                     sensor.DataCadastro = DateTime.Now;
                     sensor.DataAlteracao = DateTime.Now;
-                    sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
+                    sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;                    
 
                     await _InterfaceSensorService.Add(sensor);
 
@@ -127,9 +132,7 @@ namespace ProjetoDDD.Controllers
                     await _InterfaceLogAuditoriaService.Add(new LogAuditoria
                     {
                         DetalhesAuditoria = mensagem
-                    });
-
-                    return RedirectToAction(nameof(Index));
+                    });                   
                 }
             }
             catch (Exception ex)
@@ -140,9 +143,13 @@ namespace ProjetoDDD.Controllers
                 {
                     DetalhesAuditoria = mensagem
                 });
+               
+                TempData["ErroMessage"] = "Não foi possível realizar o cadastro. Tente novamente.";                
+
+                return RedirectToAction(nameof(Create));
             } 
 
-            return View(sensorViewModel);
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -153,12 +160,15 @@ namespace ProjetoDDD.Controllers
 
             try
             {
+
                 var sensor = await _InterfaceSensorService.GetEntityById((int)id);
-
-                if (id == null || sensor == null)
-                    return NotFound();
-
                 bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;
+
+                if (id == null)               
+                    throw new Exception(string.Format("{0} - {1} - {2}", DateTime.Now, id, NotFound()));
+                                
+                if (sensor == null)              
+                    throw new Exception(string.Format("{0} - {1} - {2}", DateTime.Now, sensor.Id, NotFound()));
 
                 IEnumerable<Pais> _paises = await _InterfacePaisService.List();
                 IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
@@ -181,6 +191,10 @@ namespace ProjetoDDD.Controllers
                 {
                     DetalhesAuditoria = mensagem
                 });
+
+                TempData["ErroMessage"] = "Houve um erro inesperado ao tentar editar o sensor. Por favor entre em contato com o suporte.";
+
+                return RedirectToAction(nameof(Index));
             }
 
             return View(sensorViewModel);
@@ -193,19 +207,20 @@ namespace ProjetoDDD.Controllers
             if (ModelState.IsValid)
             {
                 Sensor sensor = new Sensor();
-
-                if (id != sensorViewModel.Id)
-                    return NotFound();
+                string mensagem = string.Empty;
 
                 try
-                {
+                {    
+                    if (id != sensorViewModel.Id)                  
+                        throw new Exception(string.Format("{0} - O id: " + id + "diferente do: " + sensorViewModel.Id, DateTime.Now));                    
+
                     sensor = _mapper.Map<Sensor>(sensorViewModel); 
                     sensor.DataAlteracao = DateTime.Now;
                     sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
                     await _InterfaceSensorService.Update(sensor);
 
-                    string mensagem = string.Format("{0} - O sensor {1} foi alterado com sucesso", DateTime.Now, sensor.Id.ToString());
+                    mensagem = string.Format("{0} - O sensor {1} foi alterado com sucesso", DateTime.Now, sensor.Id.ToString());
 
                     await _InterfaceLogAuditoriaService.Add(new LogAuditoria
                     {
@@ -213,28 +228,24 @@ namespace ProjetoDDD.Controllers
                     });
                 }
                 catch (DbUpdateConcurrencyException ex)
-                {
-                    string mensagem = string.Empty;
-
-                    if (!await SensorExists(sensor.Id))
-                    {
-                        mensagem = string.Format("{0} - {1}", DateTime.Now, NotFound());                       
-                    }
-                    else
-                    {
-                        mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
-                    }
+                {             
+                    if (!await SensorExists(sensor.Id))                    
+                        mensagem = string.Format("{0} - {1}", DateTime.Now, NotFound());   
+                    else                    
+                        mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);                   
 
                     await _InterfaceLogAuditoriaService.Add(new LogAuditoria
                     {
                         DetalhesAuditoria = mensagem
                     });
-                }                
 
-                return RedirectToAction(nameof(Index));
-            }
+                    ViewBag.Error = "Não foi possível editar o sensor.";
 
-            return View(sensorViewModel);
+                    return View(sensorViewModel);
+                }
+            }           
+
+            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -243,12 +254,16 @@ namespace ProjetoDDD.Controllers
 
             try
             {
-                var sensor = await _InterfaceSensorService.GetEntityById((int)id);
+                var sensor = await _InterfaceSensorService.GetEntityById((int)id);                
+
+                if (id == null)
+                    throw new Exception(string.Format("{0} - {1} - {2}", DateTime.Now, id, NotFound()));
+
+                if (sensor == null)
+                    throw new Exception(string.Format("{0} - {1} - {2}", DateTime.Now, sensor.Id, NotFound()));
+
                 var nomePais = _InterfacePaisService.GetEntityById(sensor.PaisId).Result.Nome;
                 var nomeRegiao = _InterfaceRegiaoService.GetEntityById(sensor.RegiaoId).Result.Nome;
-
-                if (id == null || sensor == null)
-                    return NotFound();
 
                 bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;               
 
@@ -256,7 +271,6 @@ namespace ProjetoDDD.Controllers
                 sensorViewModel.Ativo = status;
                 sensorViewModel.NomePais = nomePais;
                 sensorViewModel.NomeRegiao = nomeRegiao;
-
             }
             catch (Exception ex)
             {
@@ -266,6 +280,10 @@ namespace ProjetoDDD.Controllers
                 {
                     DetalhesAuditoria = mensagem
                 });
+
+                TempData["ErroMessage"] = "Houve um erro inesperado ao tentar deletar o sensor. Por favor entre em contato com o suporte.";
+
+                return RedirectToAction(nameof(Index));
             }
 
             return View(sensorViewModel);
@@ -296,8 +314,10 @@ namespace ProjetoDDD.Controllers
                 {
                     DetalhesAuditoria = mensagem
                 });
+
+                TempData["ErroMessage"] = "Houve um erro inesperado ao tentar deletar o sensor. Por favor entre em contato com o suporte.";                
             }
-            
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -307,12 +327,16 @@ namespace ProjetoDDD.Controllers
 
             try
             {
-                var sensor = await _InterfaceSensorService.GetEntityById((int)id);
+                var sensor = await _InterfaceSensorService.GetEntityById((int)id);               
+
+                if (id == null)
+                    throw new Exception(string.Format("{0} - {1} - {2}", DateTime.Now, id, NotFound()));
+
+                if (sensor == null)
+                    throw new Exception(string.Format("{0} - {1} - {2}", DateTime.Now, sensor.Id, NotFound()));
+
                 var nomePais = _InterfacePaisService.GetEntityById(sensor.PaisId).Result.Nome;
                 var nomeRegiao = _InterfaceRegiaoService.GetEntityById(sensor.RegiaoId).Result.Nome;
-
-                if (id == null || sensor == null)
-                    return NotFound();
 
                 bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;
 
@@ -329,6 +353,10 @@ namespace ProjetoDDD.Controllers
                 {
                     DetalhesAuditoria = mensagem
                 });
+
+                TempData["ErroMessage"] = "Houve um erro inesperado ao tentar exibir os detalhes do sensor. Por favor entre em contato com o suporte.";
+
+                return RedirectToAction(nameof(Index));
             }
 
             return View(sensorViewModel);
@@ -352,7 +380,7 @@ namespace ProjetoDDD.Controllers
                 await _InterfaceLogAuditoriaService.Add(new LogAuditoria
                 {
                     DetalhesAuditoria = mensagem
-                });
+                });                
             }
 
             return sensorExiste;

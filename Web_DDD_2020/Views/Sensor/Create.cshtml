@@ -4,13 +4,28 @@
     ViewData["Title"] = "Cadastrar Novo Sensor";
 }
 
+@{var erroMessage = TempData["ErroMessage"]; }
+
+@if (erroMessage != null)
+{
+    <div class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        @erroMessage.ToString()
+    </div>
+}
+
+ @if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
 <h1>Sensor</h1>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>           
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Ativo" /> @Html.DisplayNameFor(model => model.Ativo)
@@ -28,17 +43,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="NomePais" class="control-label"></label>
-                @*<select asp-for="Pais" asp-items="@ViewBag.Paises"></select>*@           
+                @*<select asp-for="Pais" asp-items="@ViewBag.Paises"></select>*@
                 @Html.DropDownListFor(m => m.PaisId, (IEnumerable<SelectListItem>)ViewBag.Paises, "- Selecione -", new { @class = "form-control" })
                 <span asp-validation-for="PaisId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="NomeRegiao" class="control-label"></label>
-                @*<select asp-for="Regiao" asp-items="@ViewBag.Regioes"></select>*@       
+                @*<select asp-for="Regiao" asp-items="@ViewBag.Regioes"></select>*@
                 @Html.DropDownListFor(m => m.RegiaoId, (IEnumerable<SelectListItem>)ViewBag.Regioes, "- Selecione -", new { @class = "form-control" })
                 <span asp-validation-for="RegiaoId" class="text-danger"></span>
             </div>
-            <div class="form-group">               
+            <div class="form-group">
                 <input type="submit" value="Salvar" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-primary">Voltar</a>
             </div>
