@@ -49,7 +49,7 @@ namespace ProjetoDDD.Controllers
                 IEnumerable<Sensor> _sensor = await _InterfaceSensorService.List();
 
                 sensoresViemModel = _mapper.Map<List<SensorViewModel>>(_sensor);
-
+                
                 if (sensoresViemModel != null)
                 {
                     foreach (var item in sensoresViemModel)
@@ -73,24 +73,21 @@ namespace ProjetoDDD.Controllers
                     DetalhesAuditoria = mensagem
                 });
 
-                ViewBag.Error = "Não foi possível listar os sensores.";
+                ViewBag.Error = "Houve um erro ao tentar listar os sensores. Por favor entre em contato com o suporte.";
             }
 
             return View(sensoresViemModel);
         }
 
         public async Task<IActionResult> Create()
-        {
-            List<PaisViewModel> paises = new List<PaisViewModel>();
-            List<RegiaoViewModel> regioes = new List<RegiaoViewModel>();
-
+        {         
             try
             {
                 IEnumerable<Pais> _paises = await _InterfacePaisService.List();
                 IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
 
-                paises = _mapper.Map<List<PaisViewModel>>(_paises);
-                regioes = _mapper.Map<List<RegiaoViewModel>>(_regioes);
+                List<PaisViewModel>  paises = _mapper.Map<List<PaisViewModel>>(_paises);
+                List<RegiaoViewModel>  regioes = _mapper.Map<List<RegiaoViewModel>>(_regioes);
 
                 ViewBag.Paises = paises.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
                 ViewBag.Regioes = regioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
@@ -115,7 +112,9 @@ namespace ProjetoDDD.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SensorViewModel sensorViewModel)
-        {            
+        {
+            string mensagem = string.Empty;
+
             try
             {
                 if (ModelState.IsValid)
@@ -123,65 +122,64 @@ namespace ProjetoDDD.Controllers
                     Sensor sensor = _mapper.Map<Sensor>(sensorViewModel);
                     sensor.DataCadastro = DateTime.Now;
                     sensor.DataAlteracao = DateTime.Now;
-                    sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;                    
+                    sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
                     await _InterfaceSensorService.Add(sensor);
 
-                    string mensagem = string.Format("{0} - O sensor {1} foi criado com sucesso", DateTime.Now, sensor.Id.ToString());
+                    mensagem = string.Format("{0} - O sensor {1} foi criado com sucesso", DateTime.Now, sensor.Id.ToString());
 
                     await _InterfaceLogAuditoriaService.Add(new LogAuditoria
                     {
                         DetalhesAuditoria = mensagem
-                    });                   
+                    });
                 }
             }
             catch (Exception ex)
             {
-                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+                mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
                 await _InterfaceLogAuditoriaService.Add(new LogAuditoria
                 {
                     DetalhesAuditoria = mensagem
                 });
-               
-                TempData["ErroMessage"] = "Não foi possível realizar o cadastro. Tente novamente.";                
 
-                return RedirectToAction(nameof(Create));
-            } 
+                IEnumerable<Pais> _paises = await _InterfacePaisService.List();
+                IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
+
+                List<PaisViewModel>  paisesViewModel = _mapper.Map<List<PaisViewModel>>(_paises);
+                List<RegiaoViewModel> regioesViewModel = _mapper.Map<List<RegiaoViewModel>>(_regioes);
+
+                ViewBag.Paises = paisesViewModel.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
+                ViewBag.Regioes = regioesViewModel.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
+
+                ViewBag.Error = "Houve um erro ao tentar criar o sensores. Por favor tente novamente.";
+
+                return View(sensorViewModel);
+            }
 
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Edit(int? id)
-        {
-            List<PaisViewModel> paises = new List<PaisViewModel>();
-            List<RegiaoViewModel> regioes = new List<RegiaoViewModel>();
+        {             
             SensorViewModel sensorViewModel = new SensorViewModel();
 
             try
             {
-
-                var sensor = await _InterfaceSensorService.GetEntityById((int)id);
-                bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;
-
-                if (id == null)               
-                    throw new Exception(string.Format("{0} - {1} - {2}", DateTime.Now, id, NotFound()));
-                                
-                if (sensor == null)              
-                    throw new Exception(string.Format("{0} - {1} - {2}", DateTime.Now, sensor.Id, NotFound()));
+                var sensor = await _InterfaceSensorService.GetEntityById((int)id);   
 
                 IEnumerable<Pais> _paises = await _InterfacePaisService.List();
                 IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
 
-                paises = _mapper.Map<List<PaisViewModel>>(_paises);
-                regioes = _mapper.Map<List<RegiaoViewModel>>(_regioes);
+                List<PaisViewModel>  paisesViewModel = _mapper.Map<List<PaisViewModel>>(_paises);
+                List<RegiaoViewModel> regioesViewModel = _mapper.Map<List<RegiaoViewModel>>(_regioes);
 
-                ViewBag.Paises = paises.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
-                ViewBag.Regioes = regioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });                
-
+                bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;
                 sensorViewModel = _mapper.Map<SensorViewModel>(sensor);
                 sensorViewModel.Ativo = status;
 
+                ViewBag.Paises = paisesViewModel.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
+                ViewBag.Regioes = regioesViewModel.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
             }
             catch (Exception ex)
             {
@@ -212,7 +210,7 @@ namespace ProjetoDDD.Controllers
                 try
                 {    
                     if (id != sensorViewModel.Id)                  
-                        throw new Exception(string.Format("{0} - O id: " + id + "diferente do: " + sensorViewModel.Id, DateTime.Now));                    
+                        throw new Exception(string.Format("{0} - O id: " + id + "diferente do: " + sensorViewModel.Id, DateTime.Now));
 
                     sensor = _mapper.Map<Sensor>(sensorViewModel); 
                     sensor.DataAlteracao = DateTime.Now;
@@ -239,6 +237,15 @@ namespace ProjetoDDD.Controllers
                         DetalhesAuditoria = mensagem
                     });
 
+                    IEnumerable<Pais> _paises = await _InterfacePaisService.List();
+                    IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
+
+                    List<PaisViewModel> paisesViewModel = _mapper.Map<List<PaisViewModel>>(_paises);
+                    List<RegiaoViewModel> regioesViewModel = _mapper.Map<List<RegiaoViewModel>>(_regioes);
+
+                    ViewBag.Paises = paisesViewModel.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
+                    ViewBag.Regioes = regioesViewModel.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
+
                     ViewBag.Error = "Não foi possível editar o sensor.";
 
                     return View(sensorViewModel);
@@ -254,14 +261,7 @@ namespace ProjetoDDD.Controllers
 
             try
             {
-                var sensor = await _InterfaceSensorService.GetEntityById((int)id);                
-
-                if (id == null)
-                    throw new Exception(string.Format("{0} - {1} - {2}", DateTime.Now, id, NotFound()));
-
-                if (sensor == null)
-                    throw new Exception(string.Format("{0} - {1} - {2}", DateTime.Now, sensor.Id, NotFound()));
-
+                var sensor = await _InterfaceSensorService.GetEntityById((int)id);
                 var nomePais = _InterfacePaisService.GetEntityById(sensor.PaisId).Result.Nome;
                 var nomeRegiao = _InterfaceRegiaoService.GetEntityById(sensor.RegiaoId).Result.Nome;
 
@@ -295,7 +295,7 @@ namespace ProjetoDDD.Controllers
         {
             try
             {
-                var sensor = await _InterfaceSensorService.GetEntityById(id);
+                var sensor = await _InterfaceSensorService.GetEntityById(id);               
 
                 await _InterfaceSensorService.Delete(sensor);
 
@@ -315,7 +315,7 @@ namespace ProjetoDDD.Controllers
                     DetalhesAuditoria = mensagem
                 });
 
-                TempData["ErroMessage"] = "Houve um erro inesperado ao tentar deletar o sensor. Por favor entre em contato com o suporte.";                
+                TempData["ErroMessage"] = "Houve um erro inesperado ao tentar deletar o sensor. Por favor entre em contato com o suporte.";
             }
 
             return RedirectToAction(nameof(Index));
@@ -327,14 +327,7 @@ namespace ProjetoDDD.Controllers
 
             try
             {
-                var sensor = await _InterfaceSensorService.GetEntityById((int)id);               
-
-                if (id == null)
-                    throw new Exception(string.Format("{0} - {1} - {2}", DateTime.Now, id, NotFound()));
-
-                if (sensor == null)
-                    throw new Exception(string.Format("{0} - {1} - {2}", DateTime.Now, sensor.Id, NotFound()));
-
+                var sensor = await _InterfaceSensorService.GetEntityById((int)id); 
                 var nomePais = _InterfacePaisService.GetEntityById(sensor.PaisId).Result.Nome;
                 var nomeRegiao = _InterfaceRegiaoService.GetEntityById(sensor.RegiaoId).Result.Nome;
 
