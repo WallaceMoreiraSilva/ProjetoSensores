@@ -2,8 +2,12 @@
 
 namespace Domain.Entities
 {
-    public class EventoDisparado : Base
-    {     
+    public class EventoDisparado
+    {
+        public int Id { get; set; }
+
+        public string Nome { get; set; }
+
         public int Valor { get; set; }
       
         public DateTime DataCadastro { get; set; }

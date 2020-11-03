@@ -3,8 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
-    public class Sensor : Base
-    {        
+    public class Sensor
+    {
+        public int Id { get; set; }
+
+        public string Nome { get; set; }
+
         public int Numero { get; set; }
         
         [NotMapped]
