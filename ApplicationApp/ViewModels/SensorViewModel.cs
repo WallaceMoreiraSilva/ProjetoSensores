@@ -41,7 +41,6 @@ namespace SensoresAPP.ViewModels
 
         public RegiaoViewModel Regiao { get; set; }
 
-        //sai
         [Display(Name = "Região")]
         public string NomeRegiao { get; set; }
 
@@ -50,17 +49,11 @@ namespace SensoresAPP.ViewModels
 
         public PaisViewModel Pais { get; set; }
 
-        //sai
+       
         [Display(Name = "País")]
-        public string NomePais { get; set; }
-                
-        public int StatusSensorId { get; set; }
-
-        public StatusSensorViewModel StatusSensor { get; set; }
-
-        //sai
+        public string NomePais { get; set; }       
+       
         [Display(Name = "Status")]
-        public string StatusDoSensor { get; set; }
-
+        public string StatusSensor { get; set; }
     }
 }

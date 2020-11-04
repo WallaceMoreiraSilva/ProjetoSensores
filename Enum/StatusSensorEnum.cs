@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 
 namespace Enum
 {
 	public enum StatusSensorEnum
 	{
-		[Description("Ativo")]
-		Ativo = 1,
-
 		[Description("Inativo")]
-		Inativo = 2
+		Inativo = 0,
+
+		[Description("Ativo")]
+		Ativo = 1		
 	}
 }

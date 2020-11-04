@@ -19,23 +19,20 @@ namespace ProjetoDDD.Controllers
     {
         private readonly ISensorService _InterfaceSensorService;
         private readonly IPaisService _InterfacePaisService;
-        private readonly IRegiaoService _InterfaceRegiaoService;       
-        private readonly IStatusSensorService _InterfaceStatusSensorService;
+        private readonly IRegiaoService _InterfaceRegiaoService; 
         private readonly ILogAuditoriaService _InterfaceLogAuditoriaService;
         private readonly IMapper _mapper;    
 
         public SensorController( ISensorService InterfaceSensorService, 
                                  IPaisService InterfacePaisService, 
-                                 IRegiaoService InterfaceRegiaoService,
-                                 IStatusSensorService InterfaceStatusSensorService,
+                                 IRegiaoService InterfaceRegiaoService,                                
                                  ILogAuditoriaService InterfaceLogAuditoriaService,
                                  IMapper mapper                                 
                                 ) 
         {
             _InterfaceSensorService = InterfaceSensorService;
             _InterfacePaisService = InterfacePaisService;
-            _InterfaceRegiaoService = InterfaceRegiaoService;
-            _InterfaceStatusSensorService = InterfaceStatusSensorService;   
+            _InterfaceRegiaoService = InterfaceRegiaoService;           
             _InterfaceLogAuditoriaService = InterfaceLogAuditoriaService;
             _mapper = mapper;
         }     
@@ -56,11 +53,10 @@ namespace ProjetoDDD.Controllers
                     {
                         var nomePais = _InterfacePaisService.GetEntityById(item.PaisId).Result.Nome;
                         var nomeRegiao = _InterfaceRegiaoService.GetEntityById(item.RegiaoId).Result.Nome;
-                        var statusSensor = _InterfaceStatusSensorService.GetEntityById(item.StatusSensorId).Result.Nome;
 
-                        item.NomePais = nomePais;
+                        item.StatusSensor = Convert.ToInt32(item.StatusSensor) == (int)StatusSensorEnum.Ativo ? StatusSensorEnum.Ativo.ToString() : StatusSensorEnum.Inativo.ToString();
                         item.NomeRegiao = nomeRegiao;
-                        item.StatusDoSensor = statusSensor;
+                        item.NomePais = nomePais;                                        
                     }
                 }               
             }
@@ -122,7 +118,7 @@ namespace ProjetoDDD.Controllers
                     Sensor sensor = _mapper.Map<Sensor>(sensorViewModel);
                     sensor.DataCadastro = DateTime.Now;
                     sensor.DataAlteracao = DateTime.Now;
-                    sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
+                    sensor.StatusSensor = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
                     await _InterfaceSensorService.Add(sensor);
 
@@ -174,7 +170,7 @@ namespace ProjetoDDD.Controllers
                 List<PaisViewModel>  paisesViewModel = _mapper.Map<List<PaisViewModel>>(_paises);
                 List<RegiaoViewModel> regioesViewModel = _mapper.Map<List<RegiaoViewModel>>(_regioes);
 
-                bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;
+                bool status = sensor.StatusSensor == (int)StatusSensorEnum.Ativo ? true : false;
                 sensorViewModel = _mapper.Map<SensorViewModel>(sensor);
                 sensorViewModel.Ativo = status;
 
@@ -214,7 +210,7 @@ namespace ProjetoDDD.Controllers
 
                     sensor = _mapper.Map<Sensor>(sensorViewModel); 
                     sensor.DataAlteracao = DateTime.Now;
-                    sensor.StatusSensorId = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
+                    sensor.StatusSensor = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
                     await _InterfaceSensorService.Update(sensor);
 
@@ -264,8 +260,7 @@ namespace ProjetoDDD.Controllers
                 var sensor = await _InterfaceSensorService.GetEntityById((int)id);
                 var nomePais = _InterfacePaisService.GetEntityById(sensor.PaisId).Result.Nome;
                 var nomeRegiao = _InterfaceRegiaoService.GetEntityById(sensor.RegiaoId).Result.Nome;
-
-                bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;               
+                bool status = sensor.StatusSensor == (int)StatusSensorEnum.Ativo ? true : false;               
 
                 sensorViewModel = _mapper.Map<SensorViewModel>(sensor);
                 sensorViewModel.Ativo = status;
@@ -330,8 +325,7 @@ namespace ProjetoDDD.Controllers
                 var sensor = await _InterfaceSensorService.GetEntityById((int)id); 
                 var nomePais = _InterfacePaisService.GetEntityById(sensor.PaisId).Result.Nome;
                 var nomeRegiao = _InterfaceRegiaoService.GetEntityById(sensor.RegiaoId).Result.Nome;
-
-                bool status = sensor.StatusSensorId == (int)StatusSensorEnum.Ativo ? true : false;
+                bool status = sensor.StatusSensor == (int)StatusSensorEnum.Ativo ? true : false;
 
                 sensorViewModel = _mapper.Map<SensorViewModel>(sensor);
                 sensorViewModel.Ativo = status;

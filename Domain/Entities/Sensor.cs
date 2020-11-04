@@ -26,9 +26,6 @@ namespace Domain.Entities
 
         public virtual Pais Pais { get; set; }
 
-        public int StatusSensorId { get; set; }
-
-        public virtual StatusSensor StatusSensor { get; set; }    
-
+        public int StatusSensor { get; set; }
     }
 }

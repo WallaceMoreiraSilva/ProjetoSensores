@@ -27,8 +27,6 @@ namespace SensoresAPP.ViewModels
 
         public virtual SensorViewModel Sensor { get; set; }
 
-        public int StatusEventoDisparadoId { get; set; }
-
-        public virtual StatusEventoDisparadoViewModel StatusEventoDisparado { get; set; }
+        public int StatusEventoDisparado { get; set; }       
     }
 }

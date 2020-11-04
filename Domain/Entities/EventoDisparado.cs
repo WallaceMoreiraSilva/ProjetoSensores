@@ -16,8 +16,7 @@ namespace Domain.Entities
 
         public virtual Sensor Sensor { get; set; }
 
-        public int StatusEventoDisparadoId { get; set; }
-
-        public virtual StatusEventoDisparado StatusEventoDisparado { get; set; }       
+        public int StatusEventoDisparado { get; set; }
+          
     }
 }

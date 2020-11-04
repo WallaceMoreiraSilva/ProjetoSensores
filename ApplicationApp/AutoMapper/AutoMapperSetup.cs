@@ -14,9 +14,7 @@ namespace SensoresApp.AutoMapper
                 CreateMap<SensorViewModel,Sensor>();
                 CreateMap<PaisViewModel, Pais>();
                 CreateMap<RegiaoViewModel, Regiao>();
-                CreateMap<EventoDisparadoViewModel, EventoDisparado>();
-                CreateMap<StatusEventoDisparadoViewModel, StatusEventoDisparado>();
-                CreateMap<StatusSensorViewModel, StatusSensor>();
+                CreateMap<EventoDisparadoViewModel, EventoDisparado>();                      
 
             #endregion
 
@@ -26,9 +24,7 @@ namespace SensoresApp.AutoMapper
                 CreateMap<Sensor, SensorViewModel>();
                 CreateMap<Pais, PaisViewModel>();
                 CreateMap<Regiao, RegiaoViewModel>();
-                CreateMap<EventoDisparado, EventoDisparadoViewModel>();
-                CreateMap<StatusEventoDisparado, StatusEventoDisparadoViewModel>();
-                CreateMap<StatusSensor, StatusSensorViewModel>();
+                CreateMap<EventoDisparado, EventoDisparadoViewModel>();                            
 
             #endregion
 
