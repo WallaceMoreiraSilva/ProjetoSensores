@@ -82,8 +82,8 @@ namespace ProjetoDDD.Controllers
                 IEnumerable<Pais> _paises = await _InterfacePaisService.List();
                 IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
 
-                List<PaisViewModel>  paises = _mapper.Map<List<PaisViewModel>>(_paises);
-                List<RegiaoViewModel>  regioes = _mapper.Map<List<RegiaoViewModel>>(_regioes);
+                List<PaisViewModel>  paises = _mapper.Map<List<PaisViewModel>>(_paises).OrderBy(x => x.Nome).ToList();
+                List<RegiaoViewModel>  regioes = _mapper.Map<List<RegiaoViewModel>>(_regioes).OrderBy(x => x.Nome).ToList();
 
                 ViewBag.Paises = paises.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
                 ViewBag.Regioes = regioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
@@ -142,8 +142,8 @@ namespace ProjetoDDD.Controllers
                 IEnumerable<Pais> _paises = await _InterfacePaisService.List();
                 IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
 
-                List<PaisViewModel>  paisesViewModel = _mapper.Map<List<PaisViewModel>>(_paises);
-                List<RegiaoViewModel> regioesViewModel = _mapper.Map<List<RegiaoViewModel>>(_regioes);
+                List<PaisViewModel>  paisesViewModel = _mapper.Map<List<PaisViewModel>>(_paises).OrderBy(x => x.Nome).ToList();
+                List<RegiaoViewModel> regioesViewModel = _mapper.Map<List<RegiaoViewModel>>(_regioes).OrderBy(x => x.Nome).ToList();
 
                 ViewBag.Paises = paisesViewModel.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
                 ViewBag.Regioes = regioesViewModel.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
@@ -167,8 +167,8 @@ namespace ProjetoDDD.Controllers
                 IEnumerable<Pais> _paises = await _InterfacePaisService.List();
                 IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
 
-                List<PaisViewModel>  paisesViewModel = _mapper.Map<List<PaisViewModel>>(_paises);
-                List<RegiaoViewModel> regioesViewModel = _mapper.Map<List<RegiaoViewModel>>(_regioes);
+                List<PaisViewModel>  paisesViewModel = _mapper.Map<List<PaisViewModel>>(_paises).OrderBy(x => x.Nome).ToList();
+                List<RegiaoViewModel> regioesViewModel = _mapper.Map<List<RegiaoViewModel>>(_regioes).OrderBy(x => x.Nome).ToList();
 
                 bool status = sensor.StatusSensor == (int)StatusSensorEnum.Ativo ? true : false;
                 sensorViewModel = _mapper.Map<SensorViewModel>(sensor);
@@ -236,8 +236,8 @@ namespace ProjetoDDD.Controllers
                     IEnumerable<Pais> _paises = await _InterfacePaisService.List();
                     IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
 
-                    List<PaisViewModel> paisesViewModel = _mapper.Map<List<PaisViewModel>>(_paises);
-                    List<RegiaoViewModel> regioesViewModel = _mapper.Map<List<RegiaoViewModel>>(_regioes);
+                    List<PaisViewModel> paisesViewModel = _mapper.Map<List<PaisViewModel>>(_paises).OrderBy(x => x.Nome).ToList();
+                    List<RegiaoViewModel> regioesViewModel = _mapper.Map<List<RegiaoViewModel>>(_regioes).OrderBy(x => x.Nome).ToList();
 
                     ViewBag.Paises = paisesViewModel.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
                     ViewBag.Regioes = regioesViewModel.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
