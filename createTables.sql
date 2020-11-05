@@ -1,25 +1,3 @@
---Clean tables
-delete from EventoDisparados
-
-delete from sensores
-
-delete from regioes
-
-delete from paises
-
-delete from LogAuditorias
-
---Delete tables
-drop table EventoDisparados
-
-drop table sensores
-
-drop table regioes
-
-drop table paises
-
-drop table LogAuditorias
-
 
 --Paises
 CREATE TABLE Paises(
