@@ -204,12 +204,15 @@ namespace ProjetoDDD.Controllers
                 string mensagem = string.Empty;
 
                 try
-                {    
+                {          
                     if (id != sensorViewModel.Id)                  
                         throw new Exception(string.Format("{0} - O id: " + id + "diferente do: " + sensorViewModel.Id, DateTime.Now));
+                   
+                    sensor = _mapper.Map<Sensor>(sensorViewModel);
 
-                    sensor = _mapper.Map<Sensor>(sensorViewModel); 
-                    sensor.DataAlteracao = DateTime.Now;
+                    //verificar abaixo, por nao ter isso da erro
+                    //sensor.DataCadastro = DateTime.Now;
+                    sensor.DataAlteracao = DateTime.Now;                  
                     sensor.StatusSensor = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
                     await _InterfaceSensorService.Update(sensor);

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -70,7 +71,7 @@ namespace Infra.Repository.Generics
             try
             {
                 _context.Set<T>().Update(Objeto);
-                await _context.SaveChangesAsync();                
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {

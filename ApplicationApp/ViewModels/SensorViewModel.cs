@@ -23,23 +23,23 @@ namespace SensoresAPP.ViewModels
         [NotMapped]        
         public bool Ativo { get; set; }
 
-        [Required(ErrorMessage = "Data Cadastro é obrigatório")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]      
-        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-        [DisplayName("Data Cadastro")]
-        public DateTime DataCadastro { get; set; }
+        //[Required(ErrorMessage = "Data Cadastro é obrigatório")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]      
+        //[DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
+        //[DisplayName("Data Cadastro")]
+        //public DateTime DataCadastro { get; set; }
 
-        [Required(ErrorMessage = "Data Alteração é obrigatório")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-        [DisplayName("Data Alteração")]
-        [Display(Name = "Data de Alteração")]
-        public DateTime DataAlteracao { get; set; }
+        //[Required(ErrorMessage = "Data Alteração é obrigatório")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        //[DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
+        //[DisplayName("Data Alteração")]
+        //[Display(Name = "Data de Alteração")]
+        //public DateTime DataAlteracao { get; set; }
         
         [Required(ErrorMessage = "Região é obrigatório")]
         public int RegiaoId { get; set; }
 
-        public RegiaoViewModel Regiao { get; set; }
+        //public RegiaoViewModel Regiao { get; set; }
 
         [Display(Name = "Região")]
         public string NomeRegiao { get; set; }
@@ -47,8 +47,7 @@ namespace SensoresAPP.ViewModels
         [Required(ErrorMessage = "País é obrigatório")]
         public int PaisId { get; set; }
 
-        public PaisViewModel Pais { get; set; }
-
+        //public PaisViewModel Pais { get; set; }
        
         [Display(Name = "País")]
         public string NomePais { get; set; }       

@@ -17,7 +17,7 @@ namespace Sensores.IoC
             services.AddScoped<ISensorService, SensorService>();
             services.AddScoped<IRegiaoService, RegiaoService>();
             services.AddScoped<IPaisService, PaisService>();
-            services.AddScoped<IEventoDisparadoService, EventoDisparadoService>();          
+            services.AddScoped<IEventoDisparadoService, EventoDisparadoService>();        
 
             services.AddScoped<ILogAuditoriaService, LogAuditoriaService>();
 

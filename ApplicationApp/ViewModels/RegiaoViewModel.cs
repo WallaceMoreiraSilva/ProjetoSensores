@@ -15,17 +15,17 @@ namespace SensoresAPP.ViewModels
         [DisplayName("Nome")]
         public string Nome { get; set; }
 
-        [Required(ErrorMessage = "Data Cadastro é obrigatório")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-        [DisplayName("Data Cadastro")]
-        public DateTime DataCadastro { get; set; }
+        //[Required(ErrorMessage = "Data Cadastro é obrigatório")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        //[DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
+        //[DisplayName("Data Cadastro")]
+        //public DateTime DataCadastro { get; set; }
 
-        [Required(ErrorMessage = "Data Alteração é obrigatório")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
-        [DisplayName("Data Alteração")]
-        public DateTime DataAlteracao { get; set; }
+        //[Required(ErrorMessage = "Data Alteração é obrigatório")]
+        //[DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        //[DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
+        //[DisplayName("Data Alteração")]
+        //public DateTime DataAlteracao { get; set; }
 
     }
 }
