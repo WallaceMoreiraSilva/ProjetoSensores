@@ -1,5 +1,14 @@
+USE ProjetoModeloDDD
 
---Paises
+GO
+
+IF NOT EXISTS (SELECT TOP 1 * 
+                 FROM sys.objects 
+                WHERE object_id = OBJECT_ID('ProjetoModeloDDD.Paises') 
+                  AND type IN ('U'))
+
+BEGIN
+
 CREATE TABLE Paises(
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Nome] [varchar](250) NULL,
@@ -11,9 +20,20 @@ CREATE TABLE Paises(
 	CONSTRAINT [PK_Paises] PRIMARY KEY CLUSTERED (	[Id] ASC)
 )
 
+	PRINT('Tabela nova Paises criada em - Database: ProjetoModeloDDD.');
+
+END
+ELSE
+	PRINT('Tabela Paises já existe no - Database: ProjetoModeloDDD.');
 GO
 
---Regioes
+IF NOT EXISTS (SELECT TOP 1 * 
+                 FROM sys.objects 
+                WHERE object_id = OBJECT_ID('ProjetoModeloDDD.Regioes') 
+                  AND type IN ('U'))
+
+BEGIN
+
 CREATE TABLE Regioes(
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Nome] [varchar](250) NULL,
@@ -21,10 +41,20 @@ CREATE TABLE Regioes(
 	[DataAlteracao] [datetime] NOT NULL,
 	CONSTRAINT [PK_Regioes] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
+	PRINT('Tabela nova Regioes criada em - Database: ProjetoModeloDDD.');
 
+END
+ELSE
+	PRINT('Tabela Regioes já existe no - Database: ProjetoModeloDDD.');
 GO
 
---Sensores
+IF NOT EXISTS (SELECT TOP 1 * 
+                 FROM sys.objects 
+                WHERE object_id = OBJECT_ID('ProjetoModeloDDD.Sensores') 
+                  AND type IN ('U'))
+
+BEGIN
+
 CREATE TABLE Sensores(
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Nome] [varchar](250) NULL,
@@ -36,8 +66,20 @@ CREATE TABLE Sensores(
 	[StatusSensor] [int] NOT NULL,
 	CONSTRAINT [PK_Sensores] PRIMARY KEY CLUSTERED ([Id] ASC)
  )
+	PRINT('Tabela nova Sensores criada em - Database: ProjetoModeloDDD.');
 
---Evento Disparado
+END
+ELSE
+	PRINT('Tabela Sensores já existe no - Database: ProjetoModeloDDD.');
+GO
+
+IF NOT EXISTS (SELECT TOP 1 * 
+                 FROM sys.objects 
+                WHERE object_id = OBJECT_ID('ProjetoModeloDDD.EventoDisparados') 
+                  AND type IN ('U'))
+
+BEGIN
+
 CREATE TABLE EventoDisparados(
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[Nome] [varchar](250) NULL,
@@ -47,16 +89,30 @@ CREATE TABLE EventoDisparados(
 	[StatusEventoDisparado] [int] NOT NULL,
 	CONSTRAINT [PK_EventoDisparados] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
+	PRINT('Tabela nova EventoDisparados criada em - Database: ProjetoModeloDDD.');
 
+END
+ELSE
+	PRINT('Tabela EventoDisparados já existe no - Database: ProjetoModeloDDD.');
 GO
 
---Log para Auditoria
+IF NOT EXISTS (SELECT TOP 1 * 
+                 FROM sys.objects 
+                WHERE object_id = OBJECT_ID('ProjetoModeloDDD.LogAuditorias') 
+                  AND type IN ('U'))
+
+BEGIN
+
 CREATE TABLE LogAuditorias(
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[DetalhesAuditoria] [nvarchar](max) NULL,
 	CONSTRAINT [PK_LogAuditorias] PRIMARY KEY CLUSTERED ([Id] ASC)
  )
+	PRINT('Tabela nova LogAuditorias criada em - Database: ProjetoModeloDDD.');
 
+END
+ELSE
+	PRINT('Tabela LogAuditorias já existe no - Database: ProjetoModeloDDD.');
 GO
 
 ALTER TABLE [dbo].[Sensores]  WITH CHECK ADD  CONSTRAINT [FK_Sensores_Paises_PaisId] FOREIGN KEY([PaisId])
