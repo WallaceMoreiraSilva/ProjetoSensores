@@ -1,5 +1,11 @@
-USE ProjetoModeloDDD
+IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'ProjetoModeloDDD')
+  BEGIN
+    CREATE DATABASE ProjetoModeloDDD
 
+END
+
+GO
+    USE ProjetoModeloDDD
 GO
 
 IF NOT EXISTS (SELECT TOP 1 * 

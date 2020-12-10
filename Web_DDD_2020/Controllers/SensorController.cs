@@ -35,7 +35,7 @@ namespace ProjetoDDD.Controllers
             _InterfaceRegiaoService = InterfaceRegiaoService;           
             _InterfaceLogAuditoriaService = InterfaceLogAuditoriaService;
             _mapper = mapper;
-        }     
+        }
 
         public async Task<IActionResult> Index()
         {
