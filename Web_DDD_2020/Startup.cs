@@ -22,7 +22,13 @@ namespace ProjetoDDD
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();    
+            services.AddControllersWithViews();
+
+            services.AddAuthentication("CookieSeriesAuth")
+                .AddCookie("CookieSeriesAuth", opt =>
+               {
+                   opt.Cookie.Name = "SeriesAuthCookie";
+               });
 
             services.AddDbContext<ContextBase>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ProjetoModeloDDD")).EnableSensitiveDataLogging());
 
@@ -46,13 +52,21 @@ namespace ProjetoDDD
 
             app.UseRouting();
 
+            //tem que ficar antes de UseAuthorization. Você só pode autorizar depois de autenticar
+            //Autorização é ter permissão para você fazer algo que você quer => Ex: Acessa a página de administração (só acessa aqui quem tem autorização)
+            //Autenticação é você confirmar que você é você  =>  Ex: quando você preenche usuario e senha => você esta autenticando
+            app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Sensor}/{action=Index}/{id?}");
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller=Sensor}/{action=Index}/{id?}");
+
+                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }

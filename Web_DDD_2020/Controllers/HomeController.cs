@@ -1,33 +1,47 @@
-﻿using System.Diagnostics;
+﻿using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using ProjetoDDD.Models;
 
 namespace ProjetoDDD.Controllers
 {
     public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
+    { 
+        [Authorize]
+        public IActionResult SecretApi() => Ok("Secret API");
 
-        public HomeController(ILogger<HomeController> logger)
+
+        [AllowAnonymous]
+        public IActionResult Index() => Ok("Hello from index");
+
+
+        [Authorize]
+        public IActionResult Claims()
         {
-            _logger = logger;
+            return Ok(User.Claims.Select(x => new { Type = x.Type, Value = x.Value }));
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Authentication()
         {
-            return View();
+            //Claim é uma informação do usuario
+            ClaimsIdentity identity = new ClaimsIdentity("SeriesAuthCookie");
+
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier,"1234"));
+            identity.AddClaim(new Claim(ClaimTypes.Email, "wallaceinfofuturo@gmail.com"));
+            identity.AddClaim(new Claim(ClaimTypes.Webpage, "https://github.com/WallaceMoreiraSilva"));
+
+            //Responsavel por agregar varias identidades
+            ClaimsPrincipal principal = new ClaimsPrincipal (new[] { identity });
+
+            await HttpContext.SignInAsync(principal);
+
+            return Redirect("/home/index");
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+
+
     }
 }
