@@ -30,6 +30,12 @@ namespace ProjetoDDD
                    opt.Cookie.Name = "SeriesAuthCookie";
                });
 
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("Admin", p => p.RequireRole("SecretRole"));
+                opt.AddPolicy("AdvancedUser", p => p.RequireRole("Student"));
+            });
+
             services.AddDbContext<ContextBase>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ProjetoModeloDDD")).EnableSensitiveDataLogging());
 
             NativeInjector.RegisterServices(services);

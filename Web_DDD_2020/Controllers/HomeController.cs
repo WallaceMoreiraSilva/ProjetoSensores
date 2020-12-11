@@ -9,7 +9,7 @@ namespace ProjetoDDD.Controllers
 {
     public class HomeController : Controller
     { 
-        [Authorize]
+        [Authorize(Policy = "Admin")]
         public IActionResult SecretApi() => Ok("Secret API");
 
 
@@ -32,6 +32,10 @@ namespace ProjetoDDD.Controllers
             identity.AddClaim(new Claim(ClaimTypes.Email, "wallaceinfofuturo@gmail.com"));
             identity.AddClaim(new Claim(ClaimTypes.Webpage, "https://github.com/WallaceMoreiraSilva"));
 
+            identity.AddClaim(new Claim(ClaimTypes.Role, "SecretRole"));
+            identity.AddClaim(new Claim(ClaimTypes.Role, "Student"));
+            identity.AddClaim(new Claim(ClaimTypes.Role, "Teen"));
+
             //Responsavel por agregar varias identidades
             ClaimsPrincipal principal = new ClaimsPrincipal (new[] { identity });
 
@@ -39,9 +43,6 @@ namespace ProjetoDDD.Controllers
 
             return Redirect("/home/index");
         }
-
-
-
 
     }
 }
