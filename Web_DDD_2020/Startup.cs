@@ -32,6 +32,7 @@ namespace ProjetoDDD
 
             services.AddAuthorization(opt =>
             {
+                //Policies (Políticas) => são aplicações de Roles e Claims para determinar contratos de acessos a determinadas áreas de uma aplicação.
                 opt.AddPolicy("Admin", p => p.RequireRole("SecretRole"));
                 opt.AddPolicy("AdvancedUser", p => p.RequireRole("Student"));
             });

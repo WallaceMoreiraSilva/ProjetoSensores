@@ -24,14 +24,16 @@ namespace ProjetoDDD.Controllers
         }
 
         public async Task<IActionResult> Authentication()
-        {
-            //Claim é uma informação do usuario
+        {           
             ClaimsIdentity identity = new ClaimsIdentity("SeriesAuthCookie");
 
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier,"1234"));
             identity.AddClaim(new Claim(ClaimTypes.Email, "wallaceinfofuturo@gmail.com"));
             identity.AddClaim(new Claim(ClaimTypes.Webpage, "https://github.com/WallaceMoreiraSilva"));
 
+            //Temos a claimType.Role do tipo SecretRole que vai bater com a Policy e ae vai deixar passar na claim do SecretApi
+            //Role (Perfil) é algo que define acesso a um ou um grupo de usuários em partes da aplicação. EX: um papel, uma função, um cargo ...
+            //Claim (Afirmação) utilizamos pra realizar alguma interação antes de deixar o usuário prosseguir.
             identity.AddClaim(new Claim(ClaimTypes.Role, "SecretRole"));
             identity.AddClaim(new Claim(ClaimTypes.Role, "Student"));
             identity.AddClaim(new Claim(ClaimTypes.Role, "Teen"));
