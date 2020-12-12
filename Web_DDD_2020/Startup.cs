@@ -68,12 +68,12 @@ namespace ProjetoDDD
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapControllerRoute(
-                //    name: "default",
-                //    pattern: "{controller=Sensor}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Sensor}/{action=Index}/{id?}");
 
-                endpoints.MapControllers();
-                endpoints.MapDefaultControllerRoute();
+                //endpoints.MapControllers();
+                //endpoints.MapDefaultControllerRoute();
             });
         }
     }
