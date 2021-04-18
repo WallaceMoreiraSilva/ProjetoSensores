@@ -42,14 +42,12 @@
                 <span asp-validation-for="Numero" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NomePais" class="control-label"></label>
-                @*<select asp-for="Pais" asp-items="@ViewBag.Paises"></select>*@
-                @*@Html.DropDownListFor(m => m.PaisId, (IEnumerable<SelectListItem>)ViewBag.Paises, "- Selecione -", new { @class = "form-control" })*@
+                <label asp-for="NomePais" class="control-label"></label>               
+                @Html.DropDownListFor(m => m.PaisId, (IEnumerable<SelectListItem>)ViewBag.Paises, "- Selecione -", new { @class = "form-control" })
                 <span asp-validation-for="PaisId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NomeRegiao" class="control-label"></label>
-                @*<select asp-for="Regiao" asp-items="@ViewBag.Regioes"></select>*@
+                <label asp-for="NomeRegiao" class="control-label"></label>               
                 @Html.DropDownListFor(m => m.RegiaoId, (IEnumerable<SelectListItem>)ViewBag.Regioes, "- Selecione -", new { @class = "form-control" })
                 <span asp-validation-for="RegiaoId" class="text-danger"></span>
             </div>

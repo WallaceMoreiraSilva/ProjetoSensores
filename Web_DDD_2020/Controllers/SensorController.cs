@@ -10,8 +10,6 @@ using System;
 using Enum;
 using SensoresAPP.ViewModels;
 using AutoMapper;
-using ProjetoDDD.Models;
-using System.Diagnostics;
 
 namespace ProjetoDDD.Controllers
 {
@@ -23,12 +21,14 @@ namespace ProjetoDDD.Controllers
         private readonly ILogAuditoriaService _InterfaceLogAuditoriaService;
         private readonly IMapper _mapper;    
 
-        public SensorController( ISensorService InterfaceSensorService, 
-                                 IPaisService InterfacePaisService, 
-                                 IRegiaoService InterfaceRegiaoService,                                
-                                 ILogAuditoriaService InterfaceLogAuditoriaService,
-                                 IMapper mapper                                 
-                                ) 
+        public SensorController
+        ( 
+            ISensorService InterfaceSensorService, 
+            IPaisService InterfacePaisService, 
+            IRegiaoService InterfaceRegiaoService,                                
+            ILogAuditoriaService InterfaceLogAuditoriaService,
+            IMapper mapper
+        ) 
         {
             _InterfaceSensorService = InterfaceSensorService;
             _InterfacePaisService = InterfacePaisService;
@@ -78,15 +78,12 @@ namespace ProjetoDDD.Controllers
         public async Task<IActionResult> Create()
         {         
             try
-            {
-                IEnumerable<Pais> _paises = await _InterfacePaisService.List();
-                IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
+            {             
+                List<PaisViewModel> listarPaises = await ListarPaises();
+                List<RegiaoViewModel> listarRegioes = await ListarRegioes();                
 
-                List<PaisViewModel>  paises = _mapper.Map<List<PaisViewModel>>(_paises).OrderBy(x => x.Nome).ToList();
-                List<RegiaoViewModel>  regioes = _mapper.Map<List<RegiaoViewModel>>(_regioes).OrderBy(x => x.Nome).ToList();
-
-                ViewBag.Paises = paises.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
-                ViewBag.Regioes = regioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
+                ViewBag.Paises = listarPaises.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
+                ViewBag.Regioes = listarRegioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });               
             }
             catch (Exception ex)
             {
@@ -372,6 +369,52 @@ namespace ProjetoDDD.Controllers
 
             return sensorExiste;
         }
-       
+
+        private async Task<List<PaisViewModel>> ListarPaises()
+        {
+            IEnumerable<Pais> _paises = null;
+            List<PaisViewModel> paisesViewModel = null;
+
+            try
+            {
+                _paises = await _InterfacePaisService.List();
+                paisesViewModel = _mapper.Map<List<PaisViewModel>>(_paises).OrderBy(x => x.Nome).ToList();
+            }
+            catch (Exception ex)
+            {
+                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);              
+
+                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                {
+                    DetalhesAuditoria = mensagem
+                });
+            }
+
+            return paisesViewModel;
+        }
+
+        private async Task<List<RegiaoViewModel>> ListarRegioes()
+        {
+            IEnumerable<Regiao> _regioes = null;
+            List<RegiaoViewModel> regioesViewModel = null;
+
+            try
+            {
+                _regioes = await _InterfaceRegiaoService.List();
+                regioesViewModel = _mapper.Map<List<RegiaoViewModel>>(_regioes).OrderBy(x => x.Nome).ToList();
+            }
+            catch (Exception ex)
+            {
+                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+
+                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                {
+                    DetalhesAuditoria = mensagem
+                });
+            }
+
+            return regioesViewModel;
+        }
+
     }
 }
