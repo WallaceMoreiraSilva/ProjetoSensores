@@ -44,7 +44,7 @@ namespace ProjetoDDD.Controllers
         public async Task<IActionResult> Index()
         {
             ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
-            log.Informacao("Iniciando processamento do documento com Cnpj:'{0}'", "12533592706");
+            log.Informacao("Iniciando processamento de listagem de Sensores");
 
             List<SensorViewModel> sensoresViemModel = new List<SensorViewModel>();    
 
@@ -75,6 +75,8 @@ namespace ProjetoDDD.Controllers
                 //{
                 //    DetalhesAuditoria = mensagem
                 //});
+               
+                log.Erro("Houve um erro ao tentar listar os Sensores");
 
                 ViewBag.Error = "Houve um erro ao tentar listar os sensores. Por favor entre em contato com o suporte.";
             }
@@ -83,7 +85,10 @@ namespace ProjetoDDD.Controllers
         }
 
         public async Task<IActionResult> Create()
-        {         
+        {
+            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
+            log.Informacao("Iniciando processamento de criar Sensor");
+
             try
             {             
                 List<PaisViewModel> listarPaises = await ListarPaises();
@@ -101,6 +106,8 @@ namespace ProjetoDDD.Controllers
                 //    DetalhesAuditoria = mensagem
                 //});
 
+                log.Erro("Houve um erro ao tentar criar o Sesnor", mensagem);
+
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar realizar o cadastro. Por favor entre em contato com o suporte.";
 
                 return RedirectToAction(nameof(Index));
@@ -113,6 +120,7 @@ namespace ProjetoDDD.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SensorViewModel sensorViewModel)
         {
+            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
             string mensagem = string.Empty;
 
             try
@@ -132,6 +140,8 @@ namespace ProjetoDDD.Controllers
                     //{
                     //    DetalhesAuditoria = mensagem
                     //});
+                    
+                    log.Informacao("O sensor {0} foi criado com sucesso", sensor.Id);
                 }
             }
             catch (Exception ex)
@@ -142,6 +152,8 @@ namespace ProjetoDDD.Controllers
                 //{
                 //    DetalhesAuditoria = mensagem
                 //});
+
+                log.Erro("Houve um erro ao tentar criar o Sensor", mensagem);
 
                 IEnumerable<Pais> _paises = await _InterfacePaisService.List();
                 IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
