@@ -18,27 +18,34 @@ namespace ProjetoDDD.Controllers
         private readonly ISensorService _InterfaceSensorService;
         private readonly IPaisService _InterfacePaisService;
         private readonly IRegiaoService _InterfaceRegiaoService; 
-        private readonly ILogAuditoriaService _InterfaceLogAuditoriaService;
-        private readonly IMapper _mapper;    
+        //private readonly ILogAuditoriaService _InterfaceLogAuditoriaService;
+        private readonly IMapper _mapper;
+
+        private readonly ILogComIdentificadorUnico _logger;
 
         public SensorController
         ( 
             ISensorService InterfaceSensorService, 
             IPaisService InterfacePaisService, 
             IRegiaoService InterfaceRegiaoService,                                
-            ILogAuditoriaService InterfaceLogAuditoriaService,
-            IMapper mapper
+            //ILogAuditoriaService InterfaceLogAuditoriaService,
+            IMapper mapper,
+            ILogComIdentificadorUnico logger
         ) 
         {
             _InterfaceSensorService = InterfaceSensorService;
             _InterfacePaisService = InterfacePaisService;
             _InterfaceRegiaoService = InterfaceRegiaoService;           
-            _InterfaceLogAuditoriaService = InterfaceLogAuditoriaService;
+            //_InterfaceLogAuditoriaService = InterfaceLogAuditoriaService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
         {
+            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
+            log.Informacao("Iniciando processamento do documento com Cnpj:'{0}'", "12533592706");
+
             List<SensorViewModel> sensoresViemModel = new List<SensorViewModel>();    
 
             try
@@ -64,10 +71,10 @@ namespace ProjetoDDD.Controllers
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                {
-                    DetalhesAuditoria = mensagem
-                });
+                //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                //{
+                //    DetalhesAuditoria = mensagem
+                //});
 
                 ViewBag.Error = "Houve um erro ao tentar listar os sensores. Por favor entre em contato com o suporte.";
             }
@@ -89,10 +96,10 @@ namespace ProjetoDDD.Controllers
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                {
-                    DetalhesAuditoria = mensagem
-                });
+                //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                //{
+                //    DetalhesAuditoria = mensagem
+                //});
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar realizar o cadastro. Por favor entre em contato com o suporte.";
 
@@ -121,20 +128,20 @@ namespace ProjetoDDD.Controllers
 
                     mensagem = string.Format("{0} - O sensor {1} foi criado com sucesso", DateTime.Now, sensor.Id.ToString());
 
-                    await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                    {
-                        DetalhesAuditoria = mensagem
-                    });
+                    //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                    //{
+                    //    DetalhesAuditoria = mensagem
+                    //});
                 }
             }
             catch (Exception ex)
             {
                 mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                {
-                    DetalhesAuditoria = mensagem
-                });
+                //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                //{
+                //    DetalhesAuditoria = mensagem
+                //});
 
                 IEnumerable<Pais> _paises = await _InterfacePaisService.List();
                 IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
@@ -178,10 +185,10 @@ namespace ProjetoDDD.Controllers
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                {
-                    DetalhesAuditoria = mensagem
-                });
+                //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                //{
+                //    DetalhesAuditoria = mensagem
+                //});
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar editar o sensor. Por favor entre em contato com o suporte.";
 
@@ -213,10 +220,10 @@ namespace ProjetoDDD.Controllers
 
                     mensagem = string.Format("{0} - O sensor {1} foi alterado com sucesso", DateTime.Now, sensor.Id.ToString());
 
-                    await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                    {
-                        DetalhesAuditoria = mensagem
-                    });
+                    //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                    //{
+                    //    DetalhesAuditoria = mensagem
+                    //});
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {             
@@ -225,10 +232,10 @@ namespace ProjetoDDD.Controllers
                     else                    
                         mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);                   
 
-                    await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                    {
-                        DetalhesAuditoria = mensagem
-                    });
+                    //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                    //{
+                    //    DetalhesAuditoria = mensagem
+                    //});
 
                     IEnumerable<Pais> _paises = await _InterfacePaisService.List();
                     IEnumerable<Regiao> _regioes = await _InterfaceRegiaoService.List();
@@ -268,10 +275,10 @@ namespace ProjetoDDD.Controllers
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                {
-                    DetalhesAuditoria = mensagem
-                });
+                //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                //{
+                //    DetalhesAuditoria = mensagem
+                //});
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar deletar o sensor. Por favor entre em contato com o suporte.";
 
@@ -293,19 +300,19 @@ namespace ProjetoDDD.Controllers
 
                 string mensagem = string.Format("{0} - O sensor {1} foi deletado com sucesso", DateTime.Now, sensor.Id.ToString());
 
-                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                {
-                    DetalhesAuditoria = mensagem
-                });
+                //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                //{
+                //    DetalhesAuditoria = mensagem
+                //});
             }
             catch (Exception ex)
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                {
-                    DetalhesAuditoria = mensagem
-                });
+                //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                //{
+                //    DetalhesAuditoria = mensagem
+                //});
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar deletar o sensor. Por favor entre em contato com o suporte.";
             }
@@ -333,10 +340,10 @@ namespace ProjetoDDD.Controllers
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                {
-                    DetalhesAuditoria = mensagem
-                });
+                //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                //{
+                //    DetalhesAuditoria = mensagem
+                //});
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar exibir os detalhes do sensor. Por favor entre em contato com o suporte.";
 
@@ -361,10 +368,10 @@ namespace ProjetoDDD.Controllers
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
                 sensorExiste = false;                
 
-                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                {
-                    DetalhesAuditoria = mensagem
-                });                
+                //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                //{
+                //    DetalhesAuditoria = mensagem
+                //});                
             }
 
             return sensorExiste;
@@ -384,10 +391,10 @@ namespace ProjetoDDD.Controllers
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);              
 
-                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                {
-                    DetalhesAuditoria = mensagem
-                });
+                //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                //{
+                //    DetalhesAuditoria = mensagem
+                //});
             }
 
             return paisesViewModel;
@@ -407,10 +414,10 @@ namespace ProjetoDDD.Controllers
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _InterfaceLogAuditoriaService.Add(new LogAuditoria
-                {
-                    DetalhesAuditoria = mensagem
-                });
+                //await _InterfaceLogAuditoriaService.Add(new LogAuditoria
+                //{
+                //    DetalhesAuditoria = mensagem
+                //});
             }
 
             return regioesViewModel;

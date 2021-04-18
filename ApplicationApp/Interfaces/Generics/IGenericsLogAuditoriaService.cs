@@ -7,3 +7,6 @@ namespace SensoresAPP.Interfaces.Generics
         Task Add(T Objeto);        
     }
 }
+
+
+
