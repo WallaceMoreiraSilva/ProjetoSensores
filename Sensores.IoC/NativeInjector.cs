@@ -17,9 +17,13 @@ namespace Sensores.IoC
             services.AddScoped<ISensorService, SensorService>();
             services.AddScoped<IRegiaoService, RegiaoService>();
             services.AddScoped<IPaisService, PaisService>();
-            services.AddScoped<IEventoDisparadoService, EventoDisparadoService>();        
+            services.AddScoped<IEventoDisparadoService, EventoDisparadoService>();
 
-            services.AddScoped<ILogAuditoriaService, LogAuditoriaService>();
+            service.AddScope<ILogComIdentificadorUnico, LogComIdentificadorUnico>();
+
+            service.AddScope<IGestorLog, GestorLog>();
+
+            service.AddScope<ILog, Log>();
 
             #endregion
 
