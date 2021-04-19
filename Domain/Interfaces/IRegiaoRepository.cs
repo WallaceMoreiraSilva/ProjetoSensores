@@ -1,7 +1,7 @@
-﻿using Domain.Entities;
-using Domain.Interfaces.Generics;
+﻿using ProjetoDDD.Sensores.Domain.Entities;
+using ProjetoDDD.Sensores.Domain.Interfaces.Generics;
 
-namespace Domain.Interfaces
+namespace ProjetoDDD.Sensores.Domain.Interfaces
 {
     public interface IRegiaoRepository : IGenericsRepository<Regiao>
     {

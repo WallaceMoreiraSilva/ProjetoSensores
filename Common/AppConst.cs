@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Thex.Common
+namespace ProjetoDDD.Sensores.CrossCutting.Common
 {
     public class AppConsts
     {

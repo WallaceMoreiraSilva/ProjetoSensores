@@ -1,9 +1,9 @@
-﻿using Domain.Entities;
-using Domain.Interfaces;
-using Infra.Configuration;
-using Infra.Repository.Generics;
+﻿using ProjetoDDD.Sensores.Domain.Entities;
+using ProjetoDDD.Sensores.Domain.Interfaces;
+using ProjetoDDD.Sensores.Infra.Data.Context;
+using ProjetoDDD.Sensores.Infra.Data.Repository.Generics;
 
-namespace Infra.Repositories
+namespace ProjetoDDD.Sensores.Infra.Data.Repositories
 {
     public class SensorRepository : GenericsRepository<Sensor>, ISensorRepository
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SensoresAPP.Interfaces.Generics
+namespace ProjetoDDD.Sensores.Application.Interfaces.Generics
 {
     public interface IGenericsService<T> where T : class
     {

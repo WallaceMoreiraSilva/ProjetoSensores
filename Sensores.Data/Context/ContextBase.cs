@@ -1,7 +1,7 @@
-﻿using Domain.Entities;
+﻿using ProjetoDDD.Sensores.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infra.Configuration
+namespace ProjetoDDD.Sensores.Infra.Data.Context
 {
     public class ContextBase : DbContext
     {

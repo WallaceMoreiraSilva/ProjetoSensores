@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SensoresAPP.Interfaces
+namespace ProjetoDDD.Sensores.Application.Interfaces
 {
     public interface ILogComIdentificadorUnico
     {

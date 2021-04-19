@@ -19,11 +19,11 @@ namespace Sensores.IoC
             services.AddScoped<IPaisService, PaisService>();
             services.AddScoped<IEventoDisparadoService, EventoDisparadoService>();
 
-            service.AddScope<ILogComIdentificadorUnico, LogComIdentificadorUnico>();
+            //services.AddScope<ILogComIdentificadorUnico, LogComIdentificadorUnico>();
 
-            service.AddScope<IGestorLog, GestorLog>();
+            //services.AddScope<IGestorLog, GestorLog>();
 
-            service.AddScope<ILog, Log>();
+            //services.AddScope<ILog, Log>();
 
             #endregion
 

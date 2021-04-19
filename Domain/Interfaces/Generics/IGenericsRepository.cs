@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Generics
+namespace ProjetoDDD.Sensores.Domain.Interfaces.Generics
 {
     public interface IGenericsRepository<T> : IDisposable where T : class
     {

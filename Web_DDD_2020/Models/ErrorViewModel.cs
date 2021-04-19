@@ -1,6 +1,6 @@
 using System;
 
-namespace ProjetoDDD.Models
+namespace ProjetoDDD.Sensores.Presentation.Models
 {
     public class ErrorViewModel
     {

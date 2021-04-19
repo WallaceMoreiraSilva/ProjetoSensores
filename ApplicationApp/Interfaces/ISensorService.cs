@@ -1,14 +1,10 @@
-﻿using SensoresAPP.Interfaces.Generics;
-using Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ProjetoDDD.Sensores.Domain.Entities;
+using ProjetoDDD.Sensores.Application.Interfaces.Generics;
 
-namespace SensoresAPP.Interfaces
+namespace ProjetoDDD.Sensores.Application.Interfaces
 {
     public interface ISensorService : IGenericsService<Sensor>
     {
-
 
     }
 }

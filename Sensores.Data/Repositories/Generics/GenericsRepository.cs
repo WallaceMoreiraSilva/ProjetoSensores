@@ -1,14 +1,13 @@
-﻿using Domain.Interfaces.Generics;
-using Infra.Configuration;
+﻿using ProjetoDDD.Sensores.Domain.Interfaces.Generics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using ProjetoDDD.Sensores.Infra.Data.Context;
 
-namespace Infra.Repository.Generics
+namespace ProjetoDDD.Sensores.Infra.Data.Repository.Generics
 {
     public class GenericsRepository<T> : IGenericsRepository<T>, IDisposable where T : class
     {

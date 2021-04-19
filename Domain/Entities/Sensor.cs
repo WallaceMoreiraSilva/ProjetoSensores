@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities
+namespace ProjetoDDD.Sensores.Domain.Entities
 {
     public class Sensor
     {

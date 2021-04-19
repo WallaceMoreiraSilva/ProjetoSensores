@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Generics
+namespace ProjetoDDD.Sensores.Domain.Interfaces.Generics
 {
     public interface IGenericsLogAuditoriaRepository<T> : IDisposable where T : class
     {

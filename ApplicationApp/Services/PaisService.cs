@@ -1,10 +1,10 @@
-﻿using SensoresAPP.Interfaces;
-using Domain.Entities;
+﻿using ProjetoDDD.Sensores.Application.Interfaces;
+using ProjetoDDD.Sensores.Domain.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Domain.Interfaces;
+using ProjetoDDD.Sensores.Domain.Interfaces;
 
-namespace SensoresAPP.SensoresService
+namespace ProjetoDDD.Sensores.Application.Services
 {
     public class PaisService : IPaisService
     {

@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SensoresAPP.ViewModels
+namespace ProjetoDDD.Sensores.Application.ViewModel
 {
     public class SensorViewModel
     {       
@@ -37,17 +37,13 @@ namespace SensoresAPP.ViewModels
         public DateTime DataAlteracao { get; set; }
 
         [Required(ErrorMessage = "Região é obrigatório")]
-        public int RegiaoId { get; set; }
-
-        //public RegiaoViewModel Regiao { get; set; }
+        public int RegiaoId { get; set; }     
 
         [Display(Name = "Região")]
         public string NomeRegiao { get; set; }
 
         [Required(ErrorMessage = "País é obrigatório")]
-        public int PaisId { get; set; }
-
-        //public PaisViewModel Pais { get; set; }
+        public int PaisId { get; set; }    
        
         [Display(Name = "País")]
         public string NomePais { get; set; }       

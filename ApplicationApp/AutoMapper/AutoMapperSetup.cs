@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Domain.Entities;
-using SensoresAPP.ViewModels;
+using ProjetoDDD.Sensores.Domain.Entities;
+using ProjetoDDD.Sensores.Application.ViewModel;
 
-namespace SensoresApp.AutoMapper
+namespace ProjetoDDD.Sensores.Application.AutoMapper
 {
     public class AutoMapperSetup : Profile
     {

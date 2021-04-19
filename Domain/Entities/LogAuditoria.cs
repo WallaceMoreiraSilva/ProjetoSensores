@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Domain.Entities
+namespace ProjetoDDD.Sensores.Domain.Entities
 {
     public class LogAuditoria
     {

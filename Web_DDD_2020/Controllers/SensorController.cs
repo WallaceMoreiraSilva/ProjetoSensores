@@ -1,17 +1,17 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Domain.Entities;
-using SensoresAPP.Interfaces;
+using ProjetoDDD.Sensores.Domain.Entities;
+using ProjetoDDD.Sensores.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using Enum;
-using SensoresAPP.ViewModels;
+using ProjetoDDD.Sensores.CrossCutting.Enum;
+using ProjetoDDD.Sensores.Application.ViewModel;
 using AutoMapper;
 
-namespace ProjetoDDD.Controllers
+namespace ProjetoDDD.Sensores.Presentation.Controllers
 {
     public class SensorController : Controller
     {

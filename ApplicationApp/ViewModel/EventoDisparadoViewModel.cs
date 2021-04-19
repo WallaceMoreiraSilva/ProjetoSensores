@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace SensoresAPP.ViewModels
+namespace ProjetoDDD.Sensores.Application.ViewModel
 {
     public class EventoDisparadoViewModel
     {
@@ -23,9 +23,7 @@ namespace SensoresAPP.ViewModels
         [DisplayName("Data Cadastro")]
         public DateTime DataCadastro { get; set; }
 
-        public int SensorId { get; set; }
-
-        //public virtual SensorViewModel Sensor { get; set; }
+        public int SensorId { get; set; }     
 
         public int StatusEventoDisparado { get; set; }       
     }

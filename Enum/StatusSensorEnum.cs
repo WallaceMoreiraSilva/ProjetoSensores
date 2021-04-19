@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Enum
+namespace ProjetoDDD.Sensores.CrossCutting.Enum
 {
 	public enum StatusSensorEnum
 	{
