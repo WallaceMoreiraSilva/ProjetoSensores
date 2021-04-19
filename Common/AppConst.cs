@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ProjetoDDD.Sensores.CrossCutting.Common
+namespace ProjetoDDD.Sensores.Infra.CrossCutting.Common
 {
     public class AppConsts
     {

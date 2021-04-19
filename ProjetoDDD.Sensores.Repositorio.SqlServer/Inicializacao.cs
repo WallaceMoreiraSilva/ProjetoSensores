@@ -1,13 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using System.Data.Common;
 
 namespace ProjetoDDD.Sensores.Infra.Persistencia
 {
     public static class Inicializacao
     {
-        public static IServiceCollection AdicionarPersistenciaMSSql(this IServiceCollection services, string connectionString)
+        public static IServiceCollection AdicionarPersistencia(this IServiceCollection services, string connectionString)
         {          
-
             services.AddScoped<ISensorService, SensorService>();
             services.AddScoped<IRegiaoService, RegiaoService>();
             services.AddScoped<IPaisService, PaisService>();
@@ -18,8 +16,7 @@ namespace ProjetoDDD.Sensores.Infra.Persistencia
             services.AddScoped<ISensorRepository, SensorRepository>();
             services.AddScoped<IRegiaoRepository, RegiaoRepository>();
             services.AddScoped<IPaisRepository, PaisRepository>();
-            services.AddScoped<IEventoDisparadoRepository, EventoDisparadoRepository>();           
-
+            services.AddScoped<IEventoDisparadoRepository, EventoDisparadoRepository>();  
          
             return services;
         }

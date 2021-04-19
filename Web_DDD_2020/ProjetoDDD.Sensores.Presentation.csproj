@@ -12,7 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ApplicationApp\ProjetoDDD.Sensores.Application.csproj" />
     <ProjectReference Include="..\Domain\ProjetoDDD.Sensores.Domain.csproj" />
-    <ProjectReference Include="..\Enum\ProjetoDDD.Sensores.CrossCutting.Enum.csproj" />
+    <ProjectReference Include="..\Enum\ProjetoDDD.Sensores.Infra.CrossCutting.Enum.csproj" />
     <ProjectReference Include="..\Sensores.Data\ProjetoDDD.Sensores.Infra.Data.csproj" />
   </ItemGroup>
 

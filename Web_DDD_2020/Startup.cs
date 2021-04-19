@@ -9,7 +9,7 @@ using ProjetoDDD.Sensores.Infra.Data.Context;
 
 namespace ProjetoDDD.Sensores.Presentation
 {
-    public class Startup : IStartup
+    public class Startup
     {
         private IServiceCollection _services;
         private Configuracao _configuracao;
@@ -21,7 +21,7 @@ namespace ProjetoDDD.Sensores.Presentation
             Configuration = configuration;
         }
 
-        public void ConfigurarServicos(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             _services = services;
             _configuracao = new Configuracao();

@@ -1,4 +1,4 @@
-﻿namespace ProjetoDDD.Sensores.CrossCutting.Enum
+﻿namespace ProjetoDDD.Sensores.Infra.CrossCutting.Enum
 {
     public enum PosicaoIdentificadorEnum
     {

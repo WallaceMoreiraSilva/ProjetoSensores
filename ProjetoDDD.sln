@@ -23,13 +23,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1 - Data", "4.1 - Data", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoDDD.Sensores.Infra.Data", "Sensores.Data\ProjetoDDD.Sensores.Infra.Data.csproj", "{E7DBC3C3-AC26-41D6-A4A4-8A22D45B1BF2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoDDD.Sensores.CrossCutting.Enum", "Enum\ProjetoDDD.Sensores.CrossCutting.Enum.csproj", "{601F2454-BA9C-47D0-8982-6AAAB27CA03B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoDDD.Sensores.Infra.CrossCutting.Enum", "Enum\ProjetoDDD.Sensores.Infra.CrossCutting.Enum.csproj", "{601F2454-BA9C-47D0-8982-6AAAB27CA03B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoDDD.Sensores.CrossCutting.Common", "Common\ProjetoDDD.Sensores.CrossCutting.Common.csproj", "{199C712C-F9F0-4C0B-9667-5B6309467676}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoDDD.Sensores.Infra.CrossCutting.Common", "Common\ProjetoDDD.Sensores.Infra.CrossCutting.Common.csproj", "{199C712C-F9F0-4C0B-9667-5B6309467676}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistencia", "Persistencia", "{FDC4D58B-929B-4C5F-B161-4EADF63DF1FA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.3 - IOC", "4.3 - IOC", "{2DEC3EFC-E847-409E-A219-17A4E912EE4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoDDD.Sensores.Infra.Persistencia", "ProjetoDDD.Sensores.Repositorio.SqlServer\ProjetoDDD.Sensores.Infra.Persistencia.csproj", "{A7306BE9-34B5-4B4F-9294-35E5B7D15744}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoDDD.Sensores.Infra.IOC.NativeInjector", "NativeInjector\ProjetoDDD.Sensores.Infra.IOC.NativeInjector.csproj", "{7662B04E-3C17-4F72-8527-14D6D5EB95B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,10 +61,10 @@ Global
 		{199C712C-F9F0-4C0B-9667-5B6309467676}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{199C712C-F9F0-4C0B-9667-5B6309467676}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{199C712C-F9F0-4C0B-9667-5B6309467676}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A7306BE9-34B5-4B4F-9294-35E5B7D15744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A7306BE9-34B5-4B4F-9294-35E5B7D15744}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A7306BE9-34B5-4B4F-9294-35E5B7D15744}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A7306BE9-34B5-4B4F-9294-35E5B7D15744}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7662B04E-3C17-4F72-8527-14D6D5EB95B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7662B04E-3C17-4F72-8527-14D6D5EB95B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7662B04E-3C17-4F72-8527-14D6D5EB95B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7662B04E-3C17-4F72-8527-14D6D5EB95B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,8 +78,8 @@ Global
 		{E7DBC3C3-AC26-41D6-A4A4-8A22D45B1BF2} = {E358F104-063E-408D-8D17-6AD7813EA651}
 		{601F2454-BA9C-47D0-8982-6AAAB27CA03B} = {66463C9F-2964-4AF9-BFA2-EC62B88DEA2E}
 		{199C712C-F9F0-4C0B-9667-5B6309467676} = {66463C9F-2964-4AF9-BFA2-EC62B88DEA2E}
-		{FDC4D58B-929B-4C5F-B161-4EADF63DF1FA} = {B72BC216-5E1B-423A-B730-A79394F22F21}
-		{A7306BE9-34B5-4B4F-9294-35E5B7D15744} = {FDC4D58B-929B-4C5F-B161-4EADF63DF1FA}
+		{2DEC3EFC-E847-409E-A219-17A4E912EE4F} = {B72BC216-5E1B-423A-B730-A79394F22F21}
+		{7662B04E-3C17-4F72-8527-14D6D5EB95B2} = {2DEC3EFC-E847-409E-A219-17A4E912EE4F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {544B13C0-A235-48A5-8102-7F6A4E4E1FF8}

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using ProjetoDDD.Sensores.CrossCutting.Enum;
+using ProjetoDDD.Sensores.Infra.CrossCutting.Enum;
 using ProjetoDDD.Sensores.Application.ViewModel;
 using AutoMapper;
 
