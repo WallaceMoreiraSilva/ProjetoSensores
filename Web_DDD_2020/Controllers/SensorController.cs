@@ -25,20 +25,17 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             ISensorService InterfaceSensorService, 
             IPaisService InterfacePaisService, 
             IRegiaoService InterfaceRegiaoService,
-            IMapper mapper,
-            ILogComIdentificadorUnico logger
+            IMapper mapper           
         ) 
         {
             _InterfaceSensorService = InterfaceSensorService;
             _InterfacePaisService = InterfacePaisService;
-            _InterfaceRegiaoService = InterfaceRegiaoService;
-            _logger = logger;
+            _InterfaceRegiaoService = InterfaceRegiaoService;           
             _mapper = mapper;            
         }
 
         public async Task<IActionResult> Index()
-        {
-            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));  
+        {           
             List<SensorViewModel> sensoresViemModel = new List<SensorViewModel>();    
 
             try
@@ -59,13 +56,13 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
                         item.NomePais = nomePais;                                        
                     }
                 }
-                log.Informacao("Listagem de sensores realizado com sucesso");
+                //log.Informacao("Listagem de sensores realizado com sucesso");
             }
             catch (Exception ex)
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);               
                
-                log.Erro("Houve um erro ao tentar listar os sensores", mensagem);
+                //log.Erro("Houve um erro ao tentar listar os sensores", mensagem);
 
                 ViewBag.Error = "Houve um erro ao tentar listar os sensores. Por favor entre em contato com o suporte.";
             }
@@ -75,9 +72,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Create()
-        {
-            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
-
+        {           
             try
             {             
                 List<PaisViewModel> listarPaises = await ListarPaises();
@@ -90,7 +85,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                log.Erro("Houve um erro ao tentar abrir a tela para criar um sensor", mensagem);
+                //log.Erro("Houve um erro ao tentar abrir a tela para criar um sensor", mensagem);
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar realizar o cadastro. Por favor entre em contato com o suporte.";
 
@@ -103,8 +98,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SensorViewModel sensorViewModel)
-        {
-            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
+        {          
             string mensagem = string.Empty;
 
             try
@@ -118,14 +112,14 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
                     await _InterfaceSensorService.Add(sensor);                   
                     
-                    log.Informacao("O sensor {0} foi criado com sucesso", sensor.Id);
+                    //log.Informacao("O sensor {0} foi criado com sucesso", sensor.Id);
                 }
             }
             catch (Exception ex)
             {
                 mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);              
 
-                log.Erro("Houve um erro ao tentar criar o Sensor", mensagem);             
+                //log.Erro("Houve um erro ao tentar criar o Sensor", mensagem);             
 
                 List<PaisViewModel> listarPaises = await ListarPaises();
                 List<RegiaoViewModel> listarRegioes = await ListarRegioes();
@@ -144,7 +138,6 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
-            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
             SensorViewModel sensorViewModel = new SensorViewModel();
 
             try
@@ -165,7 +158,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                log.Erro("Houve um erro ao tentar abrir a tela para editar um sensor", mensagem);
+                //log.Erro("Houve um erro ao tentar abrir a tela para editar um sensor", mensagem);
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar editar o sensor. Por favor entre em contato com o suporte.";
 
@@ -179,8 +172,6 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, SensorViewModel sensorViewModel)
         {
-            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
-
             if (ModelState.IsValid)
             {
                 Sensor sensor = new Sensor();
@@ -197,7 +188,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
                     await _InterfaceSensorService.Update(sensor);                                
 
-                    log.Informacao("O sensor {0} foi editado com sucesso", sensor.Id);
+                    //log.Informacao("O sensor {0} foi editado com sucesso", sensor.Id);
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {             
@@ -206,7 +197,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
                     else                    
                         mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);                   
 
-                    log.Erro("Houve um erro ao tentar editar o sensor", mensagem);
+                    //log.Erro("Houve um erro ao tentar editar o sensor", mensagem);
 
                     List<PaisViewModel> listarPaises = await ListarPaises();
                     List<RegiaoViewModel> listarRegioes = await ListarRegioes();
@@ -226,7 +217,6 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
-            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
             SensorViewModel sensorViewModel = new SensorViewModel();
 
             try
@@ -245,7 +235,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                log.Erro("Houve um erro ao tentar abrir a tela para deletar um sensor", mensagem);
+                //log.Erro("Houve um erro ao tentar abrir a tela para deletar um sensor", mensagem);
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar deletar o sensor. Por favor entre em contato com o suporte.";
 
@@ -259,21 +249,19 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
-
             try
             {
                 var sensor = await _InterfaceSensorService.GetEntityById(id);               
 
                 await _InterfaceSensorService.Delete(sensor);               
 
-                log.Informacao("O sensor {0} foi deletado com sucesso", sensor.Id);
+                //log.Informacao("O sensor {0} foi deletado com sucesso", sensor.Id);
             }
             catch (Exception ex)
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                log.Erro("Houve um erro ao tentar deletar o sensor", mensagem);
+                //log.Erro("Houve um erro ao tentar deletar o sensor", mensagem);
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar deletar o sensor. Por favor entre em contato com o suporte.";
             }
@@ -283,7 +271,6 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
-            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
             SensorViewModel sensorViewModel = new SensorViewModel();
 
             try
@@ -302,7 +289,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                log.Erro("Houve um erro ao tentar abrir a tela de detalhes do sensor", mensagem);
+                //log.Erro("Houve um erro ao tentar abrir a tela de detalhes do sensor", mensagem);
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar exibir os detalhes do sensor. Por favor entre em contato com o suporte.";
 
@@ -314,7 +301,6 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
         private async Task<bool> SensorExists(int id)
         {
-            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
             Sensor sensor = new Sensor();
             bool sensorExiste;
 
@@ -327,7 +313,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             {
                 sensorExiste = false;
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);               
-                log.Erro("Houve um erro ao tentar avaliar se o sensor existe", mensagem);
+                //log.Erro("Houve um erro ao tentar avaliar se o sensor existe", mensagem);
             }
 
             return sensorExiste;
@@ -335,7 +321,6 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
         private async Task<List<PaisViewModel>> ListarPaises()
         {
-            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
             IEnumerable<Pais> _paises = null;
             List<PaisViewModel> paisesViewModel = null;
 
@@ -347,7 +332,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             catch (Exception ex)
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
-                log.Erro("Houve um erro ao tentar listar os paises", mensagem);
+                //log.Erro("Houve um erro ao tentar listar os paises", mensagem);
             }
 
             return paisesViewModel;
@@ -355,7 +340,6 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
         private async Task<List<RegiaoViewModel>> ListarRegioes()
         {
-            ILogComIdentificadorUnico log = _logger.CriarLog(gestaolog => gestaolog.GetLogger(this.GetType().Name));
             IEnumerable<Regiao> _regioes = null;
             List<RegiaoViewModel> regioesViewModel = null;
 
@@ -367,7 +351,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             catch (Exception ex)
             {
                 string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
-                log.Erro("Houve um erro ao tentar listar as regiões", mensagem);
+                //log.Erro("Houve um erro ao tentar listar as regiões", mensagem);
             }
 
             return regioesViewModel;
