@@ -17,7 +17,8 @@ namespace ProjetoDDD.Sensores.Infra.IOC.NativeInjector
             services.AddScoped<ISensorService, SensorService>();
             services.AddScoped<IRegiaoService, RegiaoService>();
             services.AddScoped<IPaisService, PaisService>();
-            services.AddScoped<IEventoDisparadoService, EventoDisparadoService>();   
+            services.AddScoped<IEventoDisparadoService, EventoDisparadoService>();
+            services.AddScoped<ILogAuditoriaService, LogAuditoriaService>();
 
             #endregion
 
@@ -28,9 +29,10 @@ namespace ProjetoDDD.Sensores.Infra.IOC.NativeInjector
             services.AddScoped<IRegiaoRepository, RegiaoRepository>();
             services.AddScoped<IPaisRepository, PaisRepository>();
             services.AddScoped<IEventoDisparadoRepository, EventoDisparadoRepository>();
+            services.AddScoped<ILogAuditoriaRepository, LogAuditoriaRepository>();
 
             #endregion
-            
+
         }
     }
 }

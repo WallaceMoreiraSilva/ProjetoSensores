@@ -10,6 +10,7 @@ using System;
 using ProjetoDDD.Sensores.Infra.CrossCutting.Enum;
 using ProjetoDDD.Sensores.Application.ViewModel;
 using AutoMapper;
+using Microsoft.Extensions.Configuration;
 
 namespace ProjetoDDD.Sensores.Presentation.Controllers
 {
@@ -18,20 +19,23 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
         private readonly ISensorService _InterfaceSensorService;
         private readonly IPaisService _InterfacePaisService;
         private readonly IRegiaoService _InterfaceRegiaoService;       
-        private readonly IMapper _mapper;      
+        private readonly IMapper _mapper;
+        public IConfiguration Configuration { get; }
 
         public SensorController
         ( 
             ISensorService InterfaceSensorService, 
             IPaisService InterfacePaisService, 
             IRegiaoService InterfaceRegiaoService,
-            IMapper mapper           
+            IMapper mapper,
+            IConfiguration configuration
         ) 
         {
             _InterfaceSensorService = InterfaceSensorService;
             _InterfacePaisService = InterfacePaisService;
             _InterfaceRegiaoService = InterfaceRegiaoService;           
-            _mapper = mapper;            
+            _mapper = mapper;
+            Configuration = configuration;
         }
 
         public async Task<IActionResult> Index()
@@ -56,7 +60,9 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
                         item.NomePais = nomePais;                                        
                     }
                 }
-                //log.Informacao("Listagem de sensores realizado com sucesso");
+
+                //Log.Informacao("Listagem de sensores realizado com sucesso");               
+                                
             }
             catch (Exception ex)
             {

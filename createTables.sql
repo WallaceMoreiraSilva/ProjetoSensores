@@ -1,16 +1,16 @@
-IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'ProjetoModeloDDD')
+IF NOT EXISTS(SELECT * FROM sys.databases WHERE name = 'Monitoramento')
   BEGIN
-    CREATE DATABASE ProjetoModeloDDD
+    CREATE DATABASE Monitoramento
 
 END
 
 GO
-    USE ProjetoModeloDDD
+    USE Monitoramento
 GO
 
 IF NOT EXISTS (SELECT TOP 1 * 
                  FROM sys.objects 
-                WHERE object_id = OBJECT_ID('ProjetoModeloDDD.Paises') 
+                WHERE object_id = OBJECT_ID('Monitoramento.Paises') 
                   AND type IN ('U'))
 
 BEGIN
@@ -26,16 +26,16 @@ CREATE TABLE Paises(
 	CONSTRAINT [PK_Paises] PRIMARY KEY CLUSTERED (	[Id] ASC)
 )
 
-	PRINT('Tabela nova Paises criada em - Database: ProjetoModeloDDD.');
+	PRINT('Tabela nova Paises criada em - Database: Monitoramento.');
 
 END
 ELSE
-	PRINT('Tabela Paises já existe no - Database: ProjetoModeloDDD.');
+	PRINT('Tabela Paises já existe no - Database: Monitoramento.');
 GO
 
 IF NOT EXISTS (SELECT TOP 1 * 
                  FROM sys.objects 
-                WHERE object_id = OBJECT_ID('ProjetoModeloDDD.Regioes') 
+                WHERE object_id = OBJECT_ID('Monitoramento.Regioes') 
                   AND type IN ('U'))
 
 BEGIN
@@ -47,16 +47,16 @@ CREATE TABLE Regioes(
 	[DataAlteracao] [datetime] NOT NULL,
 	CONSTRAINT [PK_Regioes] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
-	PRINT('Tabela nova Regioes criada em - Database: ProjetoModeloDDD.');
+	PRINT('Tabela nova Regioes criada em - Database: Monitoramento.');
 
 END
 ELSE
-	PRINT('Tabela Regioes já existe no - Database: ProjetoModeloDDD.');
+	PRINT('Tabela Regioes já existe no - Database: Monitoramento.');
 GO
 
 IF NOT EXISTS (SELECT TOP 1 * 
                  FROM sys.objects 
-                WHERE object_id = OBJECT_ID('ProjetoModeloDDD.Sensores') 
+                WHERE object_id = OBJECT_ID('Monitoramento.Sensores') 
                   AND type IN ('U'))
 
 BEGIN
@@ -72,16 +72,16 @@ CREATE TABLE Sensores(
 	[StatusSensor] [int] NOT NULL,
 	CONSTRAINT [PK_Sensores] PRIMARY KEY CLUSTERED ([Id] ASC)
  )
-	PRINT('Tabela nova Sensores criada em - Database: ProjetoModeloDDD.');
+	PRINT('Tabela nova Sensores criada em - Database: Monitoramento.');
 
 END
 ELSE
-	PRINT('Tabela Sensores já existe no - Database: ProjetoModeloDDD.');
+	PRINT('Tabela Sensores já existe no - Database: Monitoramento.');
 GO
 
 IF NOT EXISTS (SELECT TOP 1 * 
                  FROM sys.objects 
-                WHERE object_id = OBJECT_ID('ProjetoModeloDDD.EventoDisparados') 
+                WHERE object_id = OBJECT_ID('Monitoramento.EventoDisparados') 
                   AND type IN ('U'))
 
 BEGIN
@@ -95,30 +95,31 @@ CREATE TABLE EventoDisparados(
 	[StatusEventoDisparado] [int] NOT NULL,
 	CONSTRAINT [PK_EventoDisparados] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
-	PRINT('Tabela nova EventoDisparados criada em - Database: ProjetoModeloDDD.');
+	PRINT('Tabela nova EventoDisparados criada em - Database: Monitoramento.');
 
 END
 ELSE
-	PRINT('Tabela EventoDisparados já existe no - Database: ProjetoModeloDDD.');
+	PRINT('Tabela EventoDisparados já existe no - Database: Monitoramento.');
 GO
 
 IF NOT EXISTS (SELECT TOP 1 * 
                  FROM sys.objects 
-                WHERE object_id = OBJECT_ID('ProjetoModeloDDD.LogAuditorias') 
+                WHERE object_id = OBJECT_ID('Monitoramento.LogAuditorias') 
                   AND type IN ('U'))
 
 BEGIN
 
 CREATE TABLE LogAuditorias(
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[DetalhesAuditoria] [nvarchar](max) NULL,
+	[DetalhesAuditoria] [nvarchar](max) NOT NULL,
+	[EmailUsuario] [nvarchar](max) NOT NULL,
 	CONSTRAINT [PK_LogAuditorias] PRIMARY KEY CLUSTERED ([Id] ASC)
  )
-	PRINT('Tabela nova LogAuditorias criada em - Database: ProjetoModeloDDD.');
+	PRINT('Tabela nova LogAuditorias criada em - Database: Monitoramento.');
 
 END
 ELSE
-	PRINT('Tabela LogAuditorias já existe no - Database: ProjetoModeloDDD.');
+	PRINT('Tabela LogAuditorias já existe no - Database: Monitoramento.');
 GO
 
 ALTER TABLE [dbo].[Sensores]  WITH CHECK ADD  CONSTRAINT [FK_Sensores_Paises_PaisId] FOREIGN KEY([PaisId])
