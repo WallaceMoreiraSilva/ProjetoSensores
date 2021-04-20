@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoDDD.Sensores.Domain"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoDDD.Sensores.Application", "ApplicationApp\ProjetoDDD.Sensores.Application.csproj", "{78B770B8-B4F1-404A-87EF-E739921ABBFC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoDDD.Sensores.Presentation", "Web_DDD_2020\ProjetoDDD.Sensores.Presentation.csproj", "{5682F8A4-EEB5-437D-9B14-414BAEDF6F21}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sensores", "Web_DDD_2020\Sensores.csproj", "{5682F8A4-EEB5-437D-9B14-414BAEDF6F21}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.2 - CrossCutting", "4.2 - CrossCutting", "{66463C9F-2964-4AF9-BFA2-EC62B88DEA2E}"
 EndProject

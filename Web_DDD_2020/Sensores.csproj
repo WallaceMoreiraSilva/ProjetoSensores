@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="log4net" Version="2.0.12" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,6 +16,10 @@
     <ProjectReference Include="..\Enum\ProjetoDDD.Sensores.Infra.CrossCutting.Enum.csproj" />
     <ProjectReference Include="..\NativeInjector\ProjetoDDD.Sensores.Infra.IOC.NativeInjector.csproj" />
     <ProjectReference Include="..\Sensores.Data\ProjetoDDD.Sensores.Infra.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>
