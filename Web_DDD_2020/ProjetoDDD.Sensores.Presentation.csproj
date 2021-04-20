@@ -13,6 +13,7 @@
     <ProjectReference Include="..\ApplicationApp\ProjetoDDD.Sensores.Application.csproj" />
     <ProjectReference Include="..\Domain\ProjetoDDD.Sensores.Domain.csproj" />
     <ProjectReference Include="..\Enum\ProjetoDDD.Sensores.Infra.CrossCutting.Enum.csproj" />
+    <ProjectReference Include="..\NativeInjector\ProjetoDDD.Sensores.Infra.IOC.NativeInjector.csproj" />
     <ProjectReference Include="..\Sensores.Data\ProjetoDDD.Sensores.Infra.Data.csproj" />
   </ItemGroup>
 

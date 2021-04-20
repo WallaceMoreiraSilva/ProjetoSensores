@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoDDD.Sensores.Infra.C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.3 - IOC", "4.3 - IOC", "{2DEC3EFC-E847-409E-A219-17A4E912EE4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoDDD.Sensores.Infra.IOC.NativeInjector", "NativeInjector\ProjetoDDD.Sensores.Infra.IOC.NativeInjector.csproj", "{7662B04E-3C17-4F72-8527-14D6D5EB95B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjetoDDD.Sensores.Infra.IOC.NativeInjector", "NativeInjector\ProjetoDDD.Sensores.Infra.IOC.NativeInjector.csproj", "{7662B04E-3C17-4F72-8527-14D6D5EB95B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

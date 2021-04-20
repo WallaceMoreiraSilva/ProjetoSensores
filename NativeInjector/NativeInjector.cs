@@ -6,7 +6,7 @@ using ProjetoDDD.Sensores.Domain.Interfaces.Generics;
 using ProjetoDDD.Sensores.Infra.Data.Repositories;
 using ProjetoDDD.Sensores.Infra.Data.Repository.Generics;
 
-namespace Sensores.IoC
+namespace ProjetoDDD.Sensores.Infra.IOC.NativeInjector
 {
     public static class NativeInjector
     {
@@ -17,23 +17,13 @@ namespace Sensores.IoC
             services.AddScoped<ISensorService, SensorService>();
             services.AddScoped<IRegiaoService, RegiaoService>();
             services.AddScoped<IPaisService, PaisService>();
-            services.AddScoped<IEventoDisparadoService, EventoDisparadoService>();
-
-            //services.AddScope<ILogComIdentificadorUnico, LogComIdentificadorUnico>();
-
-            //services.AddScope<IGestorLog, GestorLog>();
-
-            //services.AddScope<ILog, Log>();
-            
+            services.AddScoped<IEventoDisparadoService, EventoDisparadoService>();   
 
             #endregion
 
             #region Repositories
 
-            services.AddScoped(typeof(IGenericsRepository<>), typeof(GenericsRepository<>));
-
-            services.AddScoped(typeof(IGenericsLogAuditoriaRepository<>), typeof(GenericsLogAuditoriaRepository<>));
-
+            services.AddScoped(typeof(IGenericsRepository<>), typeof(GenericsRepository<>));     
             services.AddScoped<ISensorRepository, SensorRepository>();
             services.AddScoped<IRegiaoRepository, RegiaoRepository>();
             services.AddScoped<IPaisRepository, PaisRepository>();

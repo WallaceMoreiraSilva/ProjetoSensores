@@ -17,8 +17,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
     {
         private readonly ISensorService _InterfaceSensorService;
         private readonly IPaisService _InterfacePaisService;
-        private readonly IRegiaoService _InterfaceRegiaoService;
-        private readonly ILogComIdentificadorUnico _logger;
+        private readonly IRegiaoService _InterfaceRegiaoService;       
         private readonly IMapper _mapper;      
 
         public SensorController
