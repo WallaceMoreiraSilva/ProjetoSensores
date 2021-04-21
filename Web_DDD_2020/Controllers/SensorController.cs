@@ -20,22 +20,24 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
         private readonly IPaisService _InterfacePaisService;
         private readonly IRegiaoService _InterfaceRegiaoService;       
         private readonly IMapper _mapper;
-        public IConfiguration Configuration { get; }
+        private readonly ILogAuditoriaService _log;
+
+      
 
         public SensorController
-        ( 
-            ISensorService InterfaceSensorService, 
-            IPaisService InterfacePaisService, 
+        (
+            ISensorService InterfaceSensorService,
+            IPaisService InterfacePaisService,
             IRegiaoService InterfaceRegiaoService,
             IMapper mapper,
-            IConfiguration configuration
+            ILogAuditoriaService log
         ) 
         {
             _InterfaceSensorService = InterfaceSensorService;
             _InterfacePaisService = InterfacePaisService;
             _InterfaceRegiaoService = InterfaceRegiaoService;           
             _mapper = mapper;
-            Configuration = configuration;
+            _log = log;
         }
 
         public async Task<IActionResult> Index()
@@ -59,18 +61,19 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
                         item.NomeRegiao = nomeRegiao;
                         item.NomePais = nomePais;                                        
                     }
-                }
-
-                //Log.Informacao("Listagem de sensores realizado com sucesso");               
-                                
+                }             
             }
             catch (Exception ex)
             {
-                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);               
-               
-                //log.Erro("Houve um erro ao tentar listar os sensores", mensagem);
+                string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                ViewBag.Error = "Houve um erro ao tentar listar os sensores. Por favor entre em contato com o suporte.";
+                await _log.Add(new LogAuditoria
+                {
+                    EmailUsuario = User.Identity.Name,
+                    DetalhesAuditoria = mensagem
+                });
+
+                ViewBag.Error = "Por favor verifique se você executou os passos corretamente do README";
             }
 
             return View(sensoresViemModel);
@@ -80,18 +83,21 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
         public async Task<IActionResult> Create()
         {           
             try
-            {             
+            {
                 List<PaisViewModel> listarPaises = await ListarPaises();
-                List<RegiaoViewModel> listarRegioes = await ListarRegioes();                
-
+                List<RegiaoViewModel> listarRegioes = await ListarRegioes();    
                 ViewBag.Paises = listarPaises.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
-                ViewBag.Regioes = listarRegioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });               
+                ViewBag.Regioes = listarRegioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });    
             }
             catch (Exception ex)
             {
-                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+                string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);               
 
-                //log.Erro("Houve um erro ao tentar abrir a tela para criar um sensor", mensagem);
+                await _log.Add(new LogAuditoria
+                {
+                    EmailUsuario = User.Identity.Name,
+                    DetalhesAuditoria = mensagem
+                });
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar realizar o cadastro. Por favor entre em contato com o suporte.";
 
@@ -104,9 +110,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SensorViewModel sensorViewModel)
-        {          
-            string mensagem = string.Empty;
-
+        {    
             try
             {
                 if (ModelState.IsValid)
@@ -116,24 +120,30 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
                     sensor.DataAlteracao = DateTime.Now;
                     sensor.StatusSensor = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
-                    await _InterfaceSensorService.Add(sensor);                   
-                    
-                    //log.Informacao("O sensor {0} foi criado com sucesso", sensor.Id);
+                    await _InterfaceSensorService.Add(sensor);
+
+                    await _log.Add(new LogAuditoria
+                    {
+                        EmailUsuario = User.Identity.Name,
+                        DetalhesAuditoria = string.Concat("Cadastrou o Sensor: ", sensor.Nome, " Data de cadastro : ", DateTime.Now.ToLongTimeString())
+                    });
                 }
             }
             catch (Exception ex)
             {
-                mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);              
-
-                //log.Erro("Houve um erro ao tentar criar o Sensor", mensagem);             
+                string mensagem = string.Format("{0}-{1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace); 
 
                 List<PaisViewModel> listarPaises = await ListarPaises();
                 List<RegiaoViewModel> listarRegioes = await ListarRegioes();
-
                 ViewBag.Paises = listarPaises.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
                 ViewBag.Regioes = listarRegioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
-
                 ViewBag.Error = "Houve um erro ao tentar criar o sensores. Por favor tente novamente.";
+
+                await _log.Add(new LogAuditoria
+                {
+                    EmailUsuario = User.Identity.Name,
+                    DetalhesAuditoria = mensagem
+                });
 
                 return View(sensorViewModel);
             }
@@ -152,7 +162,6 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
                 List<PaisViewModel> listarPaises = await ListarPaises();
                 List<RegiaoViewModel> listarRegioes = await ListarRegioes();
-
                 bool status = sensor.StatusSensor == (int)StatusSensorEnum.Ativo ? true : false;
                 sensorViewModel = _mapper.Map<SensorViewModel>(sensor);
                 sensorViewModel.Ativo = status;
@@ -162,9 +171,13 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+                string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                //log.Erro("Houve um erro ao tentar abrir a tela para editar um sensor", mensagem);
+                await _log.Add(new LogAuditoria
+                {
+                    EmailUsuario = User.Identity.Name,
+                    DetalhesAuditoria = mensagem
+                });
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar editar o sensor. Por favor entre em contato com o suporte.";
 
@@ -181,36 +194,45 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             if (ModelState.IsValid)
             {
                 Sensor sensor = new Sensor();
-                string mensagem = string.Empty;
+                string mensagemCustomizada = string.Empty;
 
                 try
-                {          
-                    if (id != sensorViewModel.Id)                  
-                        throw new Exception(string.Format("{0} - O id: " + id + "diferente do: " + sensorViewModel.Id, DateTime.Now));
-                   
+                {
+                    if (id != sensorViewModel.Id)
+                        throw new Exception(string.Format("{0} - O id: " + id + " é diferente do: " + sensorViewModel.Id, DateTime.Now.ToLongDateString()));
+
                     sensor = _mapper.Map<Sensor>(sensorViewModel);                    
                     sensor.DataAlteracao = DateTime.Now;                  
                     sensor.StatusSensor = sensorViewModel.Ativo == true ? (int)StatusSensorEnum.Ativo : (int)StatusSensorEnum.Inativo;
 
-                    await _InterfaceSensorService.Update(sensor);                                
+                    await _InterfaceSensorService.Update(sensor);
 
-                    //log.Informacao("O sensor {0} foi editado com sucesso", sensor.Id);
+                    await _log.Add(new LogAuditoria
+                    {
+                        EmailUsuario = User.Identity.Name,
+                        DetalhesAuditoria = string.Concat("Editou o Sensor: ", sensor.Nome, " Data de cadastro : ", DateTime.Now.ToLongTimeString())
+                    });
                 }
                 catch (DbUpdateConcurrencyException ex)
-                {             
-                    if (!await SensorExists(sensor.Id))                    
-                        mensagem = string.Format("{0} - {1}", DateTime.Now, NotFound());   
-                    else                    
-                        mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);                   
+                {
+                    string mensagem = string.Empty;
 
-                    //log.Erro("Houve um erro ao tentar editar o sensor", mensagem);
+                    if (!await SensorExists(sensor.Id))                    
+                        mensagem = string.Format("{0}-{1}", DateTime.Now, NotFound());   
+                    else                    
+                        mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+
+                    await _log.Add(new LogAuditoria
+                    {
+                        EmailUsuario = User.Identity.Name,
+                        DetalhesAuditoria = mensagem
+                    });
 
                     List<PaisViewModel> listarPaises = await ListarPaises();
                     List<RegiaoViewModel> listarRegioes = await ListarRegioes();
 
                     ViewBag.Paises = listarPaises.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
                     ViewBag.Regioes = listarPaises.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
-
                     ViewBag.Error = "Não foi possível editar o sensor.";
 
                     return View(sensorViewModel);
@@ -239,9 +261,13 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+                string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                //log.Erro("Houve um erro ao tentar abrir a tela para deletar um sensor", mensagem);
+                await _log.Add(new LogAuditoria
+                {
+                    EmailUsuario = User.Identity.Name,
+                    DetalhesAuditoria = mensagem
+                });
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar deletar o sensor. Por favor entre em contato com o suporte.";
 
@@ -259,15 +285,23 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             {
                 var sensor = await _InterfaceSensorService.GetEntityById(id);               
 
-                await _InterfaceSensorService.Delete(sensor);               
+                await _InterfaceSensorService.Delete(sensor);
 
-                //log.Informacao("O sensor {0} foi deletado com sucesso", sensor.Id);
+                await _log.Add(new LogAuditoria
+                {
+                    EmailUsuario = User.Identity.Name,
+                    DetalhesAuditoria = string.Concat("Deletado o Sensor: ", sensor.Nome, " Data de cadastro : ", DateTime.Now.ToLongTimeString())
+                });
             }
             catch (Exception ex)
             {
-                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+                string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                //log.Erro("Houve um erro ao tentar deletar o sensor", mensagem);
+                await _log.Add(new LogAuditoria
+                {
+                    EmailUsuario = User.Identity.Name,
+                    DetalhesAuditoria = mensagem
+                });
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar deletar o sensor. Por favor entre em contato com o suporte.";
             }
@@ -293,9 +327,13 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+                string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                //log.Erro("Houve um erro ao tentar abrir a tela de detalhes do sensor", mensagem);
+                await _log.Add(new LogAuditoria
+                {
+                    EmailUsuario = User.Identity.Name,
+                    DetalhesAuditoria = mensagem
+                });
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar exibir os detalhes do sensor. Por favor entre em contato com o suporte.";
 
@@ -318,49 +356,43 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             catch (Exception ex)
             {
                 sensorExiste = false;
-                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);               
-                //log.Erro("Houve um erro ao tentar avaliar se o sensor existe", mensagem);
+                string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
+                await _log.Add(new LogAuditoria
+                {
+                    EmailUsuario = User.Identity.Name,
+                    DetalhesAuditoria = mensagem
+                });
             }
 
             return sensorExiste;
         }
 
         private async Task<List<PaisViewModel>> ListarPaises()
-        {
-            IEnumerable<Pais> _paises = null;
-            List<PaisViewModel> paisesViewModel = null;
-
+        {           
             try
             {
-                _paises = await _InterfacePaisService.List();
-                paisesViewModel = _mapper.Map<List<PaisViewModel>>(_paises).OrderBy(x => x.Nome).ToList();
+                IEnumerable<Pais>  _paises = await _InterfacePaisService.List();
+                List<PaisViewModel>  paisesViewModel = _mapper.Map<List<PaisViewModel>>(_paises).OrderBy(x => x.Nome).ToList();
+                return paisesViewModel;
             }
-            catch (Exception ex)
-            {
-                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
-                //log.Erro("Houve um erro ao tentar listar os paises", mensagem);
-            }
-
-            return paisesViewModel;
+            catch
+            {               
+                throw;
+            }            
         }
 
         private async Task<List<RegiaoViewModel>> ListarRegioes()
-        {
-            IEnumerable<Regiao> _regioes = null;
-            List<RegiaoViewModel> regioesViewModel = null;
-
+        {           
             try
             {
-                _regioes = await _InterfaceRegiaoService.List();
-                regioesViewModel = _mapper.Map<List<RegiaoViewModel>>(_regioes).OrderBy(x => x.Nome).ToList();
+                IEnumerable<Regiao>  _regioes = await _InterfaceRegiaoService.List();
+                List<RegiaoViewModel> regioesViewModel = _mapper.Map<List<RegiaoViewModel>>(_regioes).OrderBy(x => x.Nome).ToList();
+                return regioesViewModel;
             }
-            catch (Exception ex)
+            catch 
             {
-                string mensagem = string.Format("{0} - {1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
-                //log.Erro("Houve um erro ao tentar listar as regiões", mensagem);
-            }
-
-            return regioesViewModel;
+                throw;
+            }            
         }
 
     }
