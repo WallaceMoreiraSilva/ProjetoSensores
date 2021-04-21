@@ -17,12 +17,10 @@ BEGIN
 
 CREATE TABLE Paises(
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Nome] [varchar](250) NULL,
+	[Nome] [varchar](250) NOT NULL,
 	[IsoDuasLetras] [varchar](2) NULL,
 	[IsoTresLetras] [varchar](3) NULL,
-	[NumeroCodigoIso] [varchar](250) NULL,
-	[DataCadastro] [datetime] NOT NULL,
-	[DataAlteracao] [datetime] NOT NULL,
+	[NumeroCodigoIso] [varchar](250) NULL,	
 	CONSTRAINT [PK_Paises] PRIMARY KEY CLUSTERED (	[Id] ASC)
 )
 
@@ -42,9 +40,7 @@ BEGIN
 
 CREATE TABLE Regioes(
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Nome] [varchar](250) NULL,
-	[DataCadastro] [datetime] NOT NULL,
-	[DataAlteracao] [datetime] NOT NULL,
+	[Nome] [varchar](250) NOT NULL,	
 	CONSTRAINT [PK_Regioes] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
 	PRINT('Tabela nova Regioes criada em - Database: Monitoramento.');
@@ -63,7 +59,7 @@ BEGIN
 
 CREATE TABLE Sensores(
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Nome] [varchar](250) NULL,
+	[Nome] [varchar](250) NOT NULL,
 	[Numero] [int] NOT NULL,
 	[DataCadastro] [datetime] NOT NULL,
 	[DataAlteracao] [datetime] NOT NULL,
@@ -88,7 +84,7 @@ BEGIN
 
 CREATE TABLE EventoDisparados(
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Nome] [varchar](250) NULL,
+	[Nome] [varchar](250) NOT NULL,
 	[Valor] [int] NOT NULL,
 	[DataCadastro] [datetime] NOT NULL,
 	[SensorId] [int] NOT NULL,

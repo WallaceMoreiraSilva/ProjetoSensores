@@ -12,10 +12,6 @@ namespace ProjetoDDD.Sensores.Domain.Entities
         
         public string IsoTresLetras { get; set; }
        
-        public string NumeroCodigoIso  { get; set; }
-       
-        public DateTime DataCadastro { get; set; }
-       
-        public DateTime DataAlteracao { get; set; }        
+        public string NumeroCodigoIso  { get; set; }    
     }
 }
