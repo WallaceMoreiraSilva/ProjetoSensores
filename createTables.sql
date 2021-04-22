@@ -59,8 +59,7 @@ BEGIN
 
 CREATE TABLE Sensores(
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Nome] [varchar](250) NOT NULL,
-	[Numero] [int] NOT NULL,
+	[Nome] [varchar](250) NOT NULL,	
 	[DataCadastro] [datetime] NOT NULL,
 	[DataAlteracao] [datetime] NOT NULL,
 	[RegiaoId] [int] NOT NULL,

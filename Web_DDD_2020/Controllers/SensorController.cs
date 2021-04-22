@@ -117,7 +117,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
                     await _InterfaceSensorService.Add(sensor);
 
-                    mensagem = string.Format("Cadastrou o sensor {0}-{1}-{2}", sensor.Id,sensor.Nome, DateTime.Now.ToLongTimeString());
+                    mensagem = string.Format("{2} - Cadastrou o sensor com sucesso: Id = {0} - Nome = {1}", sensor.Id, sensor.Nome, DateTime.Now.ToLongTimeString());
                     await _log.Add(new Log
                     {                       
                         Detalhes = mensagem
@@ -201,7 +201,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
                     await _InterfaceSensorService.Update(sensor);
 
-                    mensagem = string.Format("Atualizou o sensor {0}-{1}-{2}", sensor.Id, sensor.Nome, DateTime.Now.ToLongTimeString());
+                    mensagem = string.Format("{2} - Atualizou o sensor com sucesso: Id = {0} - Nome = {1}", sensor.Id, sensor.Nome, DateTime.Now.ToLongTimeString());
                     await _log.Add(new Log
                     {                        
                         Detalhes = mensagem
@@ -279,7 +279,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
                 await _InterfaceSensorService.Delete(sensor);
 
-                mensagem = string.Format("Apagou o sensor {0}-{1}-{2}", sensor.Id, sensor.Nome, DateTime.Now.ToLongTimeString());
+                mensagem = string.Format("{2} - Apagou o sensor com sucesso: Id = {0} - Nome = {1}", sensor.Id, sensor.Nome, DateTime.Now.ToLongTimeString());
                 await _log.Add(new Log
                 {                    
                     Detalhes = mensagem

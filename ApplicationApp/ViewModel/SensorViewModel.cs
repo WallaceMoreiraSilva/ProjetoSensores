@@ -14,11 +14,7 @@ namespace ProjetoDDD.Sensores.Application.ViewModel
         [MinLength(2)]
         [MaxLength(100)]
         [DisplayName("Nome")]
-        public string Nome { get; set; }
-
-        [Required(ErrorMessage = "Número é obrigatório")]
-        [Display(Name = "Número")]
-        public int Numero { get; set; }
+        public string Nome { get; set; }       
 
         [NotMapped]        
         public bool Ativo { get; set; }

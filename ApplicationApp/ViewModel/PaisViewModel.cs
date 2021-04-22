@@ -20,7 +20,7 @@ namespace ProjetoDDD.Sensores.Application.ViewModel
         [Display(Name = "Código ISO (3 letras)")]
         public string IsoTresLetras { get; set; }
 
-        [Display(Name = "Número do Código ISO")]
+        [Display(Name = "número do código iso")]
         public string NumeroCodigoIso { get; set; }
     }
 }

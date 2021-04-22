@@ -7,9 +7,7 @@ namespace ProjetoDDD.Sensores.Domain.Entities
     {
         public int Id { get; set; }
 
-        public string Nome { get; set; }
-
-        public int Numero { get; set; }
+        public string Nome { get; set; }       
         
         [NotMapped]
         public bool Ativo { get; set; }
