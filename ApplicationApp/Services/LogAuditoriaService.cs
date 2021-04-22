@@ -3,21 +3,20 @@ using ProjetoDDD.Sensores.Domain.Entities;
 using ProjetoDDD.Sensores.Domain.Interfaces;
 using System.Threading.Tasks;
 
-
 namespace ProjetoDDD.Sensores.Application.Services
 {
-    public class LogAuditoriaService : ILogAuditoriaService
+    public class LogService : ILogService
     {
-        ILogAuditoriaRepository _ILogAuditoria;
+        ILogRepository _log;
 
-        public LogAuditoriaService(ILogAuditoriaRepository ILogAuditoria)
+        public LogService(ILogRepository log)
         {
-            _ILogAuditoria = ILogAuditoria;
+            _log = log;
         }
 
-        public async Task Add(LogAuditoria Objeto)
+        public async Task Add(Log Objeto)
         {
-            await _ILogAuditoria.Add(Objeto);
+            await _log.Add(Objeto);
         }
     } 
 }

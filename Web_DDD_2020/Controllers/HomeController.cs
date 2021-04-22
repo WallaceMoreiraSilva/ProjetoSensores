@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using WebCrudLogAuditoria.Models;
+using ProjetoDDD.Sensores.Presentation.Models;
 
 namespace ProjetoDDD.Sensores.Presentation.Controllers
 {

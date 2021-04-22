@@ -3,15 +3,15 @@ using Microsoft.Win32.SafeHandles;
 using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using ProjetoDDD.Sensores.Infra.Data.Areas.Identity.Data;
+using ProjetoDDD.Sensores.Infra.Data.Context;
 
 namespace ProjetoDDD.Sensores.Infra.Data.Repository.Generics
 {
-    public class LogAuditoriaGenericsRepository<T> : ILogAuditoriaGenericsRepository<T>, IDisposable where T : class
+    public class LogGenericsRepository<T> : ILogGenericsRepository<T>, IDisposable where T : class
     {
         protected readonly ContextBase _context;
 
-        public LogAuditoriaGenericsRepository(ContextBase context)
+        public LogGenericsRepository(ContextBase context)
         {
             _context = context;
         }      

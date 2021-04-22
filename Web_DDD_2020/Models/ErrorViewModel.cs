@@ -1,4 +1,4 @@
-﻿namespace WebCrudLogAuditoria.Models
+﻿namespace ProjetoDDD.Sensores.Presentation.Models
 {
     public class ErrorViewModel
     {

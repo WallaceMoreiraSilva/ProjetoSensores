@@ -3,7 +3,7 @@ using ProjetoDDD.Sensores.Application.Interfaces.Generics;
 
 namespace ProjetoDDD.Sensores.Application.Interfaces
 {
-    public interface ILogAuditoriaService : ILogAuditoriaGenericsService<LogAuditoria>
+    public interface ILogService : ILogGenericsService<Log>
     {
 
     }

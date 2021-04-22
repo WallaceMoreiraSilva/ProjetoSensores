@@ -100,22 +100,21 @@ GO
 
 IF NOT EXISTS (SELECT TOP 1 * 
                  FROM sys.objects 
-                WHERE object_id = OBJECT_ID('Monitoramento.LogAuditorias') 
+                WHERE object_id = OBJECT_ID('Monitoramento.Logs') 
                   AND type IN ('U'))
 
 BEGIN
 
-CREATE TABLE LogAuditorias(
+CREATE TABLE Logs(
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[DetalhesAuditoria] [nvarchar](max) NOT NULL,
-	[EmailUsuario] [nvarchar](max) NOT NULL,
-	CONSTRAINT [PK_LogAuditorias] PRIMARY KEY CLUSTERED ([Id] ASC)
+	[Detalhes] [nvarchar](max) NOT NULL,	
+	CONSTRAINT [PK_Logs] PRIMARY KEY CLUSTERED ([Id] ASC)
  )
-	PRINT('Tabela nova LogAuditorias criada em - Database: Monitoramento.');
+	PRINT('Tabela nova Logs criada em - Database: Monitoramento.');
 
 END
 ELSE
-	PRINT('Tabela LogAuditorias já existe no - Database: Monitoramento.');
+	PRINT('Tabela Logs já existe no - Database: Monitoramento.');
 GO
 
 ALTER TABLE [dbo].[Sensores]  WITH CHECK ADD  CONSTRAINT [FK_Sensores_Paises_PaisId] FOREIGN KEY([PaisId])

@@ -10,18 +10,16 @@ using System;
 using ProjetoDDD.Sensores.Infra.CrossCutting.Enum;
 using ProjetoDDD.Sensores.Application.ViewModel;
 using AutoMapper;
-//using Microsoft.AspNetCore.Authorization;
 
 namespace ProjetoDDD.Sensores.Presentation.Controllers
-{
-    //[Authorize]
+{   
     public class SensorController : Controller
     {
         private readonly ISensorService _InterfaceSensorService;
         private readonly IPaisService _InterfacePaisService;
         private readonly IRegiaoService _InterfaceRegiaoService;       
         private readonly IMapper _mapper;
-        private readonly ILogAuditoriaService _log;      
+        private readonly ILogService _log;      
 
         public SensorController
         (
@@ -29,7 +27,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             IPaisService InterfacePaisService,
             IRegiaoService InterfaceRegiaoService,
             IMapper mapper,
-            ILogAuditoriaService log
+            ILogService log
         ) 
         {
             _InterfaceSensorService = InterfaceSensorService;
@@ -66,9 +64,8 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             {
                 string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _log.Add(new LogAuditoria {
-                    EmailUsuario = User.Identity.Name,
-                    DetalhesAuditoria = mensagem
+                await _log.Add(new Log {                    
+                    Detalhes = mensagem
                 });
 
                 ViewBag.Error = "Por favor verifique se você executou os passos corretamente do README";
@@ -91,10 +88,9 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             {
                 string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);               
 
-                await _log.Add(new LogAuditoria
-                {
-                    EmailUsuario = User.Identity.Name,
-                    DetalhesAuditoria = mensagem
+                await _log.Add(new Log
+                {                   
+                    Detalhes = mensagem
                 });
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar realizar o cadastro. Por favor entre em contato com o suporte.";
@@ -120,10 +116,9 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
                     await _InterfaceSensorService.Add(sensor);
 
-                    await _log.Add(new LogAuditoria
-                    {
-                        EmailUsuario = User.Identity.Name,
-                        DetalhesAuditoria = string.Concat("Cadastrou o Sensor: ", sensor.Nome, " Data de cadastro : ", DateTime.Now.ToLongTimeString())
+                    await _log.Add(new Log
+                    {                       
+                        Detalhes = string.Concat("Cadastrou o Sensor: ", sensor.Nome, " Data de cadastro : ", DateTime.Now.ToLongTimeString())
                     });
                 }
             }
@@ -137,10 +132,9 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
                 ViewBag.Regioes = listarRegioes.Select(c => new SelectListItem() { Value = c.Id.ToString(), Text = c.Nome.ToString() });
                 ViewBag.Error = "Houve um erro ao tentar criar o sensores. Por favor tente novamente.";
 
-                await _log.Add(new LogAuditoria
-                {
-                    EmailUsuario = User.Identity.Name,
-                    DetalhesAuditoria = mensagem
+                await _log.Add(new Log
+                {                  
+                    Detalhes = mensagem
                 });
 
                 return View(sensorViewModel);
@@ -171,10 +165,9 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             {
                 string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _log.Add(new LogAuditoria
-                {
-                    EmailUsuario = User.Identity.Name,
-                    DetalhesAuditoria = mensagem
+                await _log.Add(new Log
+                {                   
+                    Detalhes = mensagem
                 });
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar editar o sensor. Por favor entre em contato com o suporte.";
@@ -205,10 +198,9 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
                     await _InterfaceSensorService.Update(sensor);
 
-                    await _log.Add(new LogAuditoria
-                    {
-                        EmailUsuario = User.Identity.Name,
-                        DetalhesAuditoria = string.Concat("Editou o Sensor: ", sensor.Nome, " Data de cadastro : ", DateTime.Now.ToLongTimeString())
+                    await _log.Add(new Log
+                    {                        
+                        Detalhes = string.Concat("Editou o Sensor: ", sensor.Nome, " Data de cadastro : ", DateTime.Now.ToLongTimeString())
                     });
                 }
                 catch (DbUpdateConcurrencyException ex)
@@ -220,10 +212,9 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
                     else                    
                         mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                    await _log.Add(new LogAuditoria
-                    {
-                        EmailUsuario = User.Identity.Name,
-                        DetalhesAuditoria = mensagem
+                    await _log.Add(new Log
+                    {                        
+                        Detalhes = mensagem
                     });
 
                     List<PaisViewModel> listarPaises = await ListarPaises();
@@ -261,10 +252,9 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             {
                 string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _log.Add(new LogAuditoria
-                {
-                    EmailUsuario = User.Identity.Name,
-                    DetalhesAuditoria = mensagem
+                await _log.Add(new Log
+                {                   
+                    Detalhes = mensagem
                 });
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar deletar o sensor. Por favor entre em contato com o suporte.";
@@ -285,20 +275,18 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
                 await _InterfaceSensorService.Delete(sensor);
 
-                await _log.Add(new LogAuditoria
-                {
-                    EmailUsuario = User.Identity.Name,
-                    DetalhesAuditoria = string.Concat("Deletado o Sensor: ", sensor.Nome, " Data de cadastro : ", DateTime.Now.ToLongTimeString())
+                await _log.Add(new Log
+                {                    
+                    Detalhes = string.Concat("Deletado o Sensor: ", sensor.Nome, " Data de cadastro : ", DateTime.Now.ToLongTimeString())
                 });
             }
             catch (Exception ex)
             {
                 string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _log.Add(new LogAuditoria
-                {
-                    EmailUsuario = User.Identity.Name,
-                    DetalhesAuditoria = mensagem
+                await _log.Add(new Log
+                {                   
+                    Detalhes = mensagem
                 });
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar deletar o sensor. Por favor entre em contato com o suporte.";
@@ -327,10 +315,9 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             {
                 string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _log.Add(new LogAuditoria
-                {
-                    EmailUsuario = User.Identity.Name,
-                    DetalhesAuditoria = mensagem
+                await _log.Add(new Log
+                {                   
+                    Detalhes = mensagem
                 });
 
                 TempData["ErroMessage"] = "Houve um erro inesperado ao tentar exibir os detalhes do sensor. Por favor entre em contato com o suporte.";
@@ -355,10 +342,9 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             {
                 sensorExiste = false;
                 string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
-                await _log.Add(new LogAuditoria
-                {
-                    EmailUsuario = User.Identity.Name,
-                    DetalhesAuditoria = mensagem
+                await _log.Add(new Log
+                {                   
+                    Detalhes = mensagem
                 });
             }
 

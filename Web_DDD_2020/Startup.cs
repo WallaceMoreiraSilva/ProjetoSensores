@@ -1,15 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ProjetoDDD.Sensores.Application.AutoMapper;
-using ProjetoDDD.Sensores.Infra.Data.Areas.Identity.Data;
+using ProjetoDDD.Sensores.Infra.Data.Context;
 using ProjetoDDD.Sensores.Infra.IOC.NativeInjector;
-
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 
 public class Startup
 {
@@ -21,14 +17,10 @@ public class Startup
     }
 
     public void ConfigureServices(IServiceCollection services)
-    {
-        services.AddRazorPages();
-
+    {      
         services.AddControllersWithViews();          
 
-        services.AddDbContext<ContextBase>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ProjetoSensores")));
-
-        services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ContextBase>();
+        services.AddDbContext<ContextBase>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ProjetoSensores")).EnableSensitiveDataLogging());       
 
         NativeInjector.RegisterServices(services);
 
@@ -43,8 +35,7 @@ public class Startup
         }
         else
         {
-            app.UseExceptionHandler("/Home/Error");            
-            app.UseHsts();
+            app.UseExceptionHandler("/Home/Error");
         }           
 
         app.UseHttpsRedirection();
@@ -58,8 +49,7 @@ public class Startup
         {
             endpoints.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-            endpoints.MapRazorPages();
+                pattern: "{controller=Home}/{action=Index}/{id?}");            
         });
     }
 }
