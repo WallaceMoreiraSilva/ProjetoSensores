@@ -10,19 +10,18 @@ using System;
 using ProjetoDDD.Sensores.Infra.CrossCutting.Enum;
 using ProjetoDDD.Sensores.Application.ViewModel;
 using AutoMapper;
-using Microsoft.Extensions.Configuration;
+//using Microsoft.AspNetCore.Authorization;
 
 namespace ProjetoDDD.Sensores.Presentation.Controllers
 {
+    //[Authorize]
     public class SensorController : Controller
     {
         private readonly ISensorService _InterfaceSensorService;
         private readonly IPaisService _InterfacePaisService;
         private readonly IRegiaoService _InterfaceRegiaoService;       
         private readonly IMapper _mapper;
-        private readonly ILogAuditoriaService _log;
-
-      
+        private readonly ILogAuditoriaService _log;      
 
         public SensorController
         (
