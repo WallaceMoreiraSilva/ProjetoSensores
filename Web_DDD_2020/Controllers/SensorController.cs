@@ -104,7 +104,8 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SensorViewModel sensorViewModel)
-        {    
+        {
+            string mensagem = string.Empty;
             try
             {
                 if (ModelState.IsValid)
@@ -116,15 +117,16 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
                     await _InterfaceSensorService.Add(sensor);
 
+                    mensagem = string.Format("Cadastrou o sensor {0}-{1}-{2}", sensor.Id,sensor.Nome, DateTime.Now.ToLongTimeString());
                     await _log.Add(new Log
                     {                       
-                        Detalhes = string.Concat("Cadastrou o Sensor: ", sensor.Nome, " Data de cadastro : ", DateTime.Now.ToLongTimeString())
+                        Detalhes = mensagem
                     });
                 }
             }
             catch (Exception ex)
             {
-                string mensagem = string.Format("{0}-{1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace); 
+                mensagem = string.Format("{0}-{1}{2}{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace); 
 
                 List<PaisViewModel> listarPaises = await ListarPaises();
                 List<RegiaoViewModel> listarRegioes = await ListarRegioes();
@@ -182,10 +184,11 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, SensorViewModel sensorViewModel)
         {
+            string mensagem = string.Empty;
+
             if (ModelState.IsValid)
             {
-                Sensor sensor = new Sensor();
-                string mensagemCustomizada = string.Empty;
+                Sensor sensor = new Sensor();               
 
                 try
                 {
@@ -198,15 +201,14 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
 
                     await _InterfaceSensorService.Update(sensor);
 
+                    mensagem = string.Format("Atualizou o sensor {0}-{1}-{2}", sensor.Id, sensor.Nome, DateTime.Now.ToLongTimeString());
                     await _log.Add(new Log
                     {                        
-                        Detalhes = string.Concat("Editou o Sensor: ", sensor.Nome, " Data de cadastro : ", DateTime.Now.ToLongTimeString())
+                        Detalhes = mensagem
                     });
                 }
                 catch (DbUpdateConcurrencyException ex)
-                {
-                    string mensagem = string.Empty;
-
+                {   
                     if (!await SensorExists(sensor.Id))                    
                         mensagem = string.Format("{0}-{1}", DateTime.Now, NotFound());   
                     else                    
@@ -269,21 +271,23 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            string mensagem = string.Empty;
+
             try
             {
                 var sensor = await _InterfaceSensorService.GetEntityById(id);               
 
                 await _InterfaceSensorService.Delete(sensor);
 
+                mensagem = string.Format("Apagou o sensor {0}-{1}-{2}", sensor.Id, sensor.Nome, DateTime.Now.ToLongTimeString());
                 await _log.Add(new Log
                 {                    
-                    Detalhes = string.Concat("Deletado o Sensor: ", sensor.Nome, " Data de cadastro : ", DateTime.Now.ToLongTimeString())
+                    Detalhes = mensagem
                 });
             }
             catch (Exception ex)
             {
-                string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
-
+                mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
                 await _log.Add(new Log
                 {                   
                     Detalhes = mensagem
@@ -378,6 +382,5 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
                 throw;
             }            
         }
-
     }
 }
