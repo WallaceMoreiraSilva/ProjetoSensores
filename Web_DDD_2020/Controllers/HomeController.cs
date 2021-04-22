@@ -1,45 +1,26 @@
-﻿using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using WebCrudLogAuditoria.Models;
 
 namespace ProjetoDDD.Sensores.Presentation.Controllers
 {
     public class HomeController : Controller
-    { 
-        [Authorize(Policy = "Admin")]
-        public IActionResult SecretApi() => Ok("Secret API");
-
-
-        [AllowAnonymous]
-        public IActionResult Index() => Ok("Hello from index");
-
-
-        [Authorize]
-        public IActionResult Claims()
+    {
+        public IActionResult Index()
         {
-            return Ok(User.Claims.Select(x => new { Type = x.Type, Value = x.Value }));
+            return View();
         }
 
-        public async Task<IActionResult> Authentication()
-        {           
-            ClaimsIdentity identity = new ClaimsIdentity("SeriesAuthCookie");
-
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier,"1234"));
-            identity.AddClaim(new Claim(ClaimTypes.Email, "wallaceinfofuturo@gmail.com"));
-            identity.AddClaim(new Claim(ClaimTypes.Webpage, "https://github.com/WallaceMoreiraSilva"));          
-            identity.AddClaim(new Claim(ClaimTypes.Role, "SecretRole"));
-            identity.AddClaim(new Claim(ClaimTypes.Role, "Student"));
-            identity.AddClaim(new Claim(ClaimTypes.Role, "Teen"));
-            
-            ClaimsPrincipal principal = new ClaimsPrincipal (new[] { identity });
-
-            await HttpContext.SignInAsync(principal);
-
-            return Redirect("/home/index");
+        public IActionResult Privacy()
+        {
+            return View();
         }
 
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
 }
+

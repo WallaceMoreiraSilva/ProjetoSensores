@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,36 +18,29 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddControllersWithViews();
+        services.AddControllersWithViews();       
 
-        services.AddAuthentication("CookieSeriesAuth")
-            .AddCookie("CookieSeriesAuth", opt =>
-           {
-               opt.Cookie.Name = "SeriesAuthCookie";
-           });
-
-        services.AddAuthorization(opt =>
-        {
-            opt.AddPolicy("Admin", p => p.RequireRole("SecretRole"));
-            opt.AddPolicy("AdvancedUser", p => p.RequireRole("Student"));
-        });
-
-        services.AddDbContext<ContextBase>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ProjetoModeloDDD")).EnableSensitiveDataLogging());
+        services.AddDbContext<ContextBase>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ProjetoSensores")).EnableSensitiveDataLogging());
 
         NativeInjector.RegisterServices(services);
 
         services.AddAutoMapper(typeof(AutoMapperSetup));
     }
 
-    public void Configure(IApplicationBuilder app)
-    {       
+    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    {
+        if (env.IsDevelopment())
+            app.UseDeveloperExceptionPage();
+        else
+            app.UseExceptionHandler("/Home/Error");
+        
         app.UseStaticFiles();
 
         app.UseRouting();
 
-        app.UseAuthentication();
+        //app.UseAuthentication();
 
-        app.UseAuthorization();
+        //app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
         {

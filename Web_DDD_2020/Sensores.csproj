@@ -17,8 +17,4 @@
     <ProjectReference Include="..\Sensores.Data\ProjetoDDD.Sensores.Infra.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>
