@@ -5,8 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\**" />
+    <Content Remove="Areas\**" />
+    <EmbeddedResource Remove="Areas\**" />
+    <None Remove="Areas\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
   </ItemGroup>
 
   <ItemGroup>

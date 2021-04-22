@@ -67,8 +67,7 @@ namespace ProjetoDDD.Sensores.Presentation.Controllers
             {
                 string mensagem = string.Format("{0}-{1}-{2}-{3}", DateTime.Now, ex.Message, ex.InnerException, ex.StackTrace);
 
-                await _log.Add(new LogAuditoria
-                {
+                await _log.Add(new LogAuditoria {
                     EmailUsuario = User.Identity.Name,
                     DetalhesAuditoria = mensagem
                 });

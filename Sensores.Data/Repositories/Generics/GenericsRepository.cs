@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using ProjetoDDD.Sensores.Infra.Data.Context;
+using ProjetoDDD.Sensores.Infra.Data.Areas.Identity.Data;
 
 namespace ProjetoDDD.Sensores.Infra.Data.Repository.Generics
 {

@@ -1,9 +1,10 @@
 ﻿using ProjetoDDD.Sensores.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace ProjetoDDD.Sensores.Infra.Data.Context
 {
-    public class ContextBase : DbContext
+    public class ContextBase : IdentityDbContext<ApplicationUser>
     {
         public ContextBase(DbContextOptions<ContextBase> option)
             : base(option) { }
