@@ -12,8 +12,7 @@ namespace ProjetoDDD.Sensores.Infra.Data.Context
 
         public DbSet<Sensor> Sensores { get; set; }
         public DbSet<Regiao> Regioes { get; set; }
-        public DbSet<Pais> Paises { get; set; }
-        public DbSet<EventoDisparado> EventoDisparados { get; set; }       
+        public DbSet<Pais> Paises { get; set; }          
         public DbSet<Log> Logs { get; set; }
 
         #endregion

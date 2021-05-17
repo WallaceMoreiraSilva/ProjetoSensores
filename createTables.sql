@@ -76,29 +76,6 @@ GO
 
 IF NOT EXISTS (SELECT TOP 1 * 
                  FROM sys.objects 
-                WHERE object_id = OBJECT_ID('Monitoramento.EventoDisparados') 
-                  AND type IN ('U'))
-
-BEGIN
-
-CREATE TABLE EventoDisparados(
-	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Nome] [varchar](250) NOT NULL,
-	[Valor] [int] NOT NULL,
-	[DataCadastro] [datetime] NOT NULL,
-	[SensorId] [int] NOT NULL,
-	[StatusEventoDisparado] [int] NOT NULL,
-	CONSTRAINT [PK_EventoDisparados] PRIMARY KEY CLUSTERED ([Id] ASC)
-)
-	PRINT('Tabela nova EventoDisparados criada em - Database: Monitoramento.');
-
-END
-ELSE
-	PRINT('Tabela EventoDisparados já existe no - Database: Monitoramento.');
-GO
-
-IF NOT EXISTS (SELECT TOP 1 * 
-                 FROM sys.objects 
                 WHERE object_id = OBJECT_ID('Monitoramento.Logs') 
                   AND type IN ('U'))
 
@@ -132,14 +109,7 @@ GO
 
 ALTER TABLE [dbo].[Sensores] CHECK CONSTRAINT [FK_Sensores_Regioes_RegiaoId]
 
-GO
 
-ALTER TABLE [dbo].[EventoDisparados]  WITH CHECK ADD  CONSTRAINT [FK_EventoDisparados_Sensores_SensorId] FOREIGN KEY([SensorId])
- REFERENCES [dbo].[Sensores] ([Id]) ON DELETE CASCADE
-
-GO
-
-ALTER TABLE [dbo].[EventoDisparados] CHECK CONSTRAINT [FK_EventoDisparados_Sensores_SensorId]
 
 
 

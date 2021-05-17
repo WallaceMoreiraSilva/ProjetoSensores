@@ -10,22 +10,15 @@ namespace ProjetoDDD.Sensores.Application.AutoMapper
         {
 
             #region ViewModelToDomain
-
                 CreateMap<SensorViewModel,Sensor>();
                 CreateMap<PaisViewModel, Pais>();
-                CreateMap<RegiaoViewModel, Regiao>();
-                CreateMap<EventoDisparadoViewModel, EventoDisparado>();                      
-
+                CreateMap<RegiaoViewModel, Regiao>();     
             #endregion
 
-
             #region DomainToViewModel
-
                 CreateMap<Sensor, SensorViewModel>();
                 CreateMap<Pais, PaisViewModel>();
-                CreateMap<Regiao, RegiaoViewModel>();
-                CreateMap<EventoDisparado, EventoDisparadoViewModel>();                            
-
+                CreateMap<Regiao, RegiaoViewModel>();     
             #endregion
 
         }
